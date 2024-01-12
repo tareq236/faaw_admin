@@ -42,6 +42,7 @@ exports.add_from = async (req, res, next) => {
     order_by: "",
     image: "",
     status: "",
+    is_show_in_home_page: "",
   });
 };
 
@@ -96,7 +97,8 @@ exports.add = [async (req, res, next) => {
           details: req.body.details,
           order_by: req.body.order_by,
           image: image,
-          status: req.body.status
+          status: req.body.status,
+          is_show_in_home_page: req.body.is_show_in_home_page
         };
         const save_date = await DonationCareerModel.create(insert_data).catch(errorHandlerProductList);
         req.flash('success', 'Data add successfully!');
@@ -119,6 +121,7 @@ exports.edit_from = async (req, res, next) => {
     order_by: result.order_by,
     image: result.image,
     status: result.status,
+    is_show_in_home_page: result.is_show_in_home_page,
     id: result.id,
   });
 };
@@ -173,7 +176,8 @@ exports.edit = [async (req, res, next) => {
           details: req.body.details,
           order_by: req.body.order_by,
           image: image,
-          status: req.body.status
+          status: req.body.status,
+          is_show_in_home_page: req.body.is_show_in_home_page
         };
         if(image===""){
           delete update_data.image;

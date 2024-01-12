@@ -36,6 +36,7 @@
                 <th>Title</th>
                 <th>Details</th>
                 <th>Status</th>
+                <th>Is Home</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>
@@ -76,6 +77,11 @@
                     }else{
                         $('td:eq(4)', row).html('<span class="badge badge-secondary">Unpublished</span>');
                     }
+                    if ( data.is_show_in_home_page === 1 ) {
+                        $('td:eq(5)', row).html('<span class="badge badge-success">Show</span>');
+                    }else{
+                        $('td:eq(5)', row).html('<span class="badge badge-secondary">Not Show</span>');
+                    }
                 },
                 "columns": [
                     { "data": "order_by" },
@@ -83,6 +89,7 @@
                     { "data": "title" },
                     { "data": "details" },
                     { "data": "status" },
+                    { "data": "is_show_in_home_page" },
                     { "data": "action" },
                 ]
             });

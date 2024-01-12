@@ -48,6 +48,14 @@ module.exports = sequelize => {
       comment: null,
       field: "order_by"
     },
+    is_show_in_home_page: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0,
+      autoIncrement: false,
+      comment: null,
+      field: "is_show_in_home_page"
+    },
     status: {
       type: DataTypes.INTEGER(1),
       allowNull: true,
