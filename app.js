@@ -7,6 +7,7 @@ var flash = require('express-flash');
 var session = require('express-session');
 var expressLayouts = require('express-ejs-layouts');
 var bodyParser = require('body-parser');
+var cors = require("cors")
 
 const db = require('./models');
 db.sequelize.sync({ alter: true }).then((req) => {
@@ -25,6 +26,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(cors())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
