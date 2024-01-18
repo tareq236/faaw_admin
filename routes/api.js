@@ -4,6 +4,12 @@ const router = express.Router();
 const menu = require('../controllers/api/menu');
 const homePage = require('../controllers/api/home_page');
 const member = require('../controllers/api/member');
+const page = require('../controllers/api/page');
+
+
+router.post('/v1/page_details', function(req, res, next) {
+  page.pageDetails(req, res, next);
+});
 
 router.post('/v1/member_login', function(req, res, next) {
   member.Check(req, res, next);

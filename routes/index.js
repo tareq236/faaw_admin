@@ -14,6 +14,7 @@ const Publication = require('../controllers/publication/Publication');
 const EventSponsors = require('../controllers/event_sponsors/EventSponsors');
 const DonationCareer = require('../controllers/donation_career/DonationCareer');
 const NoticeBoard = require('../controllers/notice_board/NoticeBoard');
+const Page = require('../controllers/page/Page');
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -61,7 +62,33 @@ router.get('/dashboard', function(req, res, next) {
 });
 
 
+router.get('/page', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Page.list(req, res, next);
+  }
+});
+router.post('/page/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Page.data_list(req, res, next);
+  }
+});
+router.get('/page/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Page.add_from(req, res, next);
+  }
+});
+router.post('/page/add', Page.add);
+router.get('/page/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Page.edit_from(req, res, next);
+  }
+});
+router.post('/page/edit/:id', Page.edit);
+router.post('/page/del', function(req, res, next) {
+  Page.delete(req, res, next);
+});
 
+//===============================================================
 
 router.get('/menu/sub_menu', function(req, res, next) {
   if (isLogin(req, res)) {
