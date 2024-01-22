@@ -6,7 +6,15 @@ const homePage = require('../controllers/api/home_page');
 const member = require('../controllers/api/member');
 const page = require('../controllers/api/page');
 
-
+router.post('/v1/member_list_for_approved', function(req, res, next) {
+  member.UserListForApproved(req, res, next);
+});
+router.get('/v1/user_details/:user_id', function(req, res, next) {
+  member.UserDetails(req, res, next);
+});
+router.post('/v1/member_approved', function(req, res, next) {
+  member.SaveMemberApproved(req, res, next);
+});
 router.post('/v1/page_details', function(req, res, next) {
   page.pageDetails(req, res, next);
 });

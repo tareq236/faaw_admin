@@ -87,6 +87,15 @@ module.exports = sequelize => {
       comment: null,
       field: "status"
     },
+    admin_approval: {
+      type: DataTypes.INTEGER(1),
+      allowNull: true,
+      defaultValue: 0,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "admin_approval"
+    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
