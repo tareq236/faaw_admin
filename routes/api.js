@@ -7,6 +7,10 @@ const member = require('../controllers/api/member');
 const page = require('../controllers/api/page');
 const eventList = require('../controllers/api/event_list');
 
+router.get('/v1/event_details/:id', function(req, res, next) {
+  eventList.Details(req, res, next);
+});
+
 router.post('/v1/event_register', function(req, res, next) {
   eventList.Save(req, res, next);
 });

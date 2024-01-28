@@ -1,6 +1,16 @@
 const { sequelize, EventRegisterModel} = require("../../models");
 const { QueryTypes } = require('sequelize');
 
+exports.Details = async (req, res, next) => {
+  const _data = await sequelize.query(`SELECT el.* FROM event_list el WHERE status = 1 AND id=${req.params.id} ORDER BY el.id;`, { type: QueryTypes.SELECT });
+
+  return res.status(200).json({
+    success: true,
+    result: _data,
+  });
+
+};
+
 
 exports.Save  = async (req, res, next) => {
   const errorHandler = (err) => {
