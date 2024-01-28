@@ -5,6 +5,15 @@ const menu = require('../controllers/api/menu');
 const homePage = require('../controllers/api/home_page');
 const member = require('../controllers/api/member');
 const page = require('../controllers/api/page');
+const eventList = require('../controllers/api/event_list');
+
+router.post('/v1/event_register', function(req, res, next) {
+  eventList.Save(req, res, next);
+});
+
+router.get('/v1/event_list', function(req, res, next) {
+  eventList.List(req, res, next);
+});
 
 router.post('/v1/member_list_for_approved', function(req, res, next) {
   member.UserListForApproved(req, res, next);
