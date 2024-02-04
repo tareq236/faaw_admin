@@ -15,6 +15,11 @@ const EventSponsors = require('../controllers/event_sponsors/EventSponsors');
 const DonationCareer = require('../controllers/donation_career/DonationCareer');
 const NoticeBoard = require('../controllers/notice_board/NoticeBoard');
 const Page = require('../controllers/page/Page');
+const Member = require('../controllers/member/Member');
+const BatchSession = require('../controllers/batch_session/BatchSession');
+const Occupation = require('../controllers/occupation/Occupation');
+const Job = require('../controllers/job/Job');
+const ScrollingNews = require('../controllers/scrolling_news/ScrollingNews');
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -62,6 +67,146 @@ router.get('/dashboard', function(req, res, next) {
 });
 
 
+router.get('/scrolling_news', function(req, res, next) {
+  if (isLogin(req, res)) {
+    ScrollingNews.list(req, res, next);
+  }
+});
+router.post('/scrolling_news/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    ScrollingNews.data_list(req, res, next);
+  }
+});
+router.get('/scrolling_news/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    ScrollingNews.add_from(req, res, next);
+  }
+});
+router.post('/scrolling_news/add', ScrollingNews.add);
+router.get('/scrolling_news/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    ScrollingNews.edit_from(req, res, next);
+  }
+});
+router.post('/scrolling_news/edit/:id', ScrollingNews.edit);
+router.post('/scrolling_news/del', function(req, res, next) {
+  ScrollingNews.delete(req, res, next);
+});
+
+//==================================================================
+
+router.get('/job', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Job.list(req, res, next);
+  }
+});
+router.post('/job/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Job.data_list(req, res, next);
+  }
+});
+router.get('/job/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Job.add_from(req, res, next);
+  }
+});
+router.post('/job/add', Job.add);
+router.get('/job/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Job.edit_from(req, res, next);
+  }
+});
+router.post('/job/edit/:id', Job.edit);
+router.post('/job/del', function(req, res, next) {
+  Job.delete(req, res, next);
+});
+
+
+//======================================================
+
+router.get('/occupation', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Occupation.list(req, res, next);
+  }
+});
+router.post('/occupation/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Occupation.data_list(req, res, next);
+  }
+});
+router.get('/occupation/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Occupation.add_from(req, res, next);
+  }
+});
+router.post('/occupation/add', Occupation.add);
+router.get('/occupation/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Occupation.edit_from(req, res, next);
+  }
+});
+router.post('/occupation/edit/:id', Occupation.edit);
+router.post('/occupation/del', function(req, res, next) {
+  Occupation.delete(req, res, next);
+});
+
+//==================================================================
+router.get('/batch_session', function(req, res, next) {
+  if (isLogin(req, res)) {
+    BatchSession.list(req, res, next);
+  }
+});
+router.post('/batch_session/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    BatchSession.data_list(req, res, next);
+  }
+});
+router.get('/batch_session/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    BatchSession.add_from(req, res, next);
+  }
+});
+router.post('/batch_session/add', BatchSession.add);
+router.get('/batch_session/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    BatchSession.edit_from(req, res, next);
+  }
+});
+router.post('/batch_session/edit/:id', BatchSession.edit);
+router.post('/batch_session/del', function(req, res, next) {
+  BatchSession.delete(req, res, next);
+});
+
+//======================================================================
+router.get('/member', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Member.list(req, res, next);
+  }
+});
+router.post('/member/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Member.data_list(req, res, next);
+  }
+});
+router.get('/member/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Member.add_from(req, res, next);
+  }
+});
+router.post('/member/add', Member.add);
+
+router.get('/member/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Member.edit_from(req, res, next);
+  }
+});
+router.post('/member/edit/:id', Member.edit);
+router.post('/member/del', function(req, res, next) {
+  Member.delete(req, res, next);
+});
+
+
+//==================================================================
 router.get('/page', function(req, res, next) {
   if (isLogin(req, res)) {
     Page.list(req, res, next);

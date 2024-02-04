@@ -58,7 +58,16 @@ module.exports = sequelize => {
             comment: null,
             field: "event_type"
         },
-        status: {
+      event_session: {
+        type: DataTypes.ENUM('Current Event','Past Event','Upcoming Event'),
+        allowNull: true,
+        defaultValue: null,
+        primaryKey: false,
+        autoIncrement: false,
+        comment: null,
+        field: "event_session"
+      },
+      status: {
             type: DataTypes.INTEGER(1),
             allowNull: true,
             defaultValue: 1,

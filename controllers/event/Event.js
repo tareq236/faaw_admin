@@ -49,6 +49,7 @@ exports.add_from = async (req, res, next) => {
         event_type: "",
         cover_image: "",
         status: "",
+        event_session: "",
     });
 };
 
@@ -108,7 +109,8 @@ exports.add = [async (req, res, next) => {
                     event_date: req.body.event_date,
                     event_type: req.body.event_type,
                     cover_image: image,
-                    status: req.body.status
+                    status: req.body.status,
+                    event_session: req.body.event_session
                 };
 
                 const save_date = await EventModel.create(insert_data).catch(errorHandlerProductList);
@@ -133,6 +135,7 @@ exports.edit_from = async (req, res, next) => {
         event_type: result.event_type,
         cover_image: result.cover_image,
         status: result.status,
+        event_session: result.event_session,
         id: result.id,
         moment: moment
     });
@@ -189,7 +192,8 @@ exports.edit = [async (req, res, next) => {
                     event_date: req.body.event_date,
                     event_type: req.body.event_type,
                     cover_image: image,
-                    status: req.body.status
+                    status: req.body.status,
+                    event_session: req.body.event_session
                 };
                 if(image===""){
                     delete update_data.cover_image;

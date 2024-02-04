@@ -1,6 +1,7 @@
 const { sequelize, EventRegisterModel} = require("../../models");
 const { QueryTypes } = require('sequelize');
 
+
 exports.Details = async (req, res, next) => {
   const _data = await sequelize.query(`SELECT el.* FROM event_list el WHERE status = 1 AND id=${req.params.id};`, { type: QueryTypes.SELECT });
   const _media_data = await sequelize.query(`SELECT * FROM event_image_list WHERE event_id = ${req.params.id};`, { type: QueryTypes.SELECT });
@@ -12,7 +13,6 @@ exports.Details = async (req, res, next) => {
   });
 
 };
-
 
 exports.Save  = async (req, res, next) => {
   const errorHandler = (err) => {
@@ -45,7 +45,6 @@ exports.Save  = async (req, res, next) => {
   }
 
 };
-
 
 exports.List = async (req, res, next) => {
   const _data = await sequelize.query(`SELECT el.* FROM event_list el WHERE status = 1 ORDER BY el.id;`, { type: QueryTypes.SELECT });

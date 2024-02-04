@@ -1,0 +1,171 @@
+<!-- Page header -->
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Member</a>
+                <span class="breadcrumb-item active">Member List</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
+
+<!-- Content area -->
+<div class="content">
+
+    <!-- Style combinations -->
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Member list</h5>
+        </div>
+
+        <div class="card-body">
+            <button onclick="location.href='/member/add'" type="button" class="btn btn-primary">
+                <i class="icon-plus2  mr-2"></i>
+                Add Member
+            </button>
+
+            <button id="import_user" onclick="location.href='#'" type="button" class="btn btn-primary">
+                Import User
+            </button>
+
+            <button id="export_user" onclick="location.href='#'" type="button" class="btn btn-primary">
+                Export User
+            </button>
+        </div>
+
+        <table id="list" class="table datatable-basic table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Session</th>
+                <th>Occupation</th>
+                <th>Organization Name</th>
+                <th>Designation Name</th>
+                <th>Status</th>
+                <th class="text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+    <!-- /style combinations -->
+
+
+
+</div>
+<!-- /content area -->
+
+<input type="file" id="fileInput" style="display:none;" accept=".xls, .xlsx">
+
+<script>
+    $(document).ready(function() {
+
+        $('#fileInput').hide();
+
+        $( "#import_user" ).on( "click", function() {
+            $('#fileInput').click();
+        } );
+
+        $('#fileInput').change(function() {
+            // Get the selected file name and display it (you can customize this part)
+            var fileName = $(this).val().split('\\').pop();
+            alert( "#1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Table structure for table" );
+        });
+
+        $( "#export_user" ).on( "click", function() {
+            alert( "Error: Export of row #2 failed with the following error: 22001: value too long for type Source: action “Export to database”" );
+        } );
+
+        function dataLoad() {
+            $('#list').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "search": true,
+                "destroy": true,
+                "pageLength": 50,
+                "language": {
+                    "searchPlaceholder": "Filter by title"
+                },
+                "ajax": {
+                    "url": "/member/data_list",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "createdRow": function( row, data, dataIndex ) {
+                    if ( data.status === 1 ) {
+                        $('td:eq(7)', row).html('<span class="badge badge-success">Published</span>');
+                    }else{
+                        $('td:eq(7)', row).html('<span class="badge badge-secondary">Unpublished</span>');
+                    }
+                },
+                "columns": [
+                    { "data": "name" },
+                    { "data": "phone_number" },
+                    { "data": "email" },
+                    { "data": "session" },
+                    { "data": "occupation" },
+                    { "data": "organization_name" },
+                    { "data": "designation_name" },
+                    { "data": "status" },
+                    { "data": "action" },
+                ]
+            });
+        }
+
+        dataLoad();
+
+        // Custom bootbox dialog with form
+        $("#list").on('click', '#delete', function () {
+            var delid = $(this).attr('data-delete-id');
+            bootbox.confirm({
+                title: 'Delete',
+                message: 'Do you want to delete?',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-primary'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-link'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "post",
+                            url: "/member/del",
+                            data: { del_id: delid },
+                            datatype: "json",
+                            traditional: true,
+                            success: function (data) {
+                                if (data.success) {
+                                    window.location.href = "/home_page";
+                                } else {
+                                    bootbox.alert({
+                                        title: 'Delete Faild!',
+                                        message: data.message
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+
+        $("#filter").click(function(){
+            dataLoad();
+        });
+
+
+    });
+</script>
