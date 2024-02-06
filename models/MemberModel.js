@@ -78,6 +78,14 @@ module.exports = sequelize => {
       comment: null,
       field: "designation_name"
     },
+    hsc_passing_year: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "hsc_passing_year"
+    },
     password: {
       type: DataTypes.STRING(255),
       allowNull: false,

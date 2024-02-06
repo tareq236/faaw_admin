@@ -15,6 +15,7 @@ const fields = [
   {param: 'organization_name'},
   {param: 'designation_name'},
   {param: 'password'},
+  {param: 'hsc_passing_year'},
 ];
 
 
@@ -73,6 +74,7 @@ exports.add_from = async (req, res, next) => {
     batch_session_list: batch_session_list,
     occupation_list: occupation_list,
     password: '',
+    hsc_passing_year: '',
     validation: validations.all_field_validations(null, fields)
   });
 };
@@ -101,6 +103,7 @@ exports.add = [
         phone_number: req.body.phone_number,
         email: req.body.email,
         session: req.body.session,
+        hsc_passing_year: req.body.hsc_passing_year,
         occupation: req.body.occupation,
         organization_name: req.body.organization_name,
         designation_name: req.body.designation_name,
@@ -119,6 +122,7 @@ exports.add = [
         phone_number: req.body.phone_number,
         email: req.body.email,
         session: req.body.session,
+        hsc_passing_year: req.body.hsc_passing_year,
         occupation: req.body.occupation,
         organization_name: req.body.organization_name,
         designation_name: req.body.designation_name,
@@ -136,6 +140,7 @@ exports.add = [
         phone_number: req.body.phone_number,
         email: req.body.email,
         session: req.body.session,
+        hsc_passing_year: req.body.hsc_passing_year,
         occupation: req.body.occupation,
         organization_name: req.body.organization_name,
         designation_name: req.body.designation_name,
@@ -166,6 +171,7 @@ exports.edit_from = async (req, res, next) => {
     phone_number: result.phone_number,
     email: result.email,
     session: result.session,
+    hsc_passing_year: result.hsc_passing_year,
     occupation: result.occupation,
     organization_name: result.organization_name,
     designation_name: result.designation_name,
@@ -203,6 +209,7 @@ exports.edit = [
         phone_number: req.body.phone_number,
         email: req.body.email,
         session: req.body.session,
+        hsc_passing_year: req.body.hsc_passing_year,
         occupation: req.body.occupation,
         organization_name: req.body.organization_name,
         designation_name: req.body.designation_name,
@@ -222,6 +229,7 @@ exports.edit = [
         phone_number: req.body.phone_number,
         email: req.body.email,
         session: req.body.session,
+        hsc_passing_year: req.body.hsc_passing_year,
         occupation: req.body.occupation,
         organization_name: req.body.organization_name,
         designation_name: req.body.designation_name,
@@ -240,6 +248,7 @@ exports.edit = [
         phone_number: req.body.phone_number,
         email: req.body.email,
         session: req.body.session,
+        hsc_passing_year: req.body.hsc_passing_year,
         occupation: req.body.occupation,
         organization_name: req.body.organization_name,
         designation_name: req.body.designation_name,
@@ -290,6 +299,7 @@ exports.excel_report = [
         {header: "Phone Number", key: "phone_number", width: 30},
         {header: "Email", key: "email", width: 30},
         {header: "Session/Batch", key: "session", width: 10},
+        {header: "HSC Passing Year", key: "hsc_passing_year", width: 10},
         {header: "Occupation", key: "occupation", width: 20},
         {header: "Organization name", key: "organization_name", width: 20},
         {header: "Designation name", key: "designation_name", width: 20},
@@ -304,6 +314,7 @@ exports.excel_report = [
         a_row = a_row + '"phone_number":"' + list_obj.phone_number + '",';
         a_row = a_row + '"email":"' + list_obj.email + '",';
         a_row = a_row + '"session":"' + list_obj.session + '",';
+        a_row = a_row + '"hsc_passing_year":"' + list_obj.hsc_passing_year + '",';
         a_row = a_row + '"occupation":"' + list_obj.occupation + '",';
         a_row = a_row + '"organization_name":"' + list_obj.organization_name + '",';
         a_row = a_row + '"designation_name":"' + list_obj.designation_name + '",';

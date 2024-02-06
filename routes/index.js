@@ -86,9 +86,10 @@ router.post('/member/import_excel', upload.single('file'), async (req, res) => {
           phone_number: row.getCell(3).value,
           email: row.getCell(4).value,
           session: row.getCell(5).value,
-          occupation: row.getCell(6).value,
-          organization_name: row.getCell(7).value,
-          designation_name: row.getCell(8).value,
+          hsc_passing_year: row.getCell(5).value,
+          occupation: row.getCell(7).value,
+          organization_name: row.getCell(8).value,
+          designation_name: row.getCell(9).value,
           password: '123456',
         });
       }
