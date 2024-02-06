@@ -14,6 +14,14 @@ module.exports = sequelize => {
       comment: null,
       field: "id"
     },
+    membership_number: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "membership_number"
+    },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,

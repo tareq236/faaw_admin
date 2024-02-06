@@ -1,4 +1,7 @@
 var express = require('express');
+const Excel = require('exceljs');
+const {MemberModel} = require("../models");
+const multer = require('multer');
 var router = express.Router();
 
 const Login = require('../controllers/login/Login');
@@ -66,6 +69,44 @@ router.get('/dashboard', function(req, res, next) {
   }
 });
 
+const upload = multer({ dest: 'uploads/' });
+router.post('/member/import_excel', upload.single('file'), async (req, res) => {
+  try {
+    // 3. Parse the Excel file and extract the data
+    const workbook = new Excel.Workbook();
+    await workbook.xlsx.readFile(req.file.path);
+    const worksheet = workbook.getWorksheet(1);
+
+    const data = [];
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber > 1) { // Skip header row
+        data.push({
+          membership_number: row.getCell(1).value,
+          name: row.getCell(2).value,
+          phone_number: row.getCell(3).value,
+          email: row.getCell(4).value,
+          session: row.getCell(5).value,
+          occupation: row.getCell(6).value,
+          organization_name: row.getCell(7).value,
+          designation_name: row.getCell(8).value,
+          password: '123456',
+        });
+      }
+    });
+
+    // 4. Save the extracted data to your database using Sequelize
+    await MemberModel.bulkCreate(data);
+
+    req.flash('success', 'Data edit successfully!');
+    res.redirect('/member');
+  } catch (error) {
+    console.error('Error importing data:', error);
+    req.flash('error', 'Error importing data!');
+    res.redirect('/member');
+  }
+});
+
+router.post('/member/excel_report', Member.excel_report);
 
 router.get('/scrolling_news', function(req, res, next) {
   if (isLogin(req, res)) {

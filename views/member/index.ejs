@@ -22,18 +22,33 @@
         </div>
 
         <div class="card-body">
-            <button onclick="location.href='/member/add'" type="button" class="btn btn-primary">
-                <i class="icon-plus2  mr-2"></i>
-                Add Member
-            </button>
 
-            <button id="import_user" onclick="location.href='#'" type="button" class="btn btn-primary">
-                Import User
-            </button>
+            <div class="d-flex" >
+                <button onclick="location.href='/member/add'" type="button" class="btn btn-primary">
+                    <i class="icon-plus2  mr-2"></i>
+                    Add Member
+                </button>
 
-            <button id="export_user" onclick="location.href='#'" type="button" class="btn btn-primary">
-                Export User
-            </button>
+                <form action="/member/excel_report" method="post" name="form1">
+                    <button id="export_user" onclick="location.href='#'" type="submit" class="btn btn-primary" style="margin-left: 10px">
+                        Export User
+                    </button>
+                </form>
+
+                <div style="margin-left: 25px">
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <div class=" d-flex">
+                            <input type="file" id="fileInput" name="file" class="form-input-styled" data-fouc>
+                            <button id="import_user" type="button" class="btn btn-primary" style="margin-left: 10px">
+                                Import User
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
         </div>
 
         <table id="list" class="table datatable-basic table-bordered table-striped table-hover">
@@ -66,21 +81,34 @@
 <script>
     $(document).ready(function() {
 
-        $('#fileInput').hide();
-
         $( "#import_user" ).on( "click", function() {
-            $('#fileInput').click();
-        } );
+            const formData = new FormData();
+            const fileInput = document.getElementById('fileInput');
 
-        $('#fileInput').change(function() {
-            // Get the selected file name and display it (you can customize this part)
-            var fileName = $(this).val().split('\\').pop();
-            alert( "#1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Table structure for table" );
+            if(fileInput.files.length !== 0){
+                formData.append('file', fileInput.files[0]);
+
+                $.ajax({
+                    url: '/member/import_excel',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        alert('File uploaded successfully');
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error uploading file');
+                        console.error(error);
+                    }
+                });
+            }else{
+                alert("Please choose excel file!")
+            }
+
         });
 
-        $( "#export_user" ).on( "click", function() {
-            alert( "Error: Export of row #2 failed with the following error: 22001: value too long for type Source: action “Export to database”" );
-        } );
 
         function dataLoad() {
             $('#list').DataTable( {

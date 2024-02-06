@@ -39,7 +39,11 @@
 
                 <div class="card-body">
                     <form action="/member/add" method="post" name="form1">
-
+                        <div class="form-group">
+                            <label>Membership Number: </label>
+                            <input type="text" name="membership_number" value="<%= membership_number %>" class="form-control" placeholder="Membership number">
+                            <span class="form-text text-danger"><%= validation.find(e=>e.param==='membership_number').msg %></span>
+                        </div>
                         <div class="form-group">
                             <label>Name: </label>
                             <input type="text" name="name" value="<%= name %>" class="form-control" placeholder="Name">
@@ -89,7 +93,9 @@
                         <div class="form-group">
                             <label>Admin Approval: </label>
                             <select name="admin_approval" class="form-control select-fixed-single" data-fouc>
-                                <option value="1" <%= admin_approval === 1 ? 'selected' : ''%>>Approval</option>
+                                <option value="1" <%= admin_approval === 1 ? 'selected' : ''%>>Endorse (I Know)</option>
+                                <option value="1" <%= admin_approval === 2 ? 'selected' : ''%>>Both</option>
+                                <option value="1" <%= admin_approval === 3 ? 'selected' : ''%>>No Admin Rights</option>
                                 <option value="0" <%= admin_approval === 0 ? 'selected' : ''%>>Not Approval</option>
                             </select>
                         </div>
@@ -100,7 +106,6 @@
                                 <option value="0" <%= status === 0 ? 'selected' : ''%>>Unpublished</option>
                             </select>
                         </div>
-
                         <div class="text-right">
                             <button type="submit" class="btn btn-primary">Add
                                 <i class="icon-paperplane ml-2"></i>
@@ -108,6 +113,7 @@
                         </div>
                     </form>
                 </div>
+
             </div>
             <!-- /basic layout -->
 
