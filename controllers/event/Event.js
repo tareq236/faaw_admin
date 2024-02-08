@@ -43,13 +43,14 @@ exports.add_from = async (req, res, next) => {
     };
 
     res.render('event/add', {
-        event_title: "",
-        event_details: "",
-        event_date: "",
-        event_type: "",
-        cover_image: "",
-        status: "",
-        event_session: "",
+      event_title: "",
+      event_details: "",
+      event_short_details: "",
+      event_date: "",
+      event_type: "",
+      cover_image: "",
+      status: "",
+      event_session: "",
     });
 };
 
@@ -104,13 +105,14 @@ exports.add = [async (req, res, next) => {
 
             if(req.file !== undefined && req.body.name !== "" && req.body.event_title !== "" && req.body.event_details !== "" && req.body.event_date !== ""){
                 let insert_data = {
-                    event_title: req.body.event_title,
-                    event_details: req.body.event_details,
-                    event_date: req.body.event_date,
-                    event_type: req.body.event_type,
-                    cover_image: image,
-                    status: req.body.status,
-                    event_session: req.body.event_session
+                  event_title: req.body.event_title,
+                  event_details: req.body.event_details,
+                  event_short_details: req.body.event_short_details,
+                  event_date: req.body.event_date,
+                  event_type: req.body.event_type,
+                  cover_image: image,
+                  status: req.body.status,
+                  event_session: req.body.event_session
                 };
 
                 const save_date = await EventModel.create(insert_data).catch(errorHandlerProductList);
@@ -129,15 +131,16 @@ exports.edit_from = async (req, res, next) => {
     };
     let result = await EventModel.findOne({ where: {id: id} }).catch(errorHandler);
     res.render('event/edit', {
-        event_title: result.event_title,
-        event_details: result.event_details,
-        event_date: result.event_date,
-        event_type: result.event_type,
-        cover_image: result.cover_image,
-        status: result.status,
-        event_session: result.event_session,
-        id: result.id,
-        moment: moment
+      event_title: result.event_title,
+      event_details: result.event_details,
+      event_short_details: result.event_short_details,
+      event_date: result.event_date,
+      event_type: result.event_type,
+      cover_image: result.cover_image,
+      status: result.status,
+      event_session: result.event_session,
+      id: result.id,
+      moment: moment
     });
 };
 
@@ -187,13 +190,14 @@ exports.edit = [async (req, res, next) => {
 
             if(req.body.name !== "" && req.body.event_title !== "" && req.body.event_details !== ""){
                 let update_data = {
-                    event_title: req.body.event_title,
-                    event_details: req.body.event_details,
-                    event_date: req.body.event_date,
-                    event_type: req.body.event_type,
-                    cover_image: image,
-                    status: req.body.status,
-                    event_session: req.body.event_session
+                  event_title: req.body.event_title,
+                  event_details: req.body.event_details,
+                  event_short_details: req.body.event_short_details,
+                  event_date: req.body.event_date,
+                  event_type: req.body.event_type,
+                  cover_image: image,
+                  status: req.body.status,
+                  event_session: req.body.event_session
                 };
                 if(image===""){
                     delete update_data.cover_image;

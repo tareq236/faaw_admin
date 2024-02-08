@@ -50,6 +50,10 @@
                             <textarea id="my-expressjs-tinymce-app" name="event_details"><%= event_details %></textarea>
                         </div>
                         <div class="form-group">
+                            <label>Event Short Details: </label>
+                            <textarea id="my-expressjs-tinymce-app" name="event_short_details"><%= event_short_details %></textarea>
+                        </div>
+                        <div class="form-group">
                             <label>Event Date Time:</label> <label style="font-weight: bold"><%=moment(event_date).format('LLL')%></label>
                             <input class="form-control" value="<%= event_date %>" type="datetime-local" name="event_date">
                         </div>

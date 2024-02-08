@@ -31,6 +31,15 @@ module.exports = sequelize => {
             comment: null,
             field: "event_details"
         },
+      event_short_details: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        defaultValue: null,
+        primaryKey: false,
+        autoIncrement: false,
+        comment: null,
+        field: "event_short_details"
+      },
         event_date: {
             type: DataTypes.DATE,
             allowNull: true,

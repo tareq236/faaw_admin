@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "p^L671!!Ph",
+    "password": "root@123",
     "database": "faaw_db",
-    "host": "174.138.171.172",
+    "host": "127.0.0.1",
     "port": "3306",
     "dialect": "mysql",
     "timezone": "Asia/Dhaka"

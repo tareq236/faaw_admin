@@ -6,6 +6,23 @@ const homePage = require('../controllers/api/home_page');
 const member = require('../controllers/api/member');
 const page = require('../controllers/api/page');
 const eventList = require('../controllers/api/event_list');
+const publication = require('../controllers/api/news_list');
+const noticeList = require('../controllers/api/notice_list');
+const jobList = require('../controllers/api/job_list');
+
+router.get('/v1/job_list', function(req, res, next) {
+  jobList.List(req, res, next);
+});
+router.get('/v1/notice_list', function(req, res, next) {
+  noticeList.List(req, res, next);
+});
+router.get('/v1/member_list', function(req, res, next) {
+  member.MemberList(req, res, next);
+});
+
+router.get('/v1/publication', function(req, res, next) {
+  publication.List(req, res, next);
+});
 
 router.get('/v1/event_details/:id', function(req, res, next) {
   eventList.Details(req, res, next);

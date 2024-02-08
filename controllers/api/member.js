@@ -1,4 +1,5 @@
 const { sequelize, MemberModel, MemberApprovalModel } = require("../../models");
+const {QueryTypes} = require("sequelize");
 
 exports.Save  = async (req, res, next) => {
   const errorHandler = (err) => {
@@ -198,4 +199,28 @@ exports.UserListForApproved  = async (req, res, next) => {
       });
     }
   }
+};
+
+exports.MemberList  = async (req, res, next) => {
+  let query = ` WHERE status = 1 `
+  const name = req.query.name
+  const mobile_number = req.query.mobile_number
+  const membership_number = req.query.membership_number
+  if(name){query = query + ` and name like '${name}' `}
+  if(mobile_number){query = query + ` and phone_number like '${mobile_number}' `}
+  if(membership_number){query = query + ` and membership_number like '${membership_number}' `}
+  const userList = await sequelize.query(`SELECT el.* FROM member_list el ${query};`, { type: QueryTypes.SELECT });
+
+  if(userList){
+    return res.status(200).json({
+      success: true,
+      result: userList,
+    });
+  }else{
+    return res.status(200).json({
+      success: false,
+      message: "User not found!"
+    });
+  }
+
 };
