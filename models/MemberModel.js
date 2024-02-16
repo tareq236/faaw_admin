@@ -22,6 +22,14 @@ module.exports = sequelize => {
       comment: null,
       field: "membership_number"
     },
+    membership_category_id: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "membership_category_id"
+    },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,
@@ -85,6 +93,14 @@ module.exports = sequelize => {
       autoIncrement: false,
       comment: null,
       field: "hsc_passing_year"
+    },
+    member_image: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "member_image"
     },
     password: {
       type: DataTypes.STRING(255),

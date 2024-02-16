@@ -4,7 +4,7 @@
         <div class="d-flex">
             <div class="breadcrumb">
                 <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
-                <a href="/member/" class="breadcrumb-item"> Member List</a>
+                <a href="/members/" class="breadcrumb-item"> Member List</a>
                 <span class="breadcrumb-item active">Edit Member</span>
             </div>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
@@ -38,13 +38,21 @@
                 <% } %>
 
                 <div class="card-body">
-                    <form action="/member/edit/<%=id%>" method="post" name="form1">
+                    <form action="/member/edit/<%=id%>" method="post" name="form1" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<%- id %>">
 
                         <div class="form-group">
                             <label>Membership Number: </label>
                             <input type="text" name="membership_number" value="<%= membership_number %>" class="form-control" placeholder="membership_number">
                             <span class="form-text text-danger"><%= validation.find(e=>e.param==='membership_number').msg %></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Select Membership Category:</label>
+                            <select name="membership_category_id" class="form-control select-fixed-single" data-fouc>
+                                <%for (let i=0; i<category_list.length;i++){%>
+                                    <option value="<%=category_list[i].id%>" <%= Number(category_list[i].id) === Number(membership_category_id) ? 'selected' : ''%>><%=category_list[i].category_name%></option>
+                                <%}%>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Name: </label>
@@ -71,7 +79,7 @@
                             <label>Select Batch number/ Session: </label>
                             <select name="session" class="form-control select-fixed-single" data-fouc>
                                 <%for (let i=0; i<batch_session_list.length;i++){%>
-                                <option value="<%=batch_session_list[i].batch_session_name%>" <%= batch_session_list[i].batch_session_name === session ? 'selected' : ''%>><%=batch_session_list[i].batch_session_name%></option>
+                                    <option value="<%=batch_session_list[i].batch_session_name%>" <%= batch_session_list[i].batch_session_name === session ? 'selected' : ''%>><%=batch_session_list[i].batch_session_name%></option>
                                 <%}%>
                             </select>
                         </div>
@@ -113,6 +121,19 @@
                                 <option value="1" <%= status === 1 ? 'selected' : ''%>>Published</option>
                                 <option value="0" <%= status === 0 ? 'selected' : ''%>>Unpublished</option>
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Member Image: </label>
+                            <div>
+                                <%if(member_image===""){%>
+                                    Previous Image not available
+                                <%}else{%>
+                                <img width="100%" src="/member/<%=member_image%>"/>
+                                <%}%>
+                            </div>
+                            <input name="_image" type="file" class="form-input-styled" accept="image/*" data-fouc>
+                            <span class="form-text text-muted">Accepted formats: png, jpg. Max file size 3Mb</span>
                         </div>
 
                         <div class="text-right">

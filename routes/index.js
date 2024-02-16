@@ -23,6 +23,7 @@ const BatchSession = require('../controllers/batch_session/BatchSession');
 const Occupation = require('../controllers/occupation/Occupation');
 const Job = require('../controllers/job/Job');
 const ScrollingNews = require('../controllers/scrolling_news/ScrollingNews');
+const Category = require('../controllers/category/Category');
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -69,8 +70,38 @@ router.get('/dashboard', function(req, res, next) {
   }
 });
 
+
+
+router.get('/category', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Category.list(req, res, next);
+  }
+});
+router.post('/category/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Category.data_list(req, res, next);
+  }
+});
+router.get('/category/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Category.add_from(req, res, next);
+  }
+});
+router.post('/category/add', Category.add);
+router.get('/category/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Category.edit_from(req, res, next);
+  }
+});
+router.post('/category/edit/:id', Category.edit);
+router.post('/category/del', function(req, res, next) {
+  Category.delete(req, res, next);
+});
+
+
+
 const upload = multer({ dest: 'uploads/' });
-router.post('/member/import_excel', upload.single('file'), async (req, res) => {
+router.post('/members/import_excel', upload.single('file'), async (req, res) => {
   try {
     // 3. Parse the Excel file and extract the data
     const workbook = new Excel.Workbook();
@@ -107,7 +138,7 @@ router.post('/member/import_excel', upload.single('file'), async (req, res) => {
   }
 });
 
-router.post('/member/excel_report', Member.excel_report);
+router.post('/members/excel_report', Member.excel_report);
 
 router.get('/scrolling_news', function(req, res, next) {
   if (isLogin(req, res)) {
@@ -220,12 +251,12 @@ router.post('/batch_session/del', function(req, res, next) {
 });
 
 //======================================================================
-router.get('/member', function(req, res, next) {
+router.get('/members', function(req, res, next) {
   if (isLogin(req, res)) {
     Member.list(req, res, next);
   }
 });
-router.post('/member/data_list', function(req, res, next) {
+router.post('/members/data_list', function(req, res, next) {
   if (isLogin(req, res)) {
     Member.data_list(req, res, next);
   }

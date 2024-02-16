@@ -1,56 +1,113 @@
 const { sequelize, MemberModel, MemberApprovalModel } = require("../../models");
 const {QueryTypes} = require("sequelize");
+const multer = require("multer");
+const path = require("path");
 
 exports.Save  = async (req, res, next) => {
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/member');
+    },
+    filename:(req,file,cb)=>{
+      cb(null, "member_"+Date.now()+path.extname(file.originalname));
+    }
+  });
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 50 * 1024 * 1024 }
+  }).single('_image');
+
   const errorHandler = (err) => {
     return res.status(200).json({
       success: false,
       error: err
     });
   };
-
-  if(req.body.name === ""){
+  const errorHandlerUpload = (err) => {
     return res.status(200).json({
       success: false,
-      message: "Please enter your name!"
+      error: err
     });
-  }else if(req.body.password === "") {
-    return res.status(200).json({
-      success: false,
-      message: "Please enter password!"
-    });
-  }else if(req.body.phone_number === ""){
-    return res.status(200).json({
-      success: false,
-      message: "Please enter phone number!"
-    });
-  }else if(req.body.email === ""){
-    return res.status(200).json({
-      success: false,
-      message: "Please enter email!"
-    });
-  }else{
-    let userDetails = await MemberModel.findOne({ where: {email: req.body.email}}).catch(errorHandler);
-    if(userDetails === null){
-      try {
-        const userInsertDetails = await MemberModel.create(req.body).catch(errorHandler);
-        return res.status(200).json({
-          success: true,
-          result: userInsertDetails,
-        });
-      } catch (error) {
+  };
+  upload(req, res, async ( err ) => {
+    if (err) {
+      await errorHandlerUpload(err);
+    } else {
+      let image = "";
+      if(req.file === undefined){
         return res.status(200).json({
           success: false,
-          error: error
+          message: "Please add image!"
+        });
+      }else{
+        image = req.file.filename;
+      }
+      if(req.body.membership_number === ""){
+        return res.status(200).json({
+          success: false,
+          message: "Please enter membership number"
         });
       }
-    }else{
-      return res.status(200).json({
-        success: false,
-        message: "User email already registered!"
-      });
+      if(req.body.name === ""){
+        return res.status(200).json({
+          success: false,
+          message: "Please enter name"
+        });
+      }
+      if(req.body.phone_number === ""){
+        return res.status(200).json({
+          success: false,
+          message: "Please enter phone number"
+        });
+      }
+
+      if(req.body.membership_number !== "" && req.body.name !== "" && req.body.phone_number !== "") {
+        let insert_data = {
+          membership_number: req.body.membership_number,
+          name: req.body.name,
+          phone_number: req.body.phone_number,
+          email: req.body.email,
+          session: req.body.session,
+          hsc_passing_year: req.body.hsc_passing_year,
+          occupation: req.body.occupation,
+          organization_name: req.body.organization_name,
+          designation_name: req.body.designation_name,
+          status: req.body.status,
+          password: req.body.password,
+          admin_approval: req.body.admin_approval,
+          membership_category_id: req.body.membership_category_id,
+          member_image: image,
+        };
+
+        let userDetails = await MemberModel.findOne({ where: {email: req.body.email}}).catch(errorHandler);
+        if(userDetails === null){
+          try {
+            const userInsertDetails = await MemberModel.create(insert_data).catch(errorHandler);
+            return res.status(200).json({
+              success: true,
+              result: userInsertDetails,
+            });
+          } catch (error) {
+            return res.status(200).json({
+              success: false,
+              error: error
+            });
+          }
+        }else{
+          return res.status(200).json({
+            success: false,
+            message: "User email already registered!"
+          });
+        }
+
+      }else{
+        return res.status(200).json({
+          success: false,
+          message: "Please fill up required field"
+        });
+      }
     }
-  }
+  })
 };
 
 exports.Check  = async (req, res, next) => {
@@ -223,4 +280,19 @@ exports.MemberList  = async (req, res, next) => {
     });
   }
 
+};
+
+exports.CategoryList  = async (req, res, next) => {
+  const category_list = await sequelize.query(`SELECT * FROM category_list WHERE status = 1;`, { type: QueryTypes.SELECT });
+  if(category_list){
+    return res.status(200).json({
+      success: true,
+      result: category_list,
+    });
+  }else{
+    return res.status(200).json({
+      success: false,
+      message: "Category not found!"
+    });
+  }
 };

@@ -9,7 +9,16 @@ const eventList = require('../controllers/api/event_list');
 const publication = require('../controllers/api/news_list');
 const noticeList = require('../controllers/api/notice_list');
 const jobList = require('../controllers/api/job_list');
+const payment = require('../controllers/api/payment');
+const Member = require("../controllers/member/Member");
 
+router.get('/v1/category_list', function(req, res, next) {
+  member.CategoryList(req, res, next);
+});
+
+router.get('/v1/payment', function(req, res, next) {
+  payment.sslPayment(req, res, next);
+});
 router.get('/v1/job_list', function(req, res, next) {
   jobList.List(req, res, next);
 });
@@ -52,9 +61,7 @@ router.post('/v1/page_details', function(req, res, next) {
 router.post('/v1/member_login', function(req, res, next) {
   member.Check(req, res, next);
 });
-router.post('/v1/member_register', function(req, res, next) {
-  member.Save(req, res, next);
-});
+router.post('/v1/member_register', member.Save);
 
 router.get('/v1/home_page', function(req, res, next) {
   homePage.home_page(req, res, next);

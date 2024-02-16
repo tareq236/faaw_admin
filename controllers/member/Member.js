@@ -5,6 +5,8 @@ const validations = require('../validations');
 const { check, validationResult } = require('express-validator');
 const excel = require("exceljs");
 const moment = require("moment");
+const multer = require("multer");
+const path = require("path");
 const fields = [
   {param: 'membership_number'},
   {param: 'name'},
@@ -59,6 +61,7 @@ exports.data_list = async (req, res, next) => {
 exports.add_from = async (req, res, next) => {
   const batch_session_list = await sequelize.query(`SELECT * FROM batch_session_list WHERE status = 1;`, { type: QueryTypes.SELECT });
   const occupation_list = await sequelize.query(`SELECT * FROM occupation_list WHERE status = 1;`, { type: QueryTypes.SELECT });
+  const category_list = await sequelize.query(`SELECT * FROM category_list WHERE status = 1;`, { type: QueryTypes.SELECT });
 
   res.render('member/add', {
     membership_number: "",
@@ -73,92 +76,92 @@ exports.add_from = async (req, res, next) => {
     admin_approval: 0,
     batch_session_list: batch_session_list,
     occupation_list: occupation_list,
+    category_list: category_list,
     password: '',
     hsc_passing_year: '',
+    member_image: "",
+    membership_category_id: "",
     validation: validations.all_field_validations(null, fields)
   });
 };
 
-exports.add = [
-  check('membership_number').notEmpty().withMessage('Please enter membership number'),
-  check('name').notEmpty().withMessage('Please enter name'),
-  check('phone_number').notEmpty().withMessage('Please enter phone number'),
-  check('email').notEmpty().withMessage('Please enter email'),
-  check('organization_name').notEmpty().withMessage('Please enter organization name'),
-  check('designation_name').notEmpty().withMessage('Please enter designation name'),
-  check('password').notEmpty().withMessage('Please enter password'),
-  async (req, res, next) => {
-
-    const errors = validationResult(req);
-
-    const batch_session_list = await sequelize.query(`SELECT * FROM batch_session_list WHERE status = 1;`, { type: QueryTypes.SELECT });
-    const occupation_list = await sequelize.query(`SELECT * FROM occupation_list WHERE status = 1;`, { type: QueryTypes.SELECT });
-
-    const errorHandler = (err) => {
-      console.log(err)
-      req.flash('error', err.original.sqlMessage);
-      res.render('member/add', {
-        membership_number: req.body.membership_number,
-        name: req.body.name,
-        phone_number: req.body.phone_number,
-        email: req.body.email,
-        session: req.body.session,
-        hsc_passing_year: req.body.hsc_passing_year,
-        occupation: req.body.occupation,
-        organization_name: req.body.organization_name,
-        designation_name: req.body.designation_name,
-        status: req.body.status,
-        password: req.body.password,
-        admin_approval: req.body.admin_approval,
-        batch_session_list: batch_session_list,
-        occupation_list: occupation_list,
-        validation: validations.all_field_validations(null, fields)
-      });
-    };
-    if(errors.errors.length !== 0){
-      res.render('member/add',{
-        membership_number: req.body.membership_number,
-        name: req.body.name,
-        phone_number: req.body.phone_number,
-        email: req.body.email,
-        session: req.body.session,
-        hsc_passing_year: req.body.hsc_passing_year,
-        occupation: req.body.occupation,
-        organization_name: req.body.organization_name,
-        designation_name: req.body.designation_name,
-        status: req.body.status,
-        password: req.body.password,
-        admin_approval: req.body.admin_approval,
-        batch_session_list: batch_session_list,
-        occupation_list: occupation_list,
-        validation: validations.all_field_validations(errors.errors, fields)
-      });
-    }else{
-      let insert_data = {
-        membership_number: req.body.membership_number,
-        name: req.body.name,
-        phone_number: req.body.phone_number,
-        email: req.body.email,
-        session: req.body.session,
-        hsc_passing_year: req.body.hsc_passing_year,
-        occupation: req.body.occupation,
-        organization_name: req.body.organization_name,
-        designation_name: req.body.designation_name,
-        status: req.body.status,
-        password: req.body.password,
-        admin_approval: req.body.admin_approval,
-      };
-      const save_date = await MemberModel.create(insert_data).catch(errorHandler);
-      req.flash('success', 'Data add successfully!');
-      res.redirect('/member/add');
+exports.add = [async (req, res, next) => {
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/member');
+    },
+    filename:(req,file,cb)=>{
+      cb(null, "member_"+Date.now()+path.extname(file.originalname));
     }
-  }];
+  });
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 50 * 1024 * 1024 }
+  }).single('_image');
+
+  const errorHandlerProductList = (err) => {
+    req.flash('error', err.original.sqlMessage);
+    res.redirect('/member/add');
+  };
+  const errorHandlerUpload = async (err, _id) => {
+    req.flash('error', err);
+    res.redirect('/member/add');
+  };
+  upload(req, res, async ( err ) => {
+    if (err) {
+      await errorHandlerUpload(err);
+    } else {
+      let image = "";
+      if(req.file === undefined){
+        req.flash('error', "Please add image");
+        res.redirect('/member/add');
+      }else{
+        image = req.file.filename;
+      }
+      if(req.body.membership_number === ""){
+        req.flash('error', "Please enter membership number");
+        res.redirect('/member/add');
+      }
+      if(req.body.name === ""){
+        req.flash('error', "Please enter name");
+        res.redirect('/member/add');
+      }
+      if(req.body.phone_number === ""){
+        req.flash('error', "Please enter phone number");
+        res.redirect('/member/add');
+      }
+
+      if(req.file !== undefined && req.body.membership_number !== "" && req.body.name !== "" && req.body.phone_number !== ""){
+        let insert_data = {
+          membership_number: req.body.membership_number,
+          name: req.body.name,
+          phone_number: req.body.phone_number,
+          email: req.body.email,
+          session: req.body.session,
+          hsc_passing_year: req.body.hsc_passing_year,
+          occupation: req.body.occupation,
+          organization_name: req.body.organization_name,
+          designation_name: req.body.designation_name,
+          status: req.body.status,
+          password: req.body.password,
+          admin_approval: req.body.admin_approval,
+          membership_category_id: req.body.membership_category_id,
+          member_image: image,
+        };
+        const save_date = await MemberModel.create(insert_data).catch(errorHandlerProductList);
+        req.flash('success', 'Data add successfully!');
+        res.redirect('/member/add');
+      }
+    }
+  })
+}];
 
 exports.edit_from = async (req, res, next) => {
   let id = req.params.id;
 
   const batch_session_list = await sequelize.query(`SELECT * FROM batch_session_list WHERE status = 1;`, { type: QueryTypes.SELECT });
   const occupation_list = await sequelize.query(`SELECT * FROM occupation_list WHERE status = 1;`, { type: QueryTypes.SELECT });
+  const category_list = await sequelize.query(`SELECT * FROM category_list WHERE status = 1;`, { type: QueryTypes.SELECT });
 
   const errorHandler = (err) => {
     req.flash('error', err.original.sqlMessage);
@@ -180,88 +183,86 @@ exports.edit_from = async (req, res, next) => {
     batch_session_list: batch_session_list,
     occupation_list: occupation_list,
     password: result.password,
+    category_list: category_list,
+    member_image: result.member_image,
+    membership_category_id: result.membership_category_id,
     id: result.id,
     validation: validations.all_field_validations(null, fields)
   });
 };
 
-exports.edit = [
-  check('membership_number').notEmpty().withMessage('Please enter membership number'),
-  check('name').notEmpty().withMessage('Please enter name'),
-  check('phone_number').notEmpty().withMessage('Please enter phone number'),
-  check('email').notEmpty().withMessage('Please enter email'),
-  check('organization_name').notEmpty().withMessage('Please enter organization name'),
-  check('designation_name').notEmpty().withMessage('Please enter designation name'),
-  check('password').notEmpty().withMessage('Please enter password'),
-  async (req, res, next) => {
-
-    const errors = validationResult(req);
-
-    const batch_session_list = await sequelize.query(`SELECT * FROM batch_session_list WHERE status = 1;`, { type: QueryTypes.SELECT });
-    const occupation_list = await sequelize.query(`SELECT * FROM occupation_list WHERE status = 1;`, { type: QueryTypes.SELECT });
-
-    const errorHandler = (err) => {
-      console.log(err)
-      req.flash('error', err.original.sqlMessage);
-      res.render('member/edit', {
-        membership_number: req.body.membership_number,
-        name: req.body.name,
-        phone_number: req.body.phone_number,
-        email: req.body.email,
-        session: req.body.session,
-        hsc_passing_year: req.body.hsc_passing_year,
-        occupation: req.body.occupation,
-        organization_name: req.body.organization_name,
-        designation_name: req.body.designation_name,
-        status: req.body.status,
-        password: req.body.password,
-        admin_approval: req.body.admin_approval,
-        batch_session_list: batch_session_list,
-        occupation_list: occupation_list,
-        id: req.body.id,
-        validation: validations.all_field_validations(null, fields)
-      });
-    };
-    if(errors.errors.length !== 0){
-      res.render('member/edit',{
-        membership_number: req.body.membership_number,
-        name: req.body.name,
-        phone_number: req.body.phone_number,
-        email: req.body.email,
-        session: req.body.session,
-        hsc_passing_year: req.body.hsc_passing_year,
-        occupation: req.body.occupation,
-        organization_name: req.body.organization_name,
-        designation_name: req.body.designation_name,
-        status: req.body.status,
-        password: req.body.password,
-        admin_approval: req.body.admin_approval,
-        batch_session_list: batch_session_list,
-        occupation_list: occupation_list,
-        id: req.body.id,
-        validation: validations.all_field_validations(errors.errors, fields)
-      });
-    }else{
-      let update_data = {
-        membership_number: req.body.membership_number,
-        name: req.body.name,
-        phone_number: req.body.phone_number,
-        email: req.body.email,
-        session: req.body.session,
-        hsc_passing_year: req.body.hsc_passing_year,
-        occupation: req.body.occupation,
-        organization_name: req.body.organization_name,
-        designation_name: req.body.designation_name,
-        status: req.body.status,
-        password: req.body.password,
-        admin_approval: req.body.admin_approval,
-        id: req.body.id,
-      };
-      const update_date = await MemberModel.update(update_data, { where: { id: req.body.id } }).catch(errorHandler);
-      req.flash('success', 'Data edit successfully!');
-      res.redirect('/member/edit/'+req.body.id);
+exports.edit = [async (req, res, next) => {
+  let id = req.params.id;
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/member');
+    },
+    filename:(req,file,cb)=>{
+      cb(null, "member_"+Date.now()+path.extname(file.originalname));
     }
-  }];
+  });
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 50 * 1024 * 1024 }
+  }).single('_image');
+
+  const errorHandlerProductList = (err) => {
+    req.flash('error', err.original.sqlMessage);
+    res.redirect('/member/edit/'+id);
+  };
+  const errorHandlerUpload = async (err, _id) => {
+    req.flash('error', err);
+    res.redirect('/member/edit/'+id);
+  };
+
+  upload(req, res, async ( err ) => {
+    if (err) {
+      await errorHandlerUpload(err);
+    } else {
+      let image = "";
+      if(req.file !== undefined){
+        image = req.file.filename;
+      }
+      if(req.body.membership_number === ""){
+        req.flash('error', "Please enter membership number");
+        res.redirect('/member/edit/'+id);
+      }
+      if(req.body.name === ""){
+        req.flash('error', "Please enter name");
+        res.redirect('/member/edit/'+id);
+      }
+      if(req.body.phone_number === ""){
+        req.flash('error', "Please enter phone number");
+        res.redirect('/member/edit/'+id);
+      }
+      if(req.body.membership_number !== "" && req.body.name !== "" && req.body.phone_number !== ""){
+        let update_data = {
+          membership_number: req.body.membership_number,
+          name: req.body.name,
+          phone_number: req.body.phone_number,
+          email: req.body.email,
+          session: req.body.session,
+          hsc_passing_year: req.body.hsc_passing_year,
+          occupation: req.body.occupation,
+          organization_name: req.body.organization_name,
+          designation_name: req.body.designation_name,
+          status: req.body.status,
+          password: req.body.password,
+          admin_approval: req.body.admin_approval,
+          membership_category_id: req.body.membership_category_id,
+          member_image: image,
+        };
+        if(image===""){
+          delete update_data.member_image;
+        }
+        const save_date = await MemberModel.update(update_data,{ where: { id: req.body.id } }).catch(errorHandlerProductList);
+        req.flash('success', 'Data update successfully!');
+        res.redirect('/member/edit/'+id);
+      }
+
+    }
+  })
+}];
 
 exports.delete = async (req, res, next) => {
   const errorHandler = (err) => {
