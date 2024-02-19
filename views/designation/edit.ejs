@@ -4,8 +4,8 @@
         <div class="d-flex">
             <div class="breadcrumb">
                 <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
-                <a href="/category/" class="breadcrumb-item"> Category List</a>
-                <span class="breadcrumb-item active">Add Category</span>
+                <a href="/designation" class="breadcrumb-item"> Designation Menu</a>
+                <span class="breadcrumb-item active">Edit Designation</span>
             </div>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
@@ -22,7 +22,7 @@
             <!-- Basic layout-->
             <div class="card">
                 <div class="card-header header-elements-inline">
-                    <h5 class="card-title">Add Category</h5>
+                    <h5 class="card-title">Edit Designation</h5>
                 </div>
 
                 <% if (messages.error) { %>
@@ -38,18 +38,15 @@
                 <% } %>
 
                 <div class="card-body">
-                    <form action="/category/add" method="post" name="form1">
+                    <form action="/designation/edit/<%=id%>" method="post" name="form1">
+                        <input type="hidden" name="id" value="<%- id %>">
 
                         <div class="form-group">
-                            <label>Category Name: </label>
-                            <input type="text" name="category_name" value="<%= category_name %>" class="form-control" placeholder="Category Name">
-                            <span class="form-text text-danger"><%= validation.find(e=>e.param==='category_name').msg %></span>
+                            <label>Designation Name: </label>
+                            <input type="text" name="designation_name" value="<%= designation_name %>" class="form-control" placeholder="Designation Name">
+                            <span class="form-text text-danger"><%= validation.find(e=>e.param==='designation_name').msg %></span>
                         </div>
-                        <div class="form-group">
-                            <label>Membership Fee: </label>
-                            <input type="text" name="category_price" value="<%= category_price %>" class="form-control" placeholder="Category Price">
-                            <span class="form-text text-danger"><%= validation.find(e=>e.param==='category_price').msg %></span>
-                        </div>
+
                         <div class="form-group">
                             <label>Status: </label>
                             <select name="status" class="form-control select-fixed-single" data-fouc>
@@ -59,7 +56,7 @@
                         </div>
 
                         <div class="text-right">
-                            <button type="submit" class="btn btn-primary">Add
+                            <button type="submit" class="btn btn-primary">Edit
                                 <i class="icon-paperplane ml-2"></i>
                             </button>
                         </div>

@@ -46,6 +46,11 @@
                             <input type="text" name="category_name" value="<%= category_name %>" class="form-control" placeholder="Category Name">
                             <span class="form-text text-danger"><%= validation.find(e=>e.param==='category_name').msg %></span>
                         </div>
+                        <div class="form-group">
+                            <label>Membership Fee: </label>
+                            <input type="text" name="category_price" value="<%= category_price %>" class="form-control" placeholder="Category Price">
+                            <span class="form-text text-danger"><%= validation.find(e=>e.param==='category_price').msg %></span>
+                        </div>
 
                         <div class="form-group">
                             <label>Status: </label>

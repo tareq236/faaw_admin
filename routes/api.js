@@ -12,6 +12,9 @@ const jobList = require('../controllers/api/job_list');
 const payment = require('../controllers/api/payment');
 const Member = require("../controllers/member/Member");
 
+router.get('/v1/scrolling_news_list', function(req, res, next) {
+  publication.ScrollingNewsList(req, res, next);
+});
 router.get('/v1/category_list', function(req, res, next) {
   member.CategoryList(req, res, next);
 });

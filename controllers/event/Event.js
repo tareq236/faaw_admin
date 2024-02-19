@@ -44,13 +44,14 @@ exports.add_from = async (req, res, next) => {
 
     res.render('event/add', {
       event_title: "",
+      event_venue: "",
       event_details: "",
       event_short_details: "",
       event_date: "",
       event_type: "",
       cover_image: "",
       status: "",
-      event_session: "",
+      event_session: "Upcoming Event",
     });
 };
 
@@ -106,6 +107,7 @@ exports.add = [async (req, res, next) => {
             if(req.file !== undefined && req.body.name !== "" && req.body.event_title !== "" && req.body.event_details !== "" && req.body.event_date !== ""){
                 let insert_data = {
                   event_title: req.body.event_title,
+                  event_venue: req.body.event_venue,
                   event_details: req.body.event_details,
                   event_short_details: req.body.event_short_details,
                   event_date: req.body.event_date,
@@ -132,6 +134,7 @@ exports.edit_from = async (req, res, next) => {
     let result = await EventModel.findOne({ where: {id: id} }).catch(errorHandler);
     res.render('event/edit', {
       event_title: result.event_title,
+      event_venue: result.event_venue,
       event_details: result.event_details,
       event_short_details: result.event_short_details,
       event_date: result.event_date,
@@ -191,6 +194,7 @@ exports.edit = [async (req, res, next) => {
             if(req.body.name !== "" && req.body.event_title !== "" && req.body.event_details !== ""){
                 let update_data = {
                   event_title: req.body.event_title,
+                  event_venue: req.body.event_venue,
                   event_details: req.body.event_details,
                   event_short_details: req.body.event_short_details,
                   event_date: req.body.event_date,

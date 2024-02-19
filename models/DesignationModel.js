@@ -14,21 +14,13 @@ module.exports = sequelize => {
       comment: null,
       field: "id"
     },
-    category_name: {
+    designation_name: {
       type: DataTypes.TEXT,
       allowNull: false,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "category_name"
-    },
-    category_price: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "category_price"
+      field: "designation_name"
     },
     status: {
       type: DataTypes.INTEGER(1),
@@ -59,11 +51,11 @@ module.exports = sequelize => {
     },
   };
   const options = {
-    tableName: "category_list",
+    tableName: "designation_list",
     comment: "",
     indexes: [],
     createdAt: false,
     updatedAt: false
   };
-  return sequelize.define("CategoryModel", attributes, options);
+  return sequelize.define("DesignationModel", attributes, options);
 };
