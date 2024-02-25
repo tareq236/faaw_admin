@@ -4,7 +4,7 @@
         <div class="d-flex">
             <div class="breadcrumb">
                 <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
-                <span class="breadcrumb-item active">Designation</span>
+                <span class="breadcrumb-item active">Committee</span>
             </div>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
@@ -18,11 +18,11 @@
     <!-- Style combinations -->
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Designation list</h5>
+            <h5 class="card-title">Committee list</h5>
         </div>
 
         <div class="card-body">
-            <button onclick="location.href='/designation/add'" type="button" class="btn btn-primary">
+            <button onclick="location.href='/committee/add'" type="button" class="btn btn-primary">
                 <i class="icon-plus2  mr-2"></i>
                 Add
             </button>
@@ -31,7 +31,7 @@
         <table id="list" class="table datatable-basic table-bordered table-striped table-hover">
             <thead>
             <tr>
-                <th>Designation Name</th>
+                <th>Committee Name</th>
                 <th>Status</th>
                 <th class="text-center">Actions</th>
             </tr>
@@ -63,7 +63,7 @@
                     "searchPlaceholder": "Filter by batch session name"
                 },
                 "ajax": {
-                    "url": "/designation/data_list",
+                    "url": "/committee/data_list",
                     "type": "POST",
                     "datatype": "json",
                 },
@@ -75,7 +75,7 @@
                     }
                 },
                 "columns": [
-                    { "data": "designation_name" },
+                    { "data": "committee_name" },
                     { "data": "status" },
                     { "data": "action" },
                 ]
@@ -104,13 +104,13 @@
                     if (result) {
                         $.ajax({
                             type: "post",
-                            url: "/designation/del",
+                            url: "/committee/del",
                             data: { del_id: delid },
                             datatype: "json",
                             traditional: true,
                             success: function (data) {
                                 if (data.success) {
-                                    window.location.href = "/designation";
+                                    window.location.href = "/committee";
                                 } else {
                                     bootbox.alert({
                                         title: 'Delete Faild!',

@@ -4,7 +4,8 @@
         <div class="d-flex">
             <div class="breadcrumb">
                 <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
-                <span class="breadcrumb-item active">Designation</span>
+                <a href="/committee" class="breadcrumb-item"> Committee</a>
+                <span class="breadcrumb-item active">Assign Committee</span>
             </div>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
@@ -18,21 +19,22 @@
     <!-- Style combinations -->
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Designation list</h5>
+            <h5 class="card-title">Assign Member list</h5>
         </div>
 
         <div class="card-body">
-            <button onclick="location.href='/designation/add'" type="button" class="btn btn-primary">
+            <button onclick="location.href='/committee/assign_committee/add?id=<%=id%>'" type="button" class="btn btn-primary">
                 <i class="icon-plus2  mr-2"></i>
-                Add
+                Member Assign
             </button>
         </div>
 
         <table id="list" class="table datatable-basic table-bordered table-striped table-hover">
             <thead>
             <tr>
+                <th>Committee Name</th>
+                <th>Member Name</th>
                 <th>Designation Name</th>
-                <th>Status</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>
@@ -42,6 +44,7 @@
     </div>
     <!-- /style combinations -->
 
+    <input hidden="hidden" id="c_id" value="<%=id%>"/>
 
 
 </div>
@@ -60,23 +63,17 @@
                 "destroy": true,
                 "pageLength": 50,
                 "language": {
-                    "searchPlaceholder": "Filter by batch session name"
+                    "searchPlaceholder": "Filter by member name"
                 },
                 "ajax": {
-                    "url": "/designation/data_list",
+                    "url": "/committee/assign_committee/data_list/?id="+$('#c_id').val(),
                     "type": "POST",
                     "datatype": "json",
                 },
-                "createdRow": function( row, data, dataIndex ) {
-                    if ( data.status === 1 ) {
-                        $('td:eq(1)', row).html('<span class="badge badge-success">Published</span>');
-                    }else{
-                        $('td:eq(1)', row).html('<span class="badge badge-secondary">Unpublished</span>');
-                    }
-                },
                 "columns": [
+                    { "data": "committee_name" },
+                    { "data": "name" },
                     { "data": "designation_name" },
-                    { "data": "status" },
                     { "data": "action" },
                 ]
             });
@@ -104,13 +101,13 @@
                     if (result) {
                         $.ajax({
                             type: "post",
-                            url: "/designation/del",
+                            url: "/committee/assign_committee/del",
                             data: { del_id: delid },
                             datatype: "json",
                             traditional: true,
                             success: function (data) {
                                 if (data.success) {
-                                    window.location.href = "/designation";
+                                    window.location.href = "/committee/assign_committee?id="+$('#c_id').val();
                                 } else {
                                     bootbox.alert({
                                         title: 'Delete Faild!',

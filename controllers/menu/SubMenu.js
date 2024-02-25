@@ -6,7 +6,7 @@ const { check, validationResult } = require('express-validator');
 const fields = [
     {param: 'menu_name'},
     {param: 'menu_url'},
-    {param: 'order_by'}, ,
+    {param: 'order_by'},
 ];
 
 exports.list = (req, res, next) => {

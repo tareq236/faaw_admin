@@ -24,6 +24,9 @@ const Occupation = require('../controllers/occupation/Occupation');
 const Job = require('../controllers/job/Job');
 const ScrollingNews = require('../controllers/scrolling_news/ScrollingNews');
 const Category = require('../controllers/category/Category');
+const Designation = require('../controllers/designation/Designation');
+const Committee = require('../controllers/committee/Committee');
+const AssignCommittee = require('../controllers/assign_committee/AssignCommittee');
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -70,6 +73,78 @@ router.get('/dashboard', function(req, res, next) {
   }
 });
 
+
+router.get('/committee/assign_committee', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AssignCommittee.list(req, res, next);
+  }
+});
+router.post('/committee/assign_committee/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AssignCommittee.data_list(req, res, next);
+  }
+});
+router.get('/committee/assign_committee/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AssignCommittee.add_from(req, res, next);
+  }
+});
+router.post('/committee/assign_committee/add', Committee.add);
+
+
+
+router.get('/committee', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Committee.list(req, res, next);
+  }
+});
+router.post('/committee/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Committee.data_list(req, res, next);
+  }
+});
+router.get('/committee/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Committee.add_from(req, res, next);
+  }
+});
+router.post('/committee/add', Committee.add);
+router.get('/committee/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Committee.edit_from(req, res, next);
+  }
+});
+router.post('/committee/edit/:id', Committee.edit);
+router.post('/committee/del', function(req, res, next) {
+  Committee.delete(req, res, next);
+});
+
+
+router.get('/designation', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Designation.list(req, res, next);
+  }
+});
+router.post('/designation/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Designation.data_list(req, res, next);
+  }
+});
+router.get('/designation/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Designation.add_from(req, res, next);
+  }
+});
+router.post('/designation/add', Designation.add);
+router.get('/designation/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Designation.edit_from(req, res, next);
+  }
+});
+router.post('/designation/edit/:id', Designation.edit);
+router.post('/designation/del', function(req, res, next) {
+  Designation.delete(req, res, next);
+});
 
 
 router.get('/category', function(req, res, next) {
