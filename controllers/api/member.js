@@ -210,7 +210,7 @@ exports.UserDetails  = async (req, res, next) => {
     // let memberApprovalList = await MemberApprovalModel.findAll({ where: {member_id: req.params.user_id}}).catch(errorHandler);
     const memberApprovalList = await sequelize.query(`SELECT ml.* FROM member_approval_list mal 
         INNER JOIN member_list ml ON mal.register_member_id=ml.id
-        WHERE mal.member_id = req.params.user_id;`, { type: QueryTypes.SELECT });
+        WHERE mal.member_id = ${req.params.user_id};`, { type: QueryTypes.SELECT });
 
 
     if(userDetails !== null){
