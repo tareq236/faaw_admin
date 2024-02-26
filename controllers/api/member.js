@@ -207,7 +207,12 @@ exports.UserDetails  = async (req, res, next) => {
     });
   }else{
     let userDetails = await MemberModel.findOne({ where: {id: req.params.user_id}}).catch(errorHandler);
-    let memberApprovalList = await MemberApprovalModel.findAll({ where: {member_id: req.params.user_id}}).catch(errorHandler);
+    // let memberApprovalList = await MemberApprovalModel.findAll({ where: {member_id: req.params.user_id}}).catch(errorHandler);
+    const memberApprovalList = await sequelize.query(`SELECT ml.* FROM member_approval_list mal 
+        INNER JOIN member_list ml ON mal.register_member_id=ml.id
+        WHERE mal.member_id = req.params.user_id;`, { type: QueryTypes.SELECT });
+
+
     if(userDetails !== null){
 
       return res.status(200).json({
@@ -225,6 +230,45 @@ exports.UserDetails  = async (req, res, next) => {
 };
 
 exports.UserListForApproved  = async (req, res, next) => {
+  const errorHandler = (err) => {
+    return res.status(200).json({
+      success: false,
+      error: err
+    });
+  };
+
+  if(req.body.user_id === "") {
+    return res.status(200).json({
+      success: false,
+      message: "Please enter user id!"
+    });
+  }else  if(req.body.session === ""){
+      return res.status(200).json({
+        success: false,
+        message: "Please enter session!"
+      });
+  }else{
+    // let userList = await MemberModel.findAll({ where: {session: req.body.session,admin_approval: 0 }}).catch(errorHandler);
+    const userList = await sequelize.query(`SELECT * FROM member_list ml 
+          WHERE ml.session = '${req.body.session}' AND ml.id!=${req.body.user_id} 
+          AND id NOT IN (SELECT member_id FROM member_approval_list WHERE register_member_id = ${req.body.user_id});`, { type: QueryTypes.SELECT });
+
+    if(userList){
+      return res.status(200).json({
+        success: true,
+        result: userList,
+      });
+    }else{
+      return res.status(200).json({
+        success: false,
+        message: "User not found!"
+      });
+    }
+  }
+};
+
+
+exports.ApprovedListForUser  = async (req, res, next) => {
   const errorHandler = (err) => {
     return res.status(200).json({
       success: false,

@@ -51,9 +51,9 @@ router.get('/v1/event_list', function(req, res, next) {
 router.post('/v1/member_list_for_approved', function(req, res, next) {
   member.UserListForApproved(req, res, next);
 });
-router.post('/v1/member_list_for_approved', function(req, res, next) {
-  member.UserListForApproved(req, res, next);
-});
+// router.post('/v1/approved_list_for_user', function(req, res, next) {
+//   member.ApprovedListForUser(req, res, next);
+// });
 router.get('/v1/user_details/:user_id', function(req, res, next) {
   member.UserDetails(req, res, next);
 });
