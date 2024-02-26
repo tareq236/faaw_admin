@@ -245,7 +245,7 @@ exports.UserListForApproved  = async (req, res, next) => {
   }else{
     // let userList = await MemberModel.findAll({ where: {session: req.body.session,admin_approval: 0 }}).catch(errorHandler);
     const userList = await sequelize.query(`SELECT * FROM member_list ml LEFT JOIN member_approval_list mal ON ml.id = mal.member_id 
-            WHERE ml.session = '${req.body.session}' AND ml.id!=${req.body.user_id} AND mal.register_member_id != ${req.body.user_id};`, { type: QueryTypes.SELECT });
+            WHERE ml.session = '${req.body.session}' AND ml.id!=${req.body.user_id} AND mal.register_member_id != ml.id;`, { type: QueryTypes.SELECT });
 
     if(userList){
       return res.status(200).json({
