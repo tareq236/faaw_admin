@@ -1,5 +1,37 @@
-const { sequelize, EventRegisterModel} = require("../../models");
+const { sequelize, EventRegisterModel, EventSponsorModel} = require("../../models");
 const { QueryTypes } = require('sequelize');
+
+exports.EventSponsorSave  = async (req, res, next) => {
+  const errorHandler = (err) => {
+    return res.status(200).json({
+      success: false,
+      error: err
+    });
+  };
+
+  let eventDetails = await EventSponsorModel.findOne({ where: {event_id: req.body.event_id, email: req.body.email}}).catch(errorHandler);
+
+  if(eventDetails === null){
+    try {
+      const eventRegisterInsert = await EventSponsorModel.create(req.body).catch(errorHandler);
+      return res.status(200).json({
+        success: true,
+        result: eventRegisterInsert,
+      });
+    } catch (error) {
+      return res.status(200).json({
+        success: false,
+        error: error
+      });
+    }
+  }else{
+    return res.status(200).json({
+      success: false,
+      message: "Already event registered !"
+    });
+  }
+
+};
 
 
 exports.Details = async (req, res, next) => {

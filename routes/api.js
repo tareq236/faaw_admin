@@ -46,6 +46,9 @@ router.get('/v1/event_details/:id', function(req, res, next) {
 router.post('/v1/event_register', function(req, res, next) {
   eventList.Save(req, res, next);
 });
+router.post('/v1/event_sponsor_register', function(req, res, next) {
+  eventList.EventSponsorSave(req, res, next);
+});
 
 router.get('/v1/event_list', function(req, res, next) {
   eventList.List(req, res, next);
