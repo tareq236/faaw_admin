@@ -5,10 +5,18 @@ exports.NewsDetails = async (req, res, next) => {
   const _id = req.params.id
   const _data = await sequelize.query(`SELECT el.* FROM publication el WHERE id = ${_id};`, { type: QueryTypes.SELECT });
 
-  return res.status(200).json({
-    success: true,
-    result: _data[0],
-  });
+  if(_data.length !== 0){
+    return res.status(200).json({
+      success: true,
+      result: _data[0],
+    });
+  }else{
+    return res.status(200).json({
+      success: false,
+      message: "Data not found"
+    });
+  }
+
 
 };
 
