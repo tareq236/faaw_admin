@@ -9,9 +9,7 @@ exports.Save  = async (req, res, next) => {
     });
   };
 
-  let eventDetails = await DonationModel.findOne({ where: {email_address: req.body.email_address}}).catch(errorHandler);
 
-  if(eventDetails === null){
     try {
       const eventRegisterInsert = await DonationModel.create(req.body).catch(errorHandler);
       return res.status(200).json({
@@ -24,11 +22,6 @@ exports.Save  = async (req, res, next) => {
         error: error
       });
     }
-  }else{
-    return res.status(200).json({
-      success: false,
-      message: "Already event registered !"
-    });
-  }
+
 
 };
