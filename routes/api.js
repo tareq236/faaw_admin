@@ -32,6 +32,9 @@ router.get('/v1/member_list', function(req, res, next) {
   member.MemberList(req, res, next);
 });
 
+router.get('/v1/news_details/:id', function(req, res, next) {
+  publication.NewsDetails(req, res, next);
+});
 router.get('/v1/publication', function(req, res, next) {
   publication.List(req, res, next);
 });
