@@ -22,6 +22,14 @@ module.exports = sequelize => {
             comment: null,
             field: "title"
         },
+      details: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        primaryKey: false,
+        autoIncrement: false,
+        comment: null,
+        field: "details"
+      },
         cover_image: {
             type: DataTypes.STRING(255),
             allowNull: true,

@@ -45,6 +45,7 @@ exports.data_list = async (req, res, next) => {
 exports.add_from = async (req, res, next) => {
     res.render('publication/add', {
       title: "",
+      details: "",
       cover_image: "",
       file: "",
       status: "",
@@ -93,6 +94,7 @@ exports.add = [async (req, res, next) => {
             if(req.files[0] !== undefined && req.files[1] !== undefined && req.body.title !== "" ){
                 let insert_data = {
                   title: req.body.title,
+                  details: req.body.details,
                   type: req.body.type,
                   cover_image: req.files[0].filename,
                   file: req.files[1].filename,
@@ -115,6 +117,7 @@ exports.edit_from = async (req, res, next) => {
     let result = await PublicationModel.findOne({ where: {id: id} }).catch(errorHandler);
     res.render('publication/edit', {
       title: result.title,
+      details: result.details,
       type: result.type,
       cover_image: result.cover_image,
       file: result.file,
@@ -162,6 +165,7 @@ exports.edit = [async (req, res, next) => {
             if(req.body.title !== ""){
                 let update_data = {
                   title: req.body.title,
+                  details: req.body.details,
                   type: req.body.type,
                   cover_image: req.files[0] === undefined ? '' : req.files[0].filename,
                   file: req.files[1] === undefined ? '' : req.files[1].filename,
