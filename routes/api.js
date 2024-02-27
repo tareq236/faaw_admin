@@ -10,7 +10,7 @@ const publication = require('../controllers/api/news_list');
 const noticeList = require('../controllers/api/notice_list');
 const jobList = require('../controllers/api/job_list');
 const payment = require('../controllers/api/payment');
-const Member = require("../controllers/member/Member");
+const donation = require("../controllers/api/donation");
 
 router.get('/v1/scrolling_news_list', function(req, res, next) {
   publication.ScrollingNewsList(req, res, next);
@@ -71,6 +71,7 @@ router.post('/v1/member_login', function(req, res, next) {
   member.Check(req, res, next);
 });
 router.post('/v1/member_register', member.Save);
+router.post('/v1/donation_register', donation.Save);
 
 router.get('/v1/home_page', function(req, res, next) {
   homePage.home_page(req, res, next);

@@ -267,7 +267,6 @@ exports.UserListForApproved  = async (req, res, next) => {
   }
 };
 
-
 exports.ApprovedListForUser  = async (req, res, next) => {
   const errorHandler = (err) => {
     return res.status(200).json({
