@@ -84,6 +84,14 @@ module.exports = sequelize => {
         comment: null,
         field: "event_venue"
       },
+      event_fees: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+        primaryKey: false,
+        autoIncrement: false,
+        comment: null,
+        field: "event_fees"
+      },
       status: {
             type: DataTypes.INTEGER(1),
             allowNull: true,

@@ -51,6 +51,7 @@ exports.add_from = async (req, res, next) => {
       event_type: "",
       cover_image: "",
       status: "",
+      event_fees: "",
       event_session: "Upcoming Event",
     });
 };
@@ -114,6 +115,7 @@ exports.add = [async (req, res, next) => {
                   event_type: req.body.event_type,
                   cover_image: image,
                   status: req.body.status,
+                  event_fees: req.body.event_fees,
                   event_session: req.body.event_session
                 };
 
@@ -142,6 +144,7 @@ exports.edit_from = async (req, res, next) => {
       cover_image: result.cover_image,
       status: result.status,
       event_session: result.event_session,
+      event_fees: result.event_fees,
       id: result.id,
       moment: moment
     });
@@ -201,7 +204,8 @@ exports.edit = [async (req, res, next) => {
                   event_type: req.body.event_type,
                   cover_image: image,
                   status: req.body.status,
-                  event_session: req.body.event_session
+                  event_session: req.body.event_session,
+                  event_fees: req.body.event_fees
                 };
                 if(image===""){
                     delete update_data.cover_image;
