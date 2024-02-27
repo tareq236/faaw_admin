@@ -14,6 +14,14 @@ module.exports = sequelize => {
       comment: null,
       field: "id"
     },
+    member_id: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "member_id"
+    },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,
@@ -47,13 +55,22 @@ module.exports = sequelize => {
       field: "phone_number"
     },
     pay_amount: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING(255),
       allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
       field: "pay_amount"
+    },
+    payment_type: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "payment_type"
     },
     status: {
       type: DataTypes.INTEGER(1),
