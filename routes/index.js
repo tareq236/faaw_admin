@@ -27,6 +27,7 @@ const Category = require('../controllers/category/Category');
 const Designation = require('../controllers/designation/Designation');
 const Committee = require('../controllers/committee/Committee');
 const AssignCommittee = require('../controllers/assign_committee/AssignCommittee');
+const Donate = require('../controllers/donate_list/Donate');
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -72,6 +73,20 @@ router.get('/dashboard', function(req, res, next) {
     Dashboard.data(req, res, next);
   }
 });
+
+
+
+router.get('/donate_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Donate.list(req, res, next);
+  }
+});
+router.post('/donate_list/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Donate.data_list(req, res, next);
+  }
+});
+
 
 
 router.get('/committee/assign_committee', function(req, res, next) {
