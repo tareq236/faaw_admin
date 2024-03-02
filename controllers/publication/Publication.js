@@ -64,7 +64,7 @@ exports.add = [async (req, res, next) => {
     });
     const uploads = multer({
         storage: storage,
-        limits: { fileSize: 50 * 1024 * 1024 }
+        limits: { fileSize: 6 * 1024 * 1024 }
     }).array('ff', 2);
 
 
@@ -139,7 +139,7 @@ exports.edit = [async (req, res, next) => {
     });
     const uploads = multer({
         storage: storage,
-        limits: { fileSize: 50 * 1024 * 1024 }
+        limits: { fileSize: 6 * 1024 * 1024 }
     }).array('ff', 2);
 
 
