@@ -4,6 +4,7 @@ const CommonFunction = require('../common_function');
 const path = require('path');
 const multer = require('multer');
 const moment = require('moment');
+const sharp = require("sharp");
 
 exports.list = (req, res, next) => {
     res.render('event/index', { })
@@ -90,7 +91,22 @@ exports.add = [async (req, res, next) => {
                 req.flash('error', "Please add image");
                 res.redirect('/event/add');
             }else{
-                image = req.file.filename;
+              if(event_session === "Upcoming Event"){
+                const resizedImagePath = 'public/cover_image_event/resized_' + req.file.filename;
+                await sharp(req.file.path)
+                  .resize(650, 450) // Resize to 300x300 pixels
+                  .toFile(resizedImagePath)
+                  .catch(errorHandler);
+                image = resizedImagePath.split('public/cover_image_event/')[1];
+              }else{
+                const resizedImagePath = 'public/cover_image_event/resized_' + req.file.filename;
+                await sharp(req.file.path)
+                  .resize(370, 220) // Resize to 300x300 pixels
+                  .toFile(resizedImagePath)
+                  .catch(errorHandler);
+                image = resizedImagePath.split('public/cover_image_event/')[1];
+              }
+                // image = req.file.filename;
             }
             if(req.body.event_title === ""){
                 req.flash('error', "Please enter event title");
@@ -183,7 +199,23 @@ exports.edit = [async (req, res, next) => {
         } else {
             let image = "";
             if(req.file !== undefined){
-                image = req.file.filename;
+              if(event_session === "Upcoming Event"){
+                const resizedImagePath = 'public/cover_image_event/resized_' + req.file.filename;
+                await sharp(req.file.path)
+                  .resize(650, 450) // Resize to 300x300 pixels
+                  .toFile(resizedImagePath)
+                  .catch(errorHandler);
+                image = resizedImagePath.split('public/cover_image_event/')[1];
+              }else{
+                const resizedImagePath = 'public/cover_image_event/resized_' + req.file.filename;
+                await sharp(req.file.path)
+                  .resize(370, 220) // Resize to 300x300 pixels
+                  .toFile(resizedImagePath)
+                  .catch(errorHandler);
+                image = resizedImagePath.split('public/cover_image_event/')[1];
+              }
+
+              // image = req.file.filename;
             }
             if(req.body.event_title === ""){
                 req.flash('error', "Please enter event title");

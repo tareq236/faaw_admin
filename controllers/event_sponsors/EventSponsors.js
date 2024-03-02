@@ -3,6 +3,7 @@ const { QueryTypes } = require('sequelize');
 const CommonFunction = require('../common_function');
 const path = require('path');
 const multer = require('multer');
+const sharp = require("sharp");
 
 exports.list = (req, res, next) => {
   res.render('event_sponsors/index', {})
@@ -78,7 +79,15 @@ exports.add = [async (req, res, next) => {
         req.flash('error', "Please add slider image");
         res.redirect('/event_sponsors/add');
       }else{
-        image = req.file.filename;
+        const resizedImagePath = 'public/event_sponsors/resized_' + req.file.filename;
+        await sharp(req.file.path)
+          .resize(370, 220) // Resize to 300x300 pixels
+          .toFile(resizedImagePath)
+          .catch(errorHandler);
+
+        image = resizedImagePath.split('public/event_sponsors/')[1];
+        // image = req.file.filename;
+
       }
       if(req.body.name === ""){
         req.flash('error', "Please enter name");

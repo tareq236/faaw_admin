@@ -33,7 +33,6 @@ exports.EventSponsorSave  = async (req, res, next) => {
 
 };
 
-
 exports.Details = async (req, res, next) => {
   const _data = await sequelize.query(`SELECT el.* FROM event_list el WHERE status = 1 AND id=${req.params.id};`, { type: QueryTypes.SELECT });
   const _media_data = await sequelize.query(`SELECT * FROM event_image_list WHERE event_id = ${req.params.id};`, { type: QueryTypes.SELECT });

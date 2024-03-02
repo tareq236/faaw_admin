@@ -26,6 +26,7 @@
     "path": "^0.12.7",
     "sequelize": "^6.6.4",
     "sequelize-cli": "^6.2.0",
+    "sharp": "^0.33.2",
     "shelljs": "^0.8.4",
     "sslcommerz-lts": "^1.1.0",
     "tinymce": "^6.8.2"

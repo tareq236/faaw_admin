@@ -7,6 +7,7 @@ const excel = require("exceljs");
 const moment = require("moment");
 const multer = require("multer");
 const path = require("path");
+const sharp = require("sharp");
 const fields = [
   {param: 'membership_number'},
   {param: 'name'},
@@ -116,7 +117,14 @@ exports.add = [async (req, res, next) => {
         req.flash('error', "Please add image");
         res.redirect('/member/add');
       }else{
-        image = req.file.filename;
+        const resizedImagePath = 'public/member/resized_' + req.file.filename;
+        await sharp(req.file.path)
+          .resize(150, 150) // Resize to 300x300 pixels
+          .toFile(resizedImagePath)
+          .catch(errorHandler);
+
+        image = resizedImagePath.split('public/member/')[1];
+        // image = req.file.filename;
       }
       if(req.body.membership_number === ""){
         req.flash('error', "Please enter membership number");
