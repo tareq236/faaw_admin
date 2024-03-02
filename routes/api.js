@@ -11,6 +11,14 @@ const noticeList = require('../controllers/api/notice_list');
 const jobList = require('../controllers/api/job_list');
 const payment = require('../controllers/api/payment');
 const donation = require("../controllers/api/donation");
+const others = require("../controllers/api/others");
+
+router.get('/v1/batch_session_list', function(req, res, next) {
+  others.batch_session_list(req, res, next);
+});
+router.get('/v1/occupation_list', function(req, res, next) {
+  others.occupation_list_list(req, res, next);
+});
 
 router.get('/v1/scrolling_news_list', function(req, res, next) {
   publication.ScrollingNewsList(req, res, next);
