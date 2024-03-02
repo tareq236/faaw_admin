@@ -192,11 +192,14 @@ router.post('/members/import_excel', upload.single('file'), async (req, res) => 
           phone_number: row.getCell(3).value,
           email: row.getCell(4).value,
           session: row.getCell(5).value,
-          hsc_passing_year: row.getCell(5).value,
+          hsc_passing_year: row.getCell(6).value,
           occupation: row.getCell(7).value,
           organization_name: row.getCell(8).value,
           designation_name: row.getCell(9).value,
+          membership_category_id: row.getCell(10).value,
           password: '123456',
+          member_image: 'default.jpg',
+
         });
       }
     });
@@ -204,8 +207,9 @@ router.post('/members/import_excel', upload.single('file'), async (req, res) => 
     // 4. Save the extracted data to your database using Sequelize
     await MemberModel.bulkCreate(data);
 
-    req.flash('success', 'Data edit successfully!');
-    res.redirect('/member');
+    return res.status(200).json({
+      success: true,
+    });
   } catch (error) {
     console.error('Error importing data:', error);
     req.flash('error', 'Error importing data!');

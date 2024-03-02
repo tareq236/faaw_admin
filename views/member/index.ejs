@@ -93,8 +93,12 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        alert('File uploaded successfully');
-                        console.log(response);
+                        if(response.success){
+                            alert('File uploaded successfully');
+                            console.log(response);
+                            window.location.href = "/members";
+                        }
+
                     },
                     error: function(xhr, status, error) {
                         alert('Error uploading file');
@@ -165,13 +169,13 @@
                     if (result) {
                         $.ajax({
                             type: "post",
-                            url: "/member/del",
+                            url: "/members/del",
                             data: { del_id: delid },
                             datatype: "json",
                             traditional: true,
                             success: function (data) {
                                 if (data.success) {
-                                    window.location.href = "/member";
+                                    window.location.href = "/members";
                                 } else {
                                     bootbox.alert({
                                         title: 'Delete Faild!',
