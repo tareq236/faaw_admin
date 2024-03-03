@@ -68,6 +68,10 @@ exports.add = [async (req, res, next) => {
     req.flash('error', err);
     res.redirect('/event_sponsors/add');
   };
+  const errorHandler = async (err, _id) => {
+    req.flash('error', err);
+    res.redirect('/event_sponsors/add');
+  };
 
   // Upload image
   upload(req, res, async ( err ) => {

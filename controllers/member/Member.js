@@ -108,6 +108,10 @@ exports.add = [async (req, res, next) => {
     req.flash('error', err);
     res.redirect('/member/add');
   };
+  const errorHandler = async (err, _id) => {
+    req.flash('error', err);
+    res.redirect('/member/add');
+  };
   upload(req, res, async ( err ) => {
     if (err) {
       await errorHandlerUpload(err);

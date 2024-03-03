@@ -80,6 +80,10 @@ exports.add = [async (req, res, next) => {
         req.flash('error', err);
         res.redirect('/event/add');
     };
+    const errorHandler = async (err, _id) => {
+        req.flash('error', err);
+        res.redirect('/event/add');
+    };
 
     // Upload image
     upload(req, res, async ( err ) => {
@@ -191,6 +195,10 @@ exports.edit = [async (req, res, next) => {
         req.flash('error', err);
         res.redirect('/event/edit/'+id);
     };
+  const errorHandler = async (err) => {
+    req.flash('error', err);
+    res.redirect('/event/edit/'+id);
+  };
 
     // Upload image
     upload(req, res, async ( err ) => {
