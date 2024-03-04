@@ -76,6 +76,7 @@ exports.Save  = async (req, res, next) => {
           name: req.body.name,
           phone_number: req.body.phone_number,
           email: req.body.email,
+          address: req.body.address,
           session: req.body.session,
           hsc_passing_year: req.body.hsc_passing_year,
           occupation: req.body.occupation,

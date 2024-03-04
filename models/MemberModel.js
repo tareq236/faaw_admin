@@ -110,6 +110,14 @@ module.exports = sequelize => {
       comment: null,
       field: "password"
     },
+    address: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "address"
+    },
     status: {
       type: DataTypes.INTEGER(1),
       allowNull: true,

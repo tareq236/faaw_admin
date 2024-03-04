@@ -19,6 +19,7 @@ const fields = [
   {param: 'designation_name'},
   {param: 'password'},
   {param: 'hsc_passing_year'},
+  {param: 'address'},
 ];
 
 
@@ -82,6 +83,7 @@ exports.add_from = async (req, res, next) => {
     hsc_passing_year: '',
     member_image: "",
     membership_category_id: "",
+    address: "",
     validation: validations.all_field_validations(null, fields)
   });
 };
@@ -158,6 +160,7 @@ exports.add = [async (req, res, next) => {
           password: req.body.password,
           admin_approval: req.body.admin_approval,
           membership_category_id: req.body.membership_category_id,
+          address: req.body.address,
           member_image: image,
         };
         const save_date = await MemberModel.create(insert_data).catch(errorHandlerProductList);
@@ -198,6 +201,7 @@ exports.edit_from = async (req, res, next) => {
     category_list: category_list,
     member_image: result.member_image,
     membership_category_id: result.membership_category_id,
+    address: result.address,
     id: result.id,
     validation: validations.all_field_validations(null, fields)
   });
@@ -262,6 +266,7 @@ exports.edit = [async (req, res, next) => {
           password: req.body.password,
           admin_approval: req.body.admin_approval,
           membership_category_id: req.body.membership_category_id,
+          address: req.body.address,
           member_image: image,
         };
         if(image===""){
@@ -311,6 +316,7 @@ exports.excel_report = [
         {header: "Name", key: "name", width: 10},
         {header: "Phone Number", key: "phone_number", width: 30},
         {header: "Email", key: "email", width: 30},
+        {header: "Address", key: "address", width: 30},
         {header: "Session/Batch", key: "session", width: 10},
         {header: "HSC Passing Year", key: "hsc_passing_year", width: 10},
         {header: "Occupation", key: "occupation", width: 20},
@@ -326,6 +332,7 @@ exports.excel_report = [
         a_row = a_row + '"name":"' + list_obj.name + '",';
         a_row = a_row + '"phone_number":"' + list_obj.phone_number + '",';
         a_row = a_row + '"email":"' + list_obj.email + '",';
+        a_row = a_row + '"address":"' + list_obj.address + '",';
         a_row = a_row + '"session":"' + list_obj.session + '",';
         a_row = a_row + '"hsc_passing_year":"' + list_obj.hsc_passing_year + '",';
         a_row = a_row + '"occupation":"' + list_obj.occupation + '",';
