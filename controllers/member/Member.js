@@ -322,9 +322,7 @@ exports.excel_report = [
         {header: "Occupation", key: "occupation", width: 20},
         {header: "Organization name", key: "organization_name", width: 20},
         {header: "Designation name", key: "designation_name", width: 20},
-        {header: "Status", key: "status", width: 20},
-        {header: "Admin Approval", key: "admin_approval", width: 20},
-        {header: "Created At", key: "created_at", width: 20},
+        {header: "Membership Category", key: "membership_category_id", width: 20},
       ];
       list.forEach((list_obj) => {
         let a_row = "{";
@@ -338,9 +336,7 @@ exports.excel_report = [
         a_row = a_row + '"occupation":"' + list_obj.occupation + '",';
         a_row = a_row + '"organization_name":"' + list_obj.organization_name + '",';
         a_row = a_row + '"designation_name":"' + list_obj.designation_name + '",';
-        a_row = a_row + '"status":"' + list_obj.status + '",';
-        a_row = a_row + '"admin_approval":"' + list_obj.admin_approval + '",';
-        a_row = a_row + '"created_at":"' + moment(list_obj.created_at).format('DD-MMM-YYYY h:m:s') + '"}';
+        a_row = a_row + '"membership_category_id":"' + list_obj.membership_category_id + '"}';
         let json_obj = JSON.parse(a_row);
         worksheet.addRow(json_obj);
       });
