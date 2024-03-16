@@ -31,6 +31,7 @@ const Donate = require('../controllers/donate_list/Donate');
 const Gallery = require('../controllers/gallery/Gallery');
 const Contacts = require('../controllers/contacts/Contacts');
 const HomeSlider = require('../controllers/home_slider/HomeSlider');
+const HomePopup = require('../controllers/home_popup/HomePopup');
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -121,6 +122,34 @@ router.post('/contacts/data_list', function(req, res, next) {
 });
 router.post('/contacts/del', function(req, res, next) {
   Contacts.delete(req, res, next);
+});
+
+
+
+router.get('/home_popup', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomePopup.list(req, res, next);
+  }
+});
+router.post('/home_popup/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomePopup.data_list(req, res, next);
+  }
+});
+router.get('/home_popup/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomePopup.add_from(req, res, next);
+  }
+});
+router.post('/home_popup/add', HomePopup.add);
+router.get('/home_popup/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomePopup.edit_from(req, res, next);
+  }
+});
+router.post('/home_popup/edit/:id', HomePopup.edit);
+router.post('/home_popup/del', function(req, res, next) {
+  HomePopup.delete(req, res, next);
 });
 
 
