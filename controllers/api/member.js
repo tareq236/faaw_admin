@@ -316,7 +316,7 @@ exports.ApprovedListForUser  = async (req, res, next) => {
 };
 
 exports.MemberList  = async (req, res, next) => {
-  let query = ` WHERE status = 1 AND admin_approval = 1`
+  let query = ` WHERE status = 1 AND admin_approval = 1 `
   const name = req.query.name
   const mobile_number = req.query.mobile_number
   const membership_number = req.query.membership_number
