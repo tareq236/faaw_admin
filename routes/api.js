@@ -12,7 +12,11 @@ const jobList = require('../controllers/api/job_list');
 const payment = require('../controllers/api/payment');
 const donation = require("../controllers/api/donation");
 const others = require("../controllers/api/others");
+const gallery = require("../controllers/api/gallery");
 
+router.get('/v1/gallery', function(req, res, next) {
+  gallery.List(req, res, next);
+});
 router.get('/v1/batch_session_list', function(req, res, next) {
   others.batch_session_list(req, res, next);
 });

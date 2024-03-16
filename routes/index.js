@@ -28,6 +28,7 @@ const Designation = require('../controllers/designation/Designation');
 const Committee = require('../controllers/committee/Committee');
 const AssignCommittee = require('../controllers/assign_committee/AssignCommittee');
 const Donate = require('../controllers/donate_list/Donate');
+const Gallery = require('../controllers/gallery/Gallery');
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -105,6 +106,34 @@ router.get('/committee/assign_committee/add', function(req, res, next) {
   }
 });
 router.post('/committee/assign_committee/add', Committee.add);
+
+
+
+router.get('/gallery', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Gallery.list(req, res, next);
+  }
+});
+router.post('/gallery/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Gallery.data_list(req, res, next);
+  }
+});
+router.get('/gallery/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Gallery.add_from(req, res, next);
+  }
+});
+router.post('/gallery/add', Gallery.add);
+router.get('/gallery/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Gallery.edit_from(req, res, next);
+  }
+});
+router.post('/gallery/edit/:id', Gallery.edit);
+router.post('/gallery/del', function(req, res, next) {
+  Gallery.delete(req, res, next);
+});
 
 
 
