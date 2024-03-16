@@ -29,6 +29,7 @@ const Committee = require('../controllers/committee/Committee');
 const AssignCommittee = require('../controllers/assign_committee/AssignCommittee');
 const Donate = require('../controllers/donate_list/Donate');
 const Gallery = require('../controllers/gallery/Gallery');
+const Contacts = require('../controllers/contacts/Contacts');
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -107,6 +108,19 @@ router.get('/committee/assign_committee/add', function(req, res, next) {
 });
 router.post('/committee/assign_committee/add', Committee.add);
 
+router.get('/contacts', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Contacts.list(req, res, next);
+  }
+});
+router.post('/contacts/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Contacts.data_list(req, res, next);
+  }
+});
+router.post('/contacts/del', function(req, res, next) {
+  Contacts.delete(req, res, next);
+});
 
 
 router.get('/gallery', function(req, res, next) {

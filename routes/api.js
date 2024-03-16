@@ -13,6 +13,12 @@ const payment = require('../controllers/api/payment');
 const donation = require("../controllers/api/donation");
 const others = require("../controllers/api/others");
 const gallery = require("../controllers/api/gallery");
+const contact = require("../controllers/api/contact");
+
+
+router.post('/v1/contact_save', function(req, res, next) {
+  contact.Insert(req, res, next);
+});
 
 router.get('/v1/gallery', function(req, res, next) {
   gallery.List(req, res, next);
