@@ -14,6 +14,7 @@ const donation = require("../controllers/api/donation");
 const others = require("../controllers/api/others");
 const gallery = require("../controllers/api/gallery");
 const contact = require("../controllers/api/contact");
+const home_slider = require("../controllers/api/home_slider");
 
 
 router.post('/v1/contact_save', function(req, res, next) {
@@ -22,6 +23,9 @@ router.post('/v1/contact_save', function(req, res, next) {
 
 router.get('/v1/gallery', function(req, res, next) {
   gallery.List(req, res, next);
+});
+router.get('/v1/home_slider', function(req, res, next) {
+  home_slider.List(req, res, next);
 });
 router.get('/v1/batch_session_list', function(req, res, next) {
   others.batch_session_list(req, res, next);

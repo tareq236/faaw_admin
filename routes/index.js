@@ -30,6 +30,7 @@ const AssignCommittee = require('../controllers/assign_committee/AssignCommittee
 const Donate = require('../controllers/donate_list/Donate');
 const Gallery = require('../controllers/gallery/Gallery');
 const Contacts = require('../controllers/contacts/Contacts');
+const HomeSlider = require('../controllers/home_slider/HomeSlider');
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -120,6 +121,33 @@ router.post('/contacts/data_list', function(req, res, next) {
 });
 router.post('/contacts/del', function(req, res, next) {
   Contacts.delete(req, res, next);
+});
+
+
+router.get('/home_slider', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomeSlider.list(req, res, next);
+  }
+});
+router.post('/home_slider/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomeSlider.data_list(req, res, next);
+  }
+});
+router.get('/home_slider/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomeSlider.add_from(req, res, next);
+  }
+});
+router.post('/home_slider/add', HomeSlider.add);
+router.get('/home_slider/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomeSlider.edit_from(req, res, next);
+  }
+});
+router.post('/home_slider/edit/:id', HomeSlider.edit);
+router.post('/home_slider/del', function(req, res, next) {
+  HomeSlider.delete(req, res, next);
 });
 
 
