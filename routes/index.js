@@ -32,6 +32,7 @@ const Gallery = require('../controllers/gallery/Gallery');
 const Contacts = require('../controllers/contacts/Contacts');
 const HomeSlider = require('../controllers/home_slider/HomeSlider');
 const HomePopup = require('../controllers/home_popup/HomePopup');
+const AboutUsMessage = require('../controllers/about_us_message/AboutUsMessage');
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -124,6 +125,32 @@ router.post('/contacts/del', function(req, res, next) {
   Contacts.delete(req, res, next);
 });
 
+
+router.get('/about_us_message', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AboutUsMessage.list(req, res, next);
+  }
+});
+router.post('/about_us_message/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AboutUsMessage.data_list(req, res, next);
+  }
+});
+router.get('/about_us_message/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AboutUsMessage.add_from(req, res, next);
+  }
+});
+router.post('/about_us_message/add', AboutUsMessage.add);
+router.get('/about_us_message/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AboutUsMessage.edit_from(req, res, next);
+  }
+});
+router.post('/about_us_message/edit/:id', AboutUsMessage.edit);
+router.post('/about_us_message/del', function(req, res, next) {
+  AboutUsMessage.delete(req, res, next);
+});
 
 
 router.get('/home_popup', function(req, res, next) {

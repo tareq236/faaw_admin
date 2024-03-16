@@ -16,12 +16,16 @@ const gallery = require("../controllers/api/gallery");
 const contact = require("../controllers/api/contact");
 const home_slider = require("../controllers/api/home_slider");
 const home_popup = require("../controllers/api/home_popup");
+const about_us_message = require("../controllers/api/about_us_message");
 
 
 router.post('/v1/contact_save', function(req, res, next) {
   contact.Insert(req, res, next);
 });
 
+router.get('/v1/about_us_message', function(req, res, next) {
+  about_us_message.List(req, res, next);
+});
 router.get('/v1/gallery', function(req, res, next) {
   gallery.List(req, res, next);
 });
