@@ -15,6 +15,7 @@ const others = require("../controllers/api/others");
 const gallery = require("../controllers/api/gallery");
 const contact = require("../controllers/api/contact");
 const home_slider = require("../controllers/api/home_slider");
+const home_popup = require("../controllers/api/home_popup");
 
 
 router.post('/v1/contact_save', function(req, res, next) {
@@ -23,6 +24,9 @@ router.post('/v1/contact_save', function(req, res, next) {
 
 router.get('/v1/gallery', function(req, res, next) {
   gallery.List(req, res, next);
+});
+router.get('/v1/home_popup', function(req, res, next) {
+  home_popup.List(req, res, next);
 });
 router.get('/v1/home_slider', function(req, res, next) {
   home_slider.List(req, res, next);
