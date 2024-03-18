@@ -9,7 +9,6 @@ const eventList = require('../controllers/api/event_list');
 const publication = require('../controllers/api/news_list');
 const noticeList = require('../controllers/api/notice_list');
 const jobList = require('../controllers/api/job_list');
-const payment = require('../controllers/api/payment');
 const donation = require("../controllers/api/donation");
 const others = require("../controllers/api/others");
 const gallery = require("../controllers/api/gallery");
@@ -47,10 +46,6 @@ router.get('/v1/scrolling_news_list', function(req, res, next) {
 });
 router.get('/v1/category_list', function(req, res, next) {
   member.CategoryList(req, res, next);
-});
-
-router.get('/v1/payment', function(req, res, next) {
-  payment.sslPayment(req, res, next);
 });
 router.get('/v1/job_list', function(req, res, next) {
   jobList.List(req, res, next);

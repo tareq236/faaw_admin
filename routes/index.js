@@ -33,6 +33,7 @@ const Contacts = require('../controllers/contacts/Contacts');
 const HomeSlider = require('../controllers/home_slider/HomeSlider');
 const HomePopup = require('../controllers/home_popup/HomePopup');
 const AboutUsMessage = require('../controllers/about_us_message/AboutUsMessage');
+const payment = require("../controllers/payment");
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -79,7 +80,9 @@ router.get('/dashboard', function(req, res, next) {
   }
 });
 
-
+router.get('/payment', function(req, res, next) {
+  payment.sslPayment(req, res, next);
+});
 
 router.get('/donate_list', function(req, res, next) {
   if (isLogin(req, res)) {

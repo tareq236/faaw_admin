@@ -1,8 +1,8 @@
 const SSLCommerzPayment = require('sslcommerz-lts')
-const {sequelize} = require("../../models");
+const {sequelize} = require("../models");
 const {QueryTypes} = require("sequelize");
-const store_id = '<your_store_id>'
-const store_passwd = '<your_store_password>'
+const store_id = 'financealumniassociationorg0live'
+const store_passwd = '65F1FFFBC182773077'
 const is_live = false //true for live, false for sandbox
 
 
