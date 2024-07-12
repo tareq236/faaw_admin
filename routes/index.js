@@ -34,6 +34,7 @@ const HomeSlider = require('../controllers/home_slider/HomeSlider');
 const HomePopup = require('../controllers/home_popup/HomePopup');
 const AboutUsMessage = require('../controllers/about_us_message/AboutUsMessage');
 const payment = require("../controllers/payment");
+const Programs = require("../controllers/programs/Programs");
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -710,6 +711,33 @@ router.post('/event_sponsors/del', function(req, res, next) {
   EventSponsors.delete(req, res, next);
 });
 
+
+//======================================================
+router.get('/programs', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Programs.list(req, res, next);
+  }
+});
+router.post('/programs/data-list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Programs.data_list(req, res, next);
+  }
+});
+router.get('/programs/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Programs.add_from(req, res, next);
+  }
+});
+router.post('/programs/add', Programs.add);
+router.get('/programs/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Programs.edit_from(req, res, next);
+  }
+});
+router.post('/programs/edit/:id', Programs.edit);
+router.post('/programs/del', function(req, res, next) {
+  Programs.delete(req, res, next);
+});
 
 //======================================================
 router.get('/donation_career', function(req, res, next) {

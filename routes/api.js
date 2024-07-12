@@ -16,7 +16,15 @@ const contact = require("../controllers/api/contact");
 const home_slider = require("../controllers/api/home_slider");
 const home_popup = require("../controllers/api/home_popup");
 const about_us_message = require("../controllers/api/about_us_message");
+const programs = require("../controllers/api/programs");
 
+
+router.post('/v1/programs_list', function(req, res, next) {
+  programs.List(req, res, next);
+});
+router.post('/v1/programs_details', function(req, res, next) {
+  programs.Details(req, res, next);
+});
 
 router.post('/v1/contact_save', function(req, res, next) {
   contact.Insert(req, res, next);
