@@ -35,15 +35,16 @@ exports.Save  = async (req, res, next) => {
       await errorHandlerUpload(err);
     } else {
       let image = "";
+      if (req.file !== undefined){
         const resizedImagePath = 'public/member/resized_' + req.file.filename;
         await sharp(req.file.path)
           .resize(150, 150) // Resize to 300x300 pixels
           .toFile(resizedImagePath)
           .catch(errorHandler);
 
-      if (req.file !== undefined){
         image = resizedImagePath.split('public/member/')[1];
       }
+
 
 
         // image = req.file.filename;
