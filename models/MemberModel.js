@@ -88,7 +88,7 @@ module.exports = sequelize => {
     },
     hsc_passing_year: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -96,7 +96,7 @@ module.exports = sequelize => {
     },
     member_image: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
