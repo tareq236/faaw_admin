@@ -35,22 +35,19 @@ exports.Save  = async (req, res, next) => {
       await errorHandlerUpload(err);
     } else {
       let image = "";
-      if(req.file === undefined){
-        return res.status(200).json({
-          success: false,
-          message: "Please add image!"
-        });
-      }else{
         const resizedImagePath = 'public/member/resized_' + req.file.filename;
         await sharp(req.file.path)
           .resize(150, 150) // Resize to 300x300 pixels
           .toFile(resizedImagePath)
           .catch(errorHandler);
 
+      if (req.file !== undefined){
         image = resizedImagePath.split('public/member/')[1];
+      }
+
 
         // image = req.file.filename;
-      }
+
       if(req.body.membership_number === ""){
         return res.status(200).json({
           success: false,
