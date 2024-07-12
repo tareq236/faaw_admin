@@ -19,10 +19,10 @@ const about_us_message = require("../controllers/api/about_us_message");
 const programs = require("../controllers/api/programs");
 
 
-router.post('/v1/programs_list', function(req, res, next) {
+router.get('/v1/programs_list', function(req, res, next) {
   programs.List(req, res, next);
 });
-router.post('/v1/programs_details', function(req, res, next) {
+router.get('/v1/programs_details', function(req, res, next) {
   programs.Details(req, res, next);
 });
 
