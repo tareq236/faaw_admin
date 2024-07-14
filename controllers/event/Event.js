@@ -95,7 +95,7 @@ exports.add = [async (req, res, next) => {
                 req.flash('error', "Please add image");
                 res.redirect('/event/add');
             }else{
-              if(event_session === "Upcoming Event"){
+              if(req.body.event_session === "Upcoming Event"){
                 const resizedImagePath = 'public/cover_image_event/resized_' + req.file.filename;
                 await sharp(req.file.path)
                   .resize(650, 450) // Resize to 300x300 pixels
