@@ -42,8 +42,12 @@ exports.sslPayment = async (req, res, next) => {
     console.log(data)
     // Redirect the user to payment gateway
     let GatewayPageURL = apiResponse.GatewayPageURL
-    res.redirect(GatewayPageURL)
-    console.log('Redirecting to: ', GatewayPageURL)
+    return res.status(200).json({
+      success: true,
+      url: GatewayPageURL,
+    });
+    // res.redirect(GatewayPageURL)
+    // console.log('Redirecting to: ', GatewayPageURL)
   });
 };
 

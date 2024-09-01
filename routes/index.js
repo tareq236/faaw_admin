@@ -81,9 +81,7 @@ router.get('/dashboard', function(req, res, next) {
   }
 });
 
-router.get('/payment', function(req, res, next) {
-  Payment.sslPayment(req, res, next);
-});
+
 
 router.get('/donate_list', function(req, res, next) {
   if (isLogin(req, res)) {
