@@ -3,14 +3,14 @@ const {sequelize} = require("../models");
 const {QueryTypes} = require("sequelize");
 const store_id = 'financealumniassociationorg0live'
 const store_passwd = '65F1FFFBC182773077'
-const is_live = false //true for live, false for sandbox
+const is_live = true //true for live, false for sandbox
 
 
 exports.sslPayment = async (req, res, next) => {
   const data = {
     total_amount: 100,
     currency: 'BDT',
-    tran_id: 'REF123', // use unique tran_id for each api call
+    tran_id: 'REF123',
     success_url: 'http://localhost:3030/success',
     fail_url: 'http://localhost:3030/fail',
     cancel_url: 'http://localhost:3030/cancel',
@@ -47,13 +47,13 @@ exports.sslPayment = async (req, res, next) => {
   });
 };
 
-exports.sslPaymentValidate = async (req, res, next) => {
-  const data = {
-    val_id:ADGAHHGDAKJ456454 //that you go from sslcommerz response
-  };
-  const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
-  sslcz.validate(data).then(data => {
-    //process the response that got from sslcommerz
-    // https://developer.sslcommerz.com/doc/v4/#order-validation-api
-  });
-}
+// exports.sslPaymentValidate = async (req, res, next) => {
+//   const data = {
+//     val_id:ADGAHHGDAKJ456454 //that you go from sslcommerz response
+//   };
+//   const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
+//   sslcz.validate(data).then(data => {
+//     //process the response that got from sslcommerz
+//     // https://developer.sslcommerz.com/doc/v4/#order-validation-api
+//   });
+// }
