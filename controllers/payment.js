@@ -7,6 +7,7 @@ const is_live = true //true for live, false for sandbox
 
 
 exports.sslPayment = async (req, res, next) => {
+  console.log(req.body)
   const data = {
     total_amount: 100,
     currency: 'BDT',
@@ -39,7 +40,7 @@ exports.sslPayment = async (req, res, next) => {
   };
   const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
   sslcz.init(data).then(apiResponse => {
-    console.log(data)
+    // console.log(data)
     // Redirect the user to payment gateway
     let GatewayPageURL = apiResponse.GatewayPageURL
     return res.status(200).json({
