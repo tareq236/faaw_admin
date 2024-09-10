@@ -24,14 +24,10 @@ exports.sslPayment = async (req, res, next) => {
         total_amount: req.body.pay_amount,
         currency: 'BDT',
         tran_id: eventRegisterInsert.id,
-        // success_url: req.body.return_url + '/success?tr_id=' + eventRegisterInsert.id,
-        // fail_url: req.body.return_url + '/fail?tr_id=' + eventRegisterInsert.id,
-        // cancel_url: req.body.return_url + '/cancel?tr_id=' + eventRegisterInsert.id,
-        // ipn_url: req.body.return_url + '/ipn?tr_id=' + eventRegisterInsert.id,
-        success_url: req.body.return_url + '/success/' + eventRegisterInsert.id,
-        fail_url: req.body.return_url + '/fail/' + eventRegisterInsert.id,
-        cancel_url: req.body.return_url + '/cancel/' + eventRegisterInsert.id,
-        ipn_url: req.body.return_url + '/ipn/' + eventRegisterInsert.id,
+        success_url: `http://127.0.0.1:3000/api/v1/success?tr_id=${eventRegisterInsert.id}&type=success&return_url=${req.body.return_url}`,
+        fail_url: `http://127.0.0.1:3000/api/v1/fail?tr_id=${eventRegisterInsert.id}&type=fail&return_url=${req.body.return_url}`,
+        cancel_url: `http://127.0.0.1:3000/api/v1/cancel?tr_id=${eventRegisterInsert.id}&type=cancel&return_url=${req.body.return_url}`,
+        ipn_url: `http://127.0.0.1:3000/api/v1/ipn_url?tr_id=${eventRegisterInsert.id}&type=ipn_url&return_url=${req.body.return_url}`,
         shipping_method: 'Service',
         product_name: 'Donation.',
         product_category: 'Donation',
@@ -84,6 +80,7 @@ exports.sslPayment = async (req, res, next) => {
 exports.sslPaymentValidate = async (req, res, next) => {
   const data = {
     val_id: req.query.tr_id,
+    type: req.query.type,
   };
   const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
   sslcz.validate(data).then(async data => {
@@ -102,27 +99,44 @@ exports.sslPaymentValidate = async (req, res, next) => {
         }
         const update_date = await DonationModel.update(updateData, {where: {id: req.query.tr_id}});
         if(update_date){
-          return res.status(200).json({
-            success: true,
-            result: updateData,
-          });
+          if(req.query.type === "success"){
+            return res.redirect(`${req.query.return_url}/success/${req.query.tr_id}`);
+          }else if(req.query.type === "fail"){
+            return res.redirect(`${req.query.return_url}/fail/${req.query.tr_id}`);
+          }else if(req.query.type === "cancel"){
+            return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
+          }else{
+            return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
+          }
         }
       }else{
-        return res.status(200).json({
-          success: false,
-          message: "Payment already update !",
-        });
+        return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
       }
     } catch (error) {
       console.log(error)
+      return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
+    }
+  });
+}
+
+exports.sslPaymentStatus = async (req, res, next) => {
+  if (req.query.tr_id) {
+    const dataDetails = await DonationModel.findOne({where: {id: req.query.tr_id}});
+    if(dataDetails){
       return res.status(200).json({
-        success: false,
-        message: "Server Error !",
-        error: error
+        success: true,
+        result: dataDetails,
+      });
+    }else{
+      return res.status(200).json({
+        success: true,
+        message: "Data not found",
       });
     }
-
-    //process the response that got from sslcommerz
-    // https://developer.sslcommerz.com/doc/v4/#order-validation-api
-  });
+  }else{
+    return res.status(200).json({
+      success: true,
+      message: "tr_id is empty",
+    });
+  }
 }

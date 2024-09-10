@@ -19,9 +19,17 @@ const about_us_message = require("../controllers/api/about_us_message");
 const programs = require("../controllers/api/programs");
 const Payment = require("../controllers/payment");
 
-
-router.get('/v1/status', function(req, res, next) {
+router.post('/v1/success', function(req, res, next) {
   Payment.sslPaymentValidate(req, res, next);
+});
+router.post('/v1/fail', function(req, res, next) {
+  Payment.sslPaymentValidate(req, res, next);
+});
+router.post('/v1/cancel', function(req, res, next) {
+  Payment.sslPaymentValidate(req, res, next);
+});
+router.get('/v1/status', function(req, res, next) {
+  Payment.sslPaymentStatus(req, res, next);
 });
 router.post('/v1/payment', function(req, res, next) {
   Payment.sslPayment(req, res, next);
