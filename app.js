@@ -30,6 +30,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
+
+// Middleware for CORS and JSON parsing
+app.use(
+  cors({
+    origin: ["http://139.162.11.50:3000"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
