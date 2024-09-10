@@ -78,6 +78,7 @@ exports.sslPayment = async (req, res, next) => {
 };
 
 exports.sslPaymentValidate = async (req, res, next) => {
+  console.log("===================")
   const data = {
     val_id: req.query.tr_id,
     type: req.query.type,
@@ -99,7 +100,6 @@ exports.sslPaymentValidate = async (req, res, next) => {
         }
         const update_date = await DonationModel.update(updateData, {where: {id: req.query.tr_id}});
         if(update_date){
-          console.log("===================")
           if(req.query.type === "success"){
             return res.redirect(`${req.query.return_url}/success/${req.query.tr_id}`);
           }else if(req.query.type === "fail"){
