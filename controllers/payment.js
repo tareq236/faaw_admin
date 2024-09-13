@@ -80,8 +80,7 @@ exports.sslPayment = async (req, res, next) => {
 exports.sslPaymentValidate = async (req, res, next) => {
   // console.log(req.body)
   try {
-    const dataDetails = await DonationModel.findOne({where: {id: req.body.tran_id}});
-    if(!dataDetails.tx_status){
+    if(req.body.status){
       let updateData = {}
       if(req.body.status === "VALID"){
         updateData = {
@@ -116,9 +115,9 @@ exports.sslPaymentValidate = async (req, res, next) => {
           console.log("***CANCELLED***")
           return res.redirect(`https://faa-dubd.org/cancel/${req.body.tran_id}`);
         }else if(req.body.status === "UNATTEMPTED"){
-          // return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+          return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
         }else if(req.body.status === "EXPIRED"){
-          // return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+          return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
         }
       }
     }else{
