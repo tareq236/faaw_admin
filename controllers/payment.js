@@ -120,8 +120,6 @@ exports.sslPaymentValidate = async (req, res, next) => {
           return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
         }else if(req.body.status === "EXPIRED"){
           return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
-        }else{
-          return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
         }
       }
     }else{
