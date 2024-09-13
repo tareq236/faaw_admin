@@ -99,7 +99,6 @@ exports.sslPaymentValidate = async (req, res, next) => {
           tx_status: req.body.status,
           tx_tran_date: req.body.tran_date,
           tx_tran_id: req.body.tran_id,
-          tx_val_id: req.body.tran_id,
           tx_amount: req.body.amount,
           tx_store_amount: req.body.store_amount,
           tx_bank_tran_id: req.body.bank_tran_id,
@@ -112,22 +111,22 @@ exports.sslPaymentValidate = async (req, res, next) => {
         if(req.body.status === "VALID"){
           return res.redirect(`https://faa-dubd.org/success/${req.body.tran_id}`);
         }else if(req.body.status === "FAILED"){
-          return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+          // return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
         }else if(req.body.status === "CANCELLED"){
           console.log("***CANCELLED***")
           return res.redirect(`https://faa-dubd.org/cancel/${req.body.tran_id}`);
         }else if(req.body.status === "UNATTEMPTED"){
-          return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+          // return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
         }else if(req.body.status === "EXPIRED"){
-          return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+          // return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
         }
       }
     }else{
-      return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+      // return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
     }
   } catch (error) {
     console.log(error)
-    return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+    // return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
   }
 
   // const data = {
