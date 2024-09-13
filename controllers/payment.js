@@ -108,11 +108,13 @@ exports.sslPaymentValidate = async (req, res, next) => {
       }
       const update_date = await DonationModel.update(updateData, {where: {id: req.body.tran_id}});
       if(update_date){
+        console.log(req.body.status)
         if(req.body.status === "VALID"){
           return res.redirect(`https://faa-dubd.org/success/${req.body.tran_id}`);
         }else if(req.body.status === "FAILED"){
           return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
         }else if(req.body.status === "CANCELLED"){
+          console.log("***CANCELLED***")
           return res.redirect(`https://faa-dubd.org/cancel/${req.body.tran_id}`);
         }else if(req.body.status === "UNATTEMPTED"){
           return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
