@@ -36,6 +36,7 @@ const AboutUsMessage = require('../controllers/about_us_message/AboutUsMessage')
 const Payment = require("../controllers/payment");
 const Programs = require("../controllers/programs/Programs");
 
+
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
     return true;
@@ -82,6 +83,18 @@ router.get('/dashboard', function(req, res, next) {
 });
 
 
+router.post('/payment/ipn_url', function(req, res, next) {
+  Payment.sslPaymentValidate(req, res, next);
+});
+router.post('/payment/success', function(req, res, next) {
+  Payment.sslPaymentValidate(req, res, next);
+});
+router.post('/payment/fail', function(req, res, next) {
+  Payment.sslPaymentValidate(req, res, next);
+});
+router.post('/payment/cancel', function(req, res, next) {
+  Payment.sslPaymentValidate(req, res, next);
+});
 
 router.get('/donate_list', function(req, res, next) {
   if (isLogin(req, res)) {

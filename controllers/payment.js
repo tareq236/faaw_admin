@@ -24,10 +24,10 @@ exports.sslPayment = async (req, res, next) => {
         total_amount: req.body.pay_amount,
         currency: 'BDT',
         tran_id: eventRegisterInsert.id,
-        success_url: `http://139.162.11.50:3000/api/v1/success?tr_id=${eventRegisterInsert.id}&type=success&return_url=${req.body.return_url}`,
-        fail_url: `http://139.162.11.50:3000/api/v1/fail?tr_id=${eventRegisterInsert.id}&type=fail&return_url=${req.body.return_url}`,
-        cancel_url: `http://139.162.11.50:3000/api/v1/cancel?tr_id=${eventRegisterInsert.id}&type=cancel&return_url=${req.body.return_url}`,
-        ipn_url: `http://139.162.11.50:3000/api/v1/ipn_url?tr_id=${eventRegisterInsert.id}&type=ipn_url&return_url=${req.body.return_url}`,
+        success_url: `http://139.162.11.50:3000/payment/success`,
+        fail_url: `http://139.162.11.50:3000/payment/fail`,
+        cancel_url: `http://139.162.11.50:3000/payment/cancel`,
+        ipn_url: `http://139.162.11.50:3000/payment/ipn_url`,
         shipping_method: 'Service',
         product_name: 'Donation.',
         product_category: 'Donation',
@@ -78,46 +78,96 @@ exports.sslPayment = async (req, res, next) => {
 };
 
 exports.sslPaymentValidate = async (req, res, next) => {
-  console.log("===================")
-  const data = {
-    val_id: req.query.tr_id,
-    type: req.query.type,
-  };
-  const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
-  sslcz.validate(data).then(async data => {
-    try {
-      const dataDetails = await DonationModel.findOne({where: {id: req.query.tr_id}});
-      if(!dataDetails.tx_status){
-        const updateData = {
-          tx_status: data.status,
-          tx_tran_date: data.tran_date,
-          tx_tran_id: data.tran_id,
-          tx_val_id: data.val_id,
-          tx_amount: data.amount,
-          tx_store_amount: data.store_amount,
-          tx_bank_tran_id: data.bank_tran_id,
-          tx_json_response: JSON.stringify(data)
-        }
-        const update_date = await DonationModel.update(updateData, {where: {id: req.query.tr_id}});
-        if(update_date){
-          if(req.query.type === "success"){
-            return res.redirect(`${req.query.return_url}/success/${req.query.tr_id}`);
-          }else if(req.query.type === "fail"){
-            return res.redirect(`${req.query.return_url}/fail/${req.query.tr_id}`);
-          }else if(req.query.type === "cancel"){
-            return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
-          }else{
-            return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
-          }
+  // console.log(req.body)
+  try {
+    const dataDetails = await DonationModel.findOne({where: {id: req.body.tran_id}});
+    if(!dataDetails.tx_status){
+      let updateData = {}
+      if(req.body.status === "VALID"){
+        updateData = {
+          tx_status: req.body.status,
+          tx_tran_date: req.body.tran_date,
+          tx_tran_id: req.body.tran_id,
+          tx_val_id: req.body.val_id,
+          tx_amount: req.body.amount,
+          tx_store_amount: req.body.store_amount,
+          tx_bank_tran_id: req.body.bank_tran_id,
+          tx_json_response: JSON.stringify(req.body)
         }
       }else{
-        return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
+        updateData = {
+          tx_status: req.body.status,
+          tx_tran_date: req.body.tran_date,
+          tx_tran_id: req.body.tran_id,
+          tx_val_id: req.body.tran_id,
+          tx_amount: req.body.amount,
+          tx_store_amount: req.body.store_amount,
+          tx_bank_tran_id: req.body.bank_tran_id,
+          tx_json_response: JSON.stringify(req.body)
+        }
       }
-    } catch (error) {
-      console.log(error)
-      return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
+      const update_date = await DonationModel.update(updateData, {where: {id: req.body.tran_id}});
+      if(update_date){
+        if(req.body.status === "VALID"){
+          return res.redirect(`https://faa-dubd.org/success/${req.body.tran_id}`);
+        }else if(req.body.status === "FAILED"){
+          return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+        }else if(req.body.status === "CANCELLED"){
+          return res.redirect(`https://faa-dubd.org/cancel/${req.body.tran_id}`);
+        }else if(req.body.status === "UNATTEMPTED"){
+          return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+        }else if(req.body.status === "EXPIRED"){
+          return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+        }else{
+          return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+        }
+      }
+    }else{
+      return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
     }
-  });
+  } catch (error) {
+    console.log(error)
+    return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+  }
+
+  // const data = {
+  //   val_id: req.body.val_id,
+  // };
+  // const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
+  // sslcz.validate(data).then(async data => {
+  //   try {
+  //     const dataDetails = await DonationModel.findOne({where: {id: req.query.tr_id}});
+  //     if(!dataDetails.tx_status){
+  //       const updateData = {
+  //         tx_status: data.status,
+  //         tx_tran_date: data.tran_date,
+  //         tx_tran_id: data.tran_id,
+  //         tx_val_id: data.val_id,
+  //         tx_amount: data.amount,
+  //         tx_store_amount: data.store_amount,
+  //         tx_bank_tran_id: data.bank_tran_id,
+  //         tx_json_response: JSON.stringify(data)
+  //       }
+  //       const update_date = await DonationModel.update(updateData, {where: {id: req.query.tr_id}});
+  //       if(update_date){
+  //         if(req.query.type === "success"){
+  //           return res.redirect(`${req.query.return_url}/success/${req.query.tr_id}`);
+  //         }else if(req.query.type === "fail"){
+  //           return res.redirect(`${req.query.return_url}/fail/${req.query.tr_id}`);
+  //         }else if(req.query.type === "cancel"){
+  //           return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
+  //         }else{
+  //           return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
+  //         }
+  //       }
+  //     }else{
+  //       return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //     return res.redirect(`${req.query.return_url}/cancel/${req.query.tr_id}`);
+  //   }
+  // });
 }
 
 exports.sslPaymentStatus = async (req, res, next) => {
