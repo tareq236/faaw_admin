@@ -121,11 +121,11 @@ exports.sslPaymentValidate = async (req, res, next) => {
         }
       }
     }else{
-      // return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+      return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
     }
   } catch (error) {
     console.log(error)
-    // return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
+    return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
   }
 
   // const data = {
