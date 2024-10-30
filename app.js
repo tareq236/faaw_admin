@@ -22,10 +22,6 @@ var apiRouter = require('./routes/api');
 
 var app = express();
 
-// Increase limit for JSON and URL-encoded data
-app.use(bodyParser.json({ limit: '1000mb' })); // Increase as needed
-app.use(bodyParser.urlencoded({ limit: '1000mb', extended: true }));
-
 // Enable CORS for all routes
 app.use(cors());
 
@@ -47,6 +43,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressLayouts);
+
+// Increase limit for JSON and URL-encoded data
+app.use(bodyParser.json({ limit: '1000mb' })); // Increase as needed
+app.use(bodyParser.urlencoded({ limit: '1000mb', extended: true }));
 
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
