@@ -45,8 +45,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressLayouts);
 
 // Increase limit for JSON and URL-encoded data
-app.use(bodyParser.json({ limit: '1000mb' })); // Increase as needed
-app.use(bodyParser.urlencoded({ limit: '1000mb', extended: true }));
+app.use(bodyParser.json({ limit: '4000mb' })); // Increase as needed
+app.use(bodyParser.urlencoded({ limit: '4000mb', extended: true }));
 
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
