@@ -7,13 +7,13 @@ var flash = require('express-flash');
 var session = require('express-session');
 var expressLayouts = require('express-ejs-layouts');
 var bodyParser = require('body-parser');
-var cors = require("cors")
+var cors = require("cors");
 
 const db = require('./models');
 db.sequelize.sync({ alter: true }).then((req) => {
-  console.log("database connection successfully !");
+  console.log("Database connection successfully!");
 }).catch((err) => {
-  console.log("database error: ", err);
+  console.log("Database error: ", err);
 });
 
 var indexRouter = require('./routes/index');
@@ -23,64 +23,52 @@ var apiRouter = require('./routes/api');
 var app = express();
 
 // Enable CORS for all routes
-app.use(cors());
+app.use(cors({
+  origin: ["http://139.162.11.50:3000"],
+  credentials: true,
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
-
-// Middleware for CORS and JSON parsing
-app.use(
-  cors({
-    origin: ["http://139.162.11.50:3000"],
-    credentials: true,
-  })
-);
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '1000mb' })); // Increase the limit as needed
+app.use(express.urlencoded({ limit: '1000mb', extended: true })); // Increase the limit as needed
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressLayouts);
 
-app.use(bodyParser.json({limit: '1000mb'}));
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-    limit: '1000mb',
-    parameterLimit: 50000,
-  }),
-);
-
-app.set('trust proxy', 1) // trust first proxy
+// Trust the first proxy (for secure cookies)
+app.set('trust proxy', 1);
 app.use(session({
   key: 'MessengerPharmaAdminUser',
   secret: 'messenger@pharma@123',
-  cookie: {  }
-}))
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Set secure to true if using HTTPS
+}));
 app.use(flash());
 
+// Serve TinyMCE from node_modules
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 app.use('/users', usersRouter);
 
-
-
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// Error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // Set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // Render the error page
   res.status(err.status || 500);
   res.render('error');
 });

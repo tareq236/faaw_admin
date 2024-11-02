@@ -18,7 +18,7 @@ exports.data_list = async (req, res, next) => {
     let page_num = req.body.draw;
     let search = req.body['search[value]'];
     let query_str = "";
-    if(search !== ""){
+    if(search){
         query_str = " WHERE title like " + '%'+search+'%';
     }
 

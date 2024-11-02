@@ -19,7 +19,7 @@ exports.data_list = async (req, res, next) => {
     let page_num = req.body.draw;
     let search = req.body['search[value]'];
     let query_str = "WHERE parent_id = 0 ";
-    if(search !== ""){
+    if(search){
         query_str = query_str + " AND menu_name like " + '%'+search+'%';
     }
 
