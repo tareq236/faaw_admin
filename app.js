@@ -25,15 +25,6 @@ var app = express();
 // Enable CORS for all routes
 app.use(cors());
 
-app.use(bodyParser.json({limit: '1000mb'}));
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-    limit: '1000mb',
-    parameterLimit: 50000,
-  }),
-);
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -52,6 +43,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressLayouts);
+
+app.use(bodyParser.json({limit: '1000mb'}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    limit: '1000mb',
+    parameterLimit: 50000,
+  }),
+);
 
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
