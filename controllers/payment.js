@@ -1,5 +1,5 @@
 const SSLCommerzPayment = require('sslcommerz-lts')
-const {sequelize, DonationModel, CategoryModel} = require("../models");
+const {sequelize, DonationModel, CategoryModel, EventRegisterModel} = require("../models");
 const {QueryTypes} = require("sequelize");
 const store_id = 'financealumniassociationorg0live'
 const store_passwd = '65F1FFFBC182773077'
@@ -84,6 +84,7 @@ exports.sslPaymentValidate = async (req, res, next) => {
       let updateData = {}
       if(req.body.status === "VALID"){
         updateData = {
+          is_pay: 1,
           tx_status: req.body.status,
           tx_tran_date: req.body.tran_date,
           tx_tran_id: req.body.tran_id,
@@ -104,7 +105,13 @@ exports.sslPaymentValidate = async (req, res, next) => {
           tx_json_response: JSON.stringify(req.body)
         }
       }
-      const update_date = await DonationModel.update(updateData, {where: {id: req.body.tran_id}});
+      let update_date = null;
+      if(req.body.value_a === "event"){
+        update_date = await EventRegisterModel.update(updateData, {where: {id: req.body.tran_id}});
+      }else{
+        update_date = await DonationModel.update(updateData, {where: {id: req.body.tran_id}});
+      }
+
       if(update_date){
         console.log(req.body.status)
         if(req.body.status === "VALID"){
@@ -112,7 +119,6 @@ exports.sslPaymentValidate = async (req, res, next) => {
         }else if(req.body.status === "FAILED"){
           // return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);
         }else if(req.body.status === "CANCELLED"){
-          console.log("***CANCELLED***")
           return res.redirect(`https://faa-dubd.org/cancel/${req.body.tran_id}`);
         }else if(req.body.status === "UNATTEMPTED"){
           return res.redirect(`https://faa-dubd.org/fail/${req.body.tran_id}`);

@@ -31,6 +31,24 @@ module.exports = sequelize => {
       comment: null,
       field: "member_id"
     },
+    student_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "student_id"
+    },
+    session: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "session"
+    },
     full_name: {
       type: DataTypes.STRING(255),
       allowNull: true,
@@ -58,14 +76,14 @@ module.exports = sequelize => {
       comment: null,
       field: "distributor_name"
     },
-    email: {
+    email_address: {
       type: DataTypes.STRING(255),
       allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "email"
+      field: "email_address"
     },
     phone_number: {
       type: DataTypes.STRING(255),
@@ -85,6 +103,24 @@ module.exports = sequelize => {
       comment: null,
       field: "address"
     },
+    member_type: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "member_type"
+    },
+    participation_type: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "participation_type"
+    },
     is_pay: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -94,6 +130,96 @@ module.exports = sequelize => {
       comment: null,
       field: "is_pay"
     },
+    pay_amount: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "pay_amount"
+    },
+    payment_type: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "payment_type"
+    },
+    tx_status: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_status"
+    },
+    tx_tran_date: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_tran_date"
+    },
+    tx_tran_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_tran_id"
+    },
+    tx_val_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_val_id"
+    },
+    tx_amount: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_amount"
+    },
+    tx_store_amount: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_store_amount"
+    },
+    tx_bank_tran_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_bank_tran_id"
+    },
+    tx_json_response: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_json_response"
+    },
     status: {
       type: DataTypes.INTEGER(1),
       allowNull: true,
@@ -102,6 +228,15 @@ module.exports = sequelize => {
       autoIncrement: false,
       comment: null,
       field: "status"
+    },
+    email_status: {
+      type: DataTypes.ENUM('pending', 'sent', 'failed'),
+      defaultValue: 'pending',
+      allowNull: true,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "email_status"
     },
     created_at: {
       type: DataTypes.DATE,
