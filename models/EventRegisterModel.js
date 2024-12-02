@@ -121,6 +121,51 @@ module.exports = sequelize => {
       comment: null,
       field: "participation_type"
     },
+    t_shirt_size: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "t_shirt_size"
+    },
+    delivery_option: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "delivery_option"
+    },
+    is_outside_dhaka: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "is_outside_dhaka"
+    },
+    delivery_charge: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "delivery_charge"
+    },
+    delivery_address: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "delivery_address"
+    },
     is_pay: {
       type: DataTypes.INTEGER,
       allowNull: true,
