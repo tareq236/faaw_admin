@@ -301,6 +301,15 @@ module.exports = sequelize => {
       comment: null,
       field: "updated_at"
     },
+    enter_date_time: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "enter_date_time"
+    },
   };
   const options = {
     tableName: "event_register",
