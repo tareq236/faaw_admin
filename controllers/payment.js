@@ -94,6 +94,7 @@ exports.sslPaymentValidate = async (req, res, next) => {
           tx_bank_tran_id: req.body.bank_tran_id,
           payment_type: req.body.card_issuer,
           card_brand: req.body.card_brand,
+          card_no: req.body.card_no,
           tx_json_response: JSON.stringify(req.body)
         }
       }else{
@@ -106,6 +107,7 @@ exports.sslPaymentValidate = async (req, res, next) => {
           tx_bank_tran_id: req.body.bank_tran_id,
           payment_type: req.body.card_issuer,
           card_brand: req.body.card_brand,
+          card_no: req.body.card_no,
           tx_json_response: JSON.stringify(req.body)
         }
       }
