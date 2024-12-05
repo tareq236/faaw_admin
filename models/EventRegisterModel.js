@@ -184,6 +184,51 @@ module.exports = sequelize => {
       comment: null,
       field: "is_pay"
     },
+    membership_renew_fees: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: 0,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "membership_renew_fees"
+    },
+    member_single_fees: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: 0,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "member_single_fees"
+    },
+    member_spouse_fees: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: 0,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "member_spouse_fees"
+    },
+    student_single_fees: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: 0,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "student_single_fees"
+    },
+    student_spouse_fees: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: 0,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "student_spouse_fees"
+    },
     pay_amount: {
       type: DataTypes.STRING(255),
       allowNull: true,
