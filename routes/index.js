@@ -35,6 +35,8 @@ const HomePopup = require('../controllers/home_popup/HomePopup');
 const AboutUsMessage = require('../controllers/about_us_message/AboutUsMessage');
 const Payment = require("../controllers/payment");
 const Programs = require("../controllers/programs/Programs");
+const EnterEvent = require("../controllers/enter_event");
+const eventRegistrationController = require('../controllers/event_registration/EventRegistration');
 
 
 function isLogin(req, res){
@@ -81,6 +83,12 @@ router.get('/dashboard', function(req, res, next) {
     Dashboard.data(req, res, next);
   }
 });
+
+router.get('/event-registration', eventRegistrationController.list);
+router.get('/event-registrations-data', eventRegistrationController.getEventRegistrations);
+router.get('/event/enter', EnterEvent.participantDetails);
+router.post('/event/enter', EnterEvent.updateEnterDateTime);
+router.get('/event-registrations-download', eventRegistrationController.downloadExcel);
 
 
 router.post('/payment/ipn_url', function(req, res, next) {

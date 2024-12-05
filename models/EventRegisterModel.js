@@ -20,7 +20,7 @@ module.exports = sequelize => {
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "event_id"
+      field: "event_id",
     },
     member_id: {
       type: DataTypes.STRING(255),
@@ -111,6 +111,15 @@ module.exports = sequelize => {
       autoIncrement: false,
       comment: null,
       field: "member_type"
+    },
+    member_category_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "member_category_id"
     },
     participation_type: {
       type: DataTypes.STRING(255),

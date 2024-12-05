@@ -53,6 +53,11 @@ exports.add_from = async (req, res, next) => {
       cover_image: "",
       status: "",
       event_fees: "",
+      membership_renew_fees: "0",
+      member_single_fees: "0",
+      member_spouse_fees: "0",
+      student_single_fees: "0",
+      student_spouse_fees: "0",
       event_session: "Upcoming Event",
     });
 };
@@ -135,7 +140,11 @@ exports.add = [async (req, res, next) => {
                   event_type: req.body.event_type,
                   cover_image: image,
                   status: req.body.status,
-                  event_fees: req.body.event_fees,
+                  membership_renew_fees: req.body.membership_renew_fees,
+                  member_single_fees: req.body.member_single_fees,
+                  member_spouse_fees: req.body.member_spouse_fees,
+                  student_single_fees: req.body.student_single_fees,
+                  student_spouse_fees: req.body.student_spouse_fees,
                   event_session: req.body.event_session
                 };
 
@@ -165,6 +174,11 @@ exports.edit_from = async (req, res, next) => {
       status: result.status,
       event_session: result.event_session,
       event_fees: result.event_fees,
+      membership_renew_fees: result.membership_renew_fees,
+      member_single_fees: result.member_single_fees,
+      member_spouse_fees: result.member_spouse_fees,
+      student_single_fees: result.student_single_fees,
+      student_spouse_fees: result.student_spouse_fees,
       id: result.id,
       moment: moment
     });
@@ -245,7 +259,11 @@ exports.edit = [async (req, res, next) => {
                   cover_image: image,
                   status: req.body.status,
                   event_session: req.body.event_session,
-                  event_fees: req.body.event_fees
+                  membership_renew_fees: req.body.membership_renew_fees,
+                  member_single_fees: req.body.member_single_fees,
+                  member_spouse_fees: req.body.member_spouse_fees,
+                  student_single_fees: req.body.student_single_fees,
+                  student_spouse_fees: req.body.student_spouse_fees,
                 };
                 if(image===""){
                     delete update_data.cover_image;
