@@ -202,6 +202,15 @@ module.exports = sequelize => {
       comment: null,
       field: "payment_type"
     },
+    card_brand: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "card_brand"
+    },
     tx_status: {
       type: DataTypes.STRING(255),
       allowNull: true,
