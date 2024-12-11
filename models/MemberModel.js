@@ -24,7 +24,8 @@ module.exports = sequelize => {
     },
     membership_category_id: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -56,7 +57,8 @@ module.exports = sequelize => {
     },
     session: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -64,7 +66,8 @@ module.exports = sequelize => {
     },
     occupation: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -72,7 +75,8 @@ module.exports = sequelize => {
     },
     organization_name: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -80,7 +84,8 @@ module.exports = sequelize => {
     },
     designation_name: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -89,6 +94,7 @@ module.exports = sequelize => {
     hsc_passing_year: {
       type: DataTypes.STRING(255),
       allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -97,6 +103,7 @@ module.exports = sequelize => {
     member_image: {
       type: DataTypes.STRING(255),
       allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -104,7 +111,8 @@ module.exports = sequelize => {
     },
     password: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -112,7 +120,8 @@ module.exports = sequelize => {
     },
     address: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,

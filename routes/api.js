@@ -18,6 +18,7 @@ const home_popup = require("../controllers/api/home_popup");
 const about_us_message = require("../controllers/api/about_us_message");
 const programs = require("../controllers/api/programs");
 const Payment = require("../controllers/payment");
+const PasswordChange = require("../controllers/api/change_password");
 
 
 
@@ -26,6 +27,10 @@ router.get('/v1/status', function(req, res, next) {
 });
 router.post('/v1/payment', function(req, res, next) {
   Payment.sslPayment(req, res, next);
+});
+
+router.post('/v1/change_password', function(req, res, next) {
+  PasswordChange.changePassword(req, res, next);
 });
 
 router.get('/v1/programs_list', function(req, res, next) {
