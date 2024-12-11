@@ -19,12 +19,7 @@ exports.changePassword = async (req, res, next) => {
         success: false,
         message: "New password empty "
       });
-    }else if(req.body.confirm_password === ""){
-      return res.status(200).json({
-        success: false,
-        message: "Confirm password empty "
-      });
-    }else if(req.body.current_password !== "" && req.body.new_password !== "" && req.body.confirm_password !== ""){
+    }else if(req.body.current_password !== "" && req.body.new_password !== ""){
       validation=true
     }
     if(validation){
