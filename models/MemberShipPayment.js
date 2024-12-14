@@ -14,22 +14,13 @@ module.exports = sequelize => {
       comment: null,
       field: "id"
     },
-    membership_number: {
+    member_id: {
       type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "membership_number"
-    },
-    membership_category_id: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      defaultValue: null,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "membership_category_id"
+      field: "member_id"
     },
     name: {
       type: DataTypes.STRING(255),
@@ -39,6 +30,22 @@ module.exports = sequelize => {
       comment: null,
       field: "name"
     },
+    organization_name: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "organization_name"
+    },
+    email_address: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "email_address"
+    },
     phone_number: {
       type: DataTypes.STRING(255),
       allowNull: false,
@@ -47,85 +54,113 @@ module.exports = sequelize => {
       comment: null,
       field: "phone_number"
     },
-    email: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "email"
-    },
-    session: {
+    pay_amount: {
       type: DataTypes.STRING(255),
       allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "session"
+      field: "pay_amount"
     },
-    occupation: {
+    payment_type: {
       type: DataTypes.STRING(255),
       allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "occupation"
+      field: "payment_type"
     },
-    organization_name: {
+    card_brand: {
       type: DataTypes.STRING(255),
       allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "organization_name"
+      field: "card_brand"
     },
-    designation_name: {
+    card_no: {
       type: DataTypes.STRING(255),
       allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "designation_name"
+      field: "card_no"
     },
-    hsc_passing_year: {
+    tx_status: {
       type: DataTypes.STRING(255),
       allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "hsc_passing_year"
+      field: "tx_status"
     },
-    member_image: {
+    tx_tran_date: {
       type: DataTypes.STRING(255),
       allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "member_image"
+      field: "tx_tran_date"
     },
-    password: {
+    tx_tran_id: {
       type: DataTypes.STRING(255),
       allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "password"
+      field: "tx_tran_id"
     },
-    address: {
+    tx_val_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_val_id"
+    },
+    tx_amount: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_amount"
+    },
+    tx_store_amount: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_store_amount"
+    },
+    tx_bank_tran_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_bank_tran_id"
+    },
+    tx_json_response: {
       type: DataTypes.TEXT,
       allowNull: true,
       defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
-      field: "address"
+      field: "tx_json_response"
     },
     status: {
       type: DataTypes.INTEGER(1),
@@ -135,33 +170,6 @@ module.exports = sequelize => {
       autoIncrement: false,
       comment: null,
       field: "status"
-    },
-    admin_approval: {
-      type: DataTypes.INTEGER(1),
-      allowNull: true,
-      defaultValue: 0,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "admin_approval"
-    },
-    is_pay: {
-      type: DataTypes.INTEGER(1),
-      allowNull: true,
-      defaultValue: 0,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "is_pay"
-    },
-    amount: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      defaultValue: 0,
-      primaryKey: false,
-      autoIncrement: false,
-      comment: null,
-      field: "amount"
     },
     created_at: {
       type: DataTypes.DATE,
@@ -183,11 +191,11 @@ module.exports = sequelize => {
     },
   };
   const options = {
-    tableName: "member_list",
+    tableName: "member_ship_payments",
     comment: "",
     indexes: [],
     createdAt: false,
     updatedAt: false
   };
-  return sequelize.define("MemberModel", attributes, options);
+  return sequelize.define("MemberShipPaymentModel", attributes, options);
 };

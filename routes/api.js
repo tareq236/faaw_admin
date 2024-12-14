@@ -28,6 +28,9 @@ router.get('/v1/status', function(req, res, next) {
 router.post('/v1/payment', function(req, res, next) {
   Payment.sslPayment(req, res, next);
 });
+router.post('/v1/payment_membership', function(req, res, next) {
+  Payment.sslPaymentMembership(req, res, next);
+});
 
 router.post('/v1/change_password', function(req, res, next) {
   PasswordChange.changePassword(req, res, next);
