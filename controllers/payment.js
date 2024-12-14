@@ -5,7 +5,6 @@ const store_id = 'financealumniassociationorg0live'
 const store_passwd = '65F1FFFBC182773077'
 const is_live = true //true for live, false for sandbox
 
-
 exports.sslPaymentMembership = async (req, res, next) => {
   try {
     const insertData = {
@@ -187,6 +186,12 @@ exports.sslPaymentValidate = async (req, res, next) => {
       let update_date = null;
       if(req.body.value_a === "event"){
         update_date = await EventRegisterModel.update(updateData, {where: {id: req.body.tran_id}});
+        const eventDetails = await EventRegisterModel.findOne({ where: {id: req.body.tran_id}});
+        if(eventDetails.member_id){
+          if(eventDetails.membership_renew_fees){
+            const update_member_date = await MemberModel.update({is_pay: 1,amount:  eventDetails.membership_renew_fees}, {where: {id: eventDetails.member_id}});
+          }
+        }
       }else if(req.body.value_a === "membership"){
         update_date = await MemberShipPaymentModel.update(updateData, {where: {id: req.body.tran_id}});
         const update_member_date = await MemberModel.update({is_pay: 1,amount:  req.body.amount}, {where: {id: req.body.value_b}});

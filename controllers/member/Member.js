@@ -22,7 +22,6 @@ const fields = [
   {param: 'address'},
 ];
 
-
 exports.list = (req, res, next) => {
   res.render('member/index', {})
 };

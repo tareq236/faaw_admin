@@ -100,7 +100,8 @@ exports.Save  = async (req, res, next) => {
           ship_state: '',
           ship_postcode: 1000,
           ship_country: 'Bangladesh',
-          value_a: "event"
+          value_a: "event",
+          value_b: req.body.member_id,
         };
         const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
         sslcz.init(data).then(apiResponse => {
