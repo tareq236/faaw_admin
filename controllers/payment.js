@@ -188,7 +188,7 @@ exports.sslPaymentValidate = async (req, res, next) => {
         update_date = await EventRegisterModel.update(updateData, {where: {id: req.body.tran_id}});
         const eventDetails = await EventRegisterModel.findOne({ where: {id: req.body.tran_id}});
         if(eventDetails.member_id){
-          if(eventDetails.membership_renew_fees){
+          if(Number(eventDetails.membership_renew_fees) !== 0){
             const update_member_date = await MemberModel.update({is_pay: 1,amount:  eventDetails.membership_renew_fees}, {where: {id: eventDetails.member_id}});
           }
         }
