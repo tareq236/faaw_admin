@@ -33,7 +33,7 @@ exports.changePassword = async (req, res, next) => {
             };
             const update_date = await MemberModel.update(update_data,{ where: { id: req.body.member_id } }).catch(errorHandler);
             return res.status(200).json({
-              success: false,
+              success: true,
               message: "Password update successfully! "
             });
           }else{
