@@ -33,7 +33,8 @@ exports.data_list = async (req, res, next) => {
   let search = req.body['search[value]'];
   let query_str = "";
   if(search){
-    query_str = query_str + " AND email like " + '%'+search+'%';
+    // query_str = query_str + " AND email like " + '%'+search+'%';
+    query_str = query_str + " AND (name LIKE '%" + search + "%' OR phone_number LIKE '%" + search + "%')";
   }
 
   const query_data = await sequelize.query(`SELECT * FROM member_list ${query_str} ORDER BY id DESC LIMIT ${offset}, ${limit};`, { type: QueryTypes.SELECT });
