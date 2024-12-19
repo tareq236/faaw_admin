@@ -189,12 +189,18 @@ exports.sslPaymentValidate = async (req, res, next) => {
         const eventDetails = await EventRegisterModel.findOne({ where: {id: req.body.tran_id}});
         if(eventDetails.member_id){
           if(Number(eventDetails.membership_renew_fees) !== 0){
-            const update_member_date = await MemberModel.update({is_pay: 1,amount:  eventDetails.membership_renew_fees}, {where: {id: eventDetails.member_id}});
+            if(req.body.status === "VALID"){
+              const update_member_date = await MemberModel.update({is_pay: 1,amount:  eventDetails.membership_renew_fees}, {where: {id: eventDetails.member_id}});
+            }
+
           }
         }
       }else if(req.body.value_a === "membership"){
         update_date = await MemberShipPaymentModel.update(updateData, {where: {id: req.body.tran_id}});
-        const update_member_date = await MemberModel.update({is_pay: 1,amount:  req.body.amount}, {where: {id: req.body.value_b}});
+        if(req.body.status === "VALID"){
+          const update_member_date = await MemberModel.update({is_pay: 1,amount:  req.body.amount}, {where: {id: req.body.value_b}});
+        }
+
       }else{
         update_date = await DonationModel.update(updateData, {where: {id: req.body.tran_id}});
       }
