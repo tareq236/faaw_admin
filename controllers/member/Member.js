@@ -41,7 +41,7 @@ exports.data_list = async (req, res, next) => {
   const query_data = await sequelize.query(`SELECT * FROM member_list ${query_str} ORDER BY id DESC LIMIT ${offset}, ${limit};`, { type: QueryTypes.SELECT });
   const query_data_count = await sequelize.query(`SELECT COUNT(*) AS num_of_row FROM member_list ${query_str};`, { type: QueryTypes.SELECT });
 
-  query_data.forEach(function(e) { e.action = CommonFunction.action_menu_edit_del(e.id, "member") });
+  query_data.forEach(function(e) { e.action = CommonFunction.action_menu_edit_del_others(e.id, "member") });
   let num_of_rows = query_data_count[0].num_of_row;
 
   if(query_data.length !== 0){
@@ -286,15 +286,36 @@ exports.delete = async (req, res, next) => {
   const errorHandler = (err) => {
     return res.status(500).json({success: false, error: err.original.sqlMessage});
   };
-  const results = await MenuModel.destroy({where:{id:req.body.del_id}}).catch(errorHandler);
+  const results = await MemberModel.destroy({where:{id:req.body.del_id}}).catch(errorHandler);
   return res.status(200).json({
     success: true,
     result: results
   });
 };
 
-exports.excel_report = [
-  async (req, res, next) => {
+exports.approve = async (req, res, next) => {
+  const errorHandler = (err) => {
+    return res.status(500).json({success: false, error: err.original.sqlMessage});
+  };
+  const results = await MemberModel.update({admin_approval: 1},{ where: { id: req.body.approve_id } }).catch(errorHandler);
+  return res.status(200).json({
+    success: true,
+    result: results
+  });
+};
+
+exports.not_approve = async (req, res, next) => {
+  const errorHandler = (err) => {
+    return res.status(500).json({success: false, error: err.original.sqlMessage});
+  };
+  const results = await MemberModel.update({admin_approval: 0},{ where: { id: req.body.approve_id } }).catch(errorHandler);
+  return res.status(200).json({
+    success: true,
+    result: results
+  });
+};
+
+exports.excel_report = [async (req, res, next) => {
 
     let file_name = "";
     const errors = validationResult(req);

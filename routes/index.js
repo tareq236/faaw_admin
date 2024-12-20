@@ -522,7 +522,12 @@ router.post('/member/edit/:id', Member.edit);
 router.post('/member/del', function(req, res, next) {
   Member.delete(req, res, next);
 });
-
+router.post('/member/approve', function(req, res, next) {
+  Member.approve(req, res, next);
+});
+router.post('/member/not_approve', function(req, res, next) {
+  Member.not_approve(req, res, next);
+});
 
 //==================================================================
 router.get('/page', function(req, res, next) {
