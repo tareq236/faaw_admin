@@ -154,8 +154,6 @@
                 alert(result.message);
                 if (result.success) location.reload();
             } catch (error) {
-                console.error("Error during fetch:", error);
-                alert("An error occurred. "+error);
                 document.getElementById("log").innerText = "Fetch Error: " + error.message;
             }
         });
