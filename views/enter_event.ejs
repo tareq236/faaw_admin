@@ -134,20 +134,22 @@
 </div>
 
 <script>
-    document.getElementById('enterForm')?.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        var event_id = document.getElementById("event_id").value;
-        const response = await fetch('/event/enter', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id: event_id}),
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('enterForm')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            var event_id = document.getElementById("event_id").value;
+            const response = await fetch('/event/enter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: event_id }),
+            });
 
-        const result = await response.json();
-        alert(result.message);
-        if (result.success) location.reload();
+            const result = await response.json();
+            alert(result.message);
+            if (result.success) location.reload();
+        });
     });
 </script>
 </body>
