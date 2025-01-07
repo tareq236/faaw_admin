@@ -122,7 +122,7 @@
         <p class="message"><%= message %></p>
         <% if (showEnterButton) { %>
             <div class="enter-btn">
-                <form action="/event/enter" method="POST" id="enterForm">
+                <form action="https://faa-dubd.org/event/enter" method="POST" id="enterForm">
                     <input type="hidden" id="event_id" name="id" value="<%= participant.id %>">
                     <button type="submit"><i class="fa fa-sign-in-alt"></i> Enter Event</button>
                 </form>
