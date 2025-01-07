@@ -131,36 +131,24 @@
     <% } else { %>
         <p class="message"><%= message %></p>
     <% } %>
-    <div id="log" style="background: #eee; padding: 10px; border: 1px solid #ccc;"></div>
 </div>
 
 <script>
     document.getElementById('enterForm')?.addEventListener('submit', async function (e) {
         e.preventDefault();
-        try {
-            const event_id = document.getElementById("event_id").value;
-            const response = await fetch('/event/enter', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: event_id }),
-            });
+        var event_id = document.getElementById("event_id").value;
+        const response = await fetch('http://139.162.11.50:3000/event/enter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: event_id}),
+        });
 
-            if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
-            }
-
-            const result = await response.json();
-            alert(result.message);
-
-            if (result.success) location.reload();
-        } catch (error) {
-            alert("Fetch Error: " + error.message);
-            console.error("Fetch Error:", error);
-            document.getElementById("log").innerText = "Fetch Error: " + error.message;
-        }
+        const result = await response.json();
+        alert(result.message);
+        if (result.success) location.reload();
     });
-
-
 </script>
 </body>
 </html>
