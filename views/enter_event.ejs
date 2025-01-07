@@ -137,7 +137,7 @@
     document.getElementById('enterForm')?.addEventListener('submit', async function (e) {
         e.preventDefault();
         var event_id = document.getElementById("event_id").value;
-        const response = await fetch('http://139.162.11.50:3000/event/enter', {
+        const response = await fetch('/event/enter', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
