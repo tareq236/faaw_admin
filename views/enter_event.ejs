@@ -135,29 +135,31 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('enterForm')?.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            console.log("Form submission prevented.");
-            var event_id = document.getElementById("event_id").value;
-            console.log("Event ID:", event_id);
-            try {
-                const response = await fetch('/event/enter', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ id: event_id }),
-                });
+    document.getElementById('enterForm')?.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        try {
+            const event_id = document.getElementById("event_id").value;
+            const response = await fetch('/event/enter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: event_id }),
+            });
 
-                const result = await response.json();
-                alert(result.message);
-                if (result.success) location.reload();
-            } catch (error) {
-                document.getElementById("log").innerText = "Fetch Error: " + error.message;
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
             }
-        });
+
+            const result = await response.json();
+            alert(result.message);
+
+            if (result.success) location.reload();
+        } catch (error) {
+            alert("Fetch Error: " + error.message);
+            console.error("Fetch Error:", error);
+            document.getElementById("log").innerText = "Fetch Error: " + error.message;
+        }
     });
+
 
 </script>
 </body>
