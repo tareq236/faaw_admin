@@ -131,6 +131,7 @@
     <% } else { %>
         <p class="message"><%= message %></p>
     <% } %>
+    <div id="log" style="background: #eee; padding: 10px; border: 1px solid #ccc;"></div>
 </div>
 
 <script>
@@ -155,6 +156,7 @@
             } catch (error) {
                 console.error("Error during fetch:", error);
                 alert("An error occurred. "+error);
+                document.getElementById("log").innerText = "Fetch Error: " + error.message;
             }
         });
     });
