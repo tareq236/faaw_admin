@@ -1,8 +1,118 @@
-const { sequelize, MemberModel, MemberApprovalModel } = require("../../models");
+const { sequelize, MemberModel, MemberApprovalModel, AdminLogin} = require("../../models");
 const {QueryTypes} = require("sequelize");
 const multer = require("multer");
 const path = require("path");
 const sharp = require('sharp');
+
+exports.MemberUpdate  = async (req, res, next) => {
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/member');
+    },
+    filename:(req,file,cb)=>{
+      cb(null, "member_"+Date.now()+path.extname(file.originalname));
+    }
+  });
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 50 * 1024 * 1024 }
+  }).single('_image');
+
+  const errorHandler = (err) => {
+    return res.status(200).json({
+      success: false,
+      error: err
+    });
+  };
+  const errorHandlerUpload = (err) => {
+    return res.status(200).json({
+      success: false,
+      error: err
+    });
+  };
+  upload(req, res, async ( err ) => {
+    if (err) {
+      await errorHandlerUpload(err);
+    } else {
+      let image = "";
+      if (req.file !== undefined){
+        const resizedImagePath = 'public/member/resized_' + req.file.filename;
+        await sharp(req.file.path)
+          .resize(150, 150) // Resize to 300x300 pixels
+          .toFile(resizedImagePath)
+          .catch(errorHandler);
+
+        image = resizedImagePath.split('public/member/')[1];
+      }
+
+      if(req.body.membership_number === ""){
+        return res.status(200).json({
+          success: false,
+          message: "Please enter membership number"
+        });
+      }
+      if(req.body.name === ""){
+        return res.status(200).json({
+          success: false,
+          message: "Please enter name"
+        });
+      }
+      if(req.body.phone_number === ""){
+        return res.status(200).json({
+          success: false,
+          message: "Please enter phone number"
+        });
+      }
+
+      if(req.body.membership_number !== "" && req.body.name !== "" && req.body.phone_number !== "") {
+        let update_data = {
+          membership_number: req.body.membership_number,
+          name: req.body.name,
+          phone_number: req.body.phone_number,
+          email: req.body.email,
+          address: req.body.address,
+          session: req.body.session,
+          hsc_passing_year: req.body.hsc_passing_year,
+          occupation: req.body.occupation,
+          organization_name: req.body.organization_name,
+          designation_name: req.body.designation_name,
+          status: req.body.status,
+          password: req.body.password,
+          admin_approval: req.body.admin_approval,
+          membership_category_id: req.body.membership_category_id,
+          member_image: image,
+        };
+
+        let userDetails = await MemberModel.findOne({ where: {id: req.body.id}}).catch(errorHandler);
+        if(userDetails !== null){
+          try {
+            const userInsertDetails = await MemberModel.update(update_data,{ where: { id: req.body.id } }).catch(errorHandler);
+            return res.status(200).json({
+              success: true,
+              result: userInsertDetails,
+            });
+          } catch (error) {
+            return res.status(200).json({
+              success: false,
+              error: error
+            });
+          }
+        }else{
+          return res.status(200).json({
+            success: false,
+            message: "Member fot found"
+          });
+        }
+
+      }else{
+        return res.status(200).json({
+          success: false,
+          message: "Please fill up required field"
+        });
+      }
+    }
+  })
+};
 
 exports.Save  = async (req, res, next) => {
   const storage = multer.diskStorage({

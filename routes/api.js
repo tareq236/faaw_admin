@@ -124,6 +124,7 @@ router.post('/v1/member_login', function(req, res, next) {
   member.Check(req, res, next);
 });
 router.post('/v1/member_register', member.Save);
+router.post('/v1/member_update', member.MemberUpdate);
 router.post('/v1/donation_register', donation.Save);
 
 router.get('/v1/home_page', function(req, res, next) {
