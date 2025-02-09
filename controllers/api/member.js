@@ -80,8 +80,11 @@ exports.MemberUpdate  = async (req, res, next) => {
           password: req.body.password,
           admin_approval: req.body.admin_approval,
           membership_category_id: req.body.membership_category_id,
-          member_image: image,
+          member_image: image
         };
+        if (req.file !== undefined) {
+          update_data.member_image = image;
+        }
 
         let userDetails = await MemberModel.findOne({ where: {id: req.body.id}}).catch(errorHandler);
         if(userDetails !== null){
