@@ -58,8 +58,8 @@
                 <th>Phone Number</th>
                 <th>Email</th>
                 <th>Session</th>
-                <th>Occupation</th>
-                <th>Status</th>
+                <th class="text-center">Payment</th>
+                <th>Approval</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>
@@ -93,8 +93,12 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        alert('File uploaded successfully');
-                        console.log(response);
+                        if(response.success){
+                            alert('File uploaded successfully');
+                            console.log(response);
+                            window.location.href = "/members";
+                        }
+
                     },
                     error: function(xhr, status, error) {
                         alert('Error uploading file');
@@ -125,10 +129,15 @@
                     "datatype": "json",
                 },
                 "createdRow": function( row, data, dataIndex ) {
-                    if ( data.status === 1 ) {
-                        $('td:eq(5)', row).html('<span class="badge badge-success">Published</span>');
+                    if ( data.is_pay === 1 ) {
+                        $('td:eq(4)', row).html('<span class="badge badge-success">Pay</span>');
                     }else{
-                        $('td:eq(5)', row).html('<span class="badge badge-secondary">Unpublished</span>');
+                        $('td:eq(4)', row).html('<span class="badge badge-secondary">Not Pay</span>');
+                    }
+                    if ( data.admin_approval === 1 ) {
+                        $('td:eq(5)', row).html('<span class="badge badge-success">Approved</span>');
+                    }else{
+                        $('td:eq(5)', row).html('<span class="badge badge-secondary">Not Approved</span>');
                     }
                 },
                 "columns": [
@@ -136,8 +145,8 @@
                     { "data": "phone_number" },
                     { "data": "email" },
                     { "data": "session" },
-                    { "data": "occupation" },
-                    { "data": "status" },
+                    { "data": "is_pay" },
+                    { "data": "admin_approval" },
                     { "data": "action" },
                 ]
             });
@@ -171,7 +180,7 @@
                             traditional: true,
                             success: function (data) {
                                 if (data.success) {
-                                    window.location.href = "/member";
+                                    window.location.href = "/members";
                                 } else {
                                     bootbox.alert({
                                         title: 'Delete Faild!',
@@ -185,6 +194,83 @@
             });
         });
 
+        $("#list").on('click', '#approve', function () {
+            var approveID = $(this).attr('data-approve-id');
+            bootbox.confirm({
+                title: 'Approve',
+                message: 'Do you want to approve?',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-primary'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-link'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "post",
+                            url: "/member/approve",
+                            data: { approve_id: approveID },
+                            datatype: "json",
+                            traditional: true,
+                            success: function (data) {
+                                if (data.success) {
+                                    window.location.href = "/members";
+                                } else {
+                                    bootbox.alert({
+                                        title: 'Delete Faild!',
+                                        message: data.message
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+        $("#list").on('click', '#not_approve', function () {
+            var approveID = $(this).attr('data-approve-id');
+            bootbox.confirm({
+                title: 'Approve Cancel',
+                message: 'Do you want to approve cancel ?',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-primary'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-link'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "post",
+                            url: "/member/not_approve",
+                            data: { approve_id: approveID },
+                            datatype: "json",
+                            traditional: true,
+                            success: function (data) {
+                                if (data.success) {
+                                    window.location.href = "/members";
+                                } else {
+                                    bootbox.alert({
+                                        title: 'Delete Faild!',
+                                        message: data.message
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
 
         $("#filter").click(function(){
             dataLoad();

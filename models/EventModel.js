@@ -1,6 +1,4 @@
-const {
-    DataTypes
-} = require('sequelize');
+const { DataTypes} = require('sequelize');
 const Sequelize = require("sequelize");
 
 module.exports = sequelize => {
@@ -86,11 +84,57 @@ module.exports = sequelize => {
       },
       event_fees: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
+        defaultValue: 0,
         primaryKey: false,
         autoIncrement: false,
         comment: null,
         field: "event_fees"
+      },
+      membership_renew_fees: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        defaultValue: 0,
+        primaryKey: false,
+        autoIncrement: false,
+        comment: null,
+        field: "membership_renew_fees"
+      },
+      member_single_fees: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        defaultValue: 0,
+        primaryKey: false,
+        autoIncrement: false,
+        comment: null,
+        field: "member_single_fees"
+      },
+      member_spouse_fees: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        defaultValue: 0,
+        primaryKey: false,
+        autoIncrement: false,
+        comment: null,
+        field: "member_spouse_fees"
+      },
+      student_single_fees: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        defaultValue: 0,
+        primaryKey: false,
+        autoIncrement: false,
+        comment: null,
+        field: "student_single_fees"
+      },
+      student_spouse_fees: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        defaultValue: 0,
+        primaryKey: false,
+        autoIncrement: false,
+        comment: null,
+        field: "student_spouse_fees"
       },
       status: {
             type: DataTypes.INTEGER(1),

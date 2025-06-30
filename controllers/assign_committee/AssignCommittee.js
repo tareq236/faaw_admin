@@ -20,7 +20,7 @@ exports.data_list = async (req, res, next) => {
   let page_num = req.body.draw;
   let search = req.body['search[value]'];
   let query_str = ` WHERE ac.committee_id=${id} `;
-  if(search !== ""){
+  if(search){
     query_str = query_str + " AND ml.name like " + '%'+search+'%';
   }
 

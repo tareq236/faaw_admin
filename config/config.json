@@ -3,7 +3,7 @@
     "username": "root",
     "password": "p^L671!!Ph",
     "database": "faaw_db",
-    "host": "127.0.0.1",
+    "host": "139.162.11.50",
     "port": "3306",
     "dialect": "mysql",
     "timezone": "Asia/Dhaka"

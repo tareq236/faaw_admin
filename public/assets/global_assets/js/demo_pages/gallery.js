@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------------
  *
- *  # Media gallery
+ *  # Media gallery_image
  *
- *  Demo JS code for gallery page kit
+ *  Demo JS code for gallery_image page kit
  *
  * ---------------------------------------------------------------------------- */
 

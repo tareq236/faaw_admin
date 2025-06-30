@@ -15,7 +15,7 @@ exports.data_list = async (req, res, next) => {
   let page_num = req.body.draw;
   let search = req.body['search[value]'];
   let query_str = "";
-  if(search !== ""){
+  if(search){
     query_str = " WHERE jon_title like " + '%'+search+'%';
   }
 
@@ -69,7 +69,7 @@ exports.add = [async (req, res, next) => {
   });
   const uploads = multer({
     storage: storage,
-    limits: { fileSize: 50 * 1024 * 1024 }
+    limits: { fileSize: 3 * 1024 * 1024 }
   }).array('ff', 2);
 
 
@@ -154,7 +154,7 @@ exports.edit = [async (req, res, next) => {
   });
   const uploads = multer({
     storage: storage,
-    limits: { fileSize: 50 * 1024 * 1024 }
+    limits: { fileSize: 3 * 1024 * 1024 }
   }).array('ff', 2);
 
 

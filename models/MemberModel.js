@@ -24,7 +24,8 @@ module.exports = sequelize => {
     },
     membership_category_id: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -56,7 +57,8 @@ module.exports = sequelize => {
     },
     session: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -64,7 +66,8 @@ module.exports = sequelize => {
     },
     occupation: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -72,7 +75,8 @@ module.exports = sequelize => {
     },
     organization_name: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -80,7 +84,8 @@ module.exports = sequelize => {
     },
     designation_name: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -88,7 +93,8 @@ module.exports = sequelize => {
     },
     hsc_passing_year: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -96,7 +102,8 @@ module.exports = sequelize => {
     },
     member_image: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
@@ -104,11 +111,21 @@ module.exports = sequelize => {
     },
     password: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       primaryKey: false,
       autoIncrement: false,
       comment: null,
       field: "password"
+    },
+    address: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "address"
     },
     status: {
       type: DataTypes.INTEGER(1),
@@ -127,6 +144,78 @@ module.exports = sequelize => {
       autoIncrement: false,
       comment: null,
       field: "admin_approval"
+    },
+    is_pay: {
+      type: DataTypes.INTEGER(1),
+      allowNull: true,
+      defaultValue: 0,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "is_pay"
+    },
+    amount: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "amount"
+    },
+    linkedin_link: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "linkedin_link"
+    },
+    facebook_link: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "facebook_link"
+    },
+    twitter_link: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "twitter_link"
+    },
+    blood_group: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "blood_group"
+    },
+    gender: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "gender"
+    },
+    date_of_birth: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "date_of_birth"
     },
     created_at: {
       type: DataTypes.DATE,

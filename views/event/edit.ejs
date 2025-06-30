@@ -40,7 +40,6 @@
                 <div class="card-body">
                     <form action="/event/edit/<%=id%>" method="post" enctype="multipart/form-data" name="form1">
                         <input type="hidden" name="id" value="<%= id %>" />
-
                         <div class="form-group">
                             <label>Event Title: </label>
                             <input type="text" name="event_title" value="<%= event_title %>" id="event_title" class="form-control" placeholder="Event Title">
@@ -84,9 +83,30 @@
                             </select>
                         </div>
 
+<!--                        <div class="form-group">-->
+<!--                            <label>Event registration fees: </label>-->
+<!--                            <input type="text" name="event_fees" value="<%= event_fees %>" id="event_fees" class="form-control" placeholder="Event registration fees">-->
+<!--                        </div>-->
+
                         <div class="form-group">
-                            <label>Event fees: </label>
-                            <input type="text" name="event_fees" value="<%= event_fees %>" id="event_fees" class="form-control" placeholder="Event fees">
+                            <label>Membership renew fees: </label>
+                            <input type="text" name="membership_renew_fees" value="<%= membership_renew_fees %>" id="membership_renew_fees" class="form-control" placeholder="Membership Renew Fees">
+                        </div>
+                        <div class="form-group">
+                            <label>Member single fees: </label>
+                            <input type="text" name="member_single_fees" value="<%= member_single_fees %>" id="member_single_fees" class="form-control" placeholder="Member single fees">
+                        </div>
+                        <div class="form-group">
+                            <label>Member spouse fees: </label>
+                            <input type="text" name="member_spouse_fees" value="<%= member_spouse_fees %>" id="member_spouse_fees" class="form-control" placeholder="Member spouse fees">
+                        </div>
+                        <div class="form-group">
+                            <label>Student/Guest single fees: </label>
+                            <input type="text" name="student_single_fees" value="<%= student_single_fees %>" id="student_single_fees" class="form-control" placeholder="Student/Guest single fees">
+                        </div>
+                        <div class="form-group">
+                            <label>Student/Guest spouse fees: </label>
+                            <input type="text" name="student_spouse_fees" value="<%= student_spouse_fees %>" id="student_spouse_fees" class="form-control" placeholder="Student/Guest spouse fees">
                         </div>
 
                         <div class="form-group">

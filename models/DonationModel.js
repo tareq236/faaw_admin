@@ -72,6 +72,96 @@ module.exports = sequelize => {
       comment: null,
       field: "payment_type"
     },
+    card_brand: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "card_brand"
+    },
+    card_no: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "card_no"
+    },
+    tx_status: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_status"
+    },
+    tx_tran_date: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_tran_date"
+    },
+    tx_tran_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_tran_id"
+    },
+    tx_val_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_val_id"
+    },
+    tx_amount: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_amount"
+    },
+    tx_store_amount: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_store_amount"
+    },
+    tx_bank_tran_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_bank_tran_id"
+    },
+    tx_json_response: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: null,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "tx_json_response"
+    },
     status: {
       type: DataTypes.INTEGER(1),
       allowNull: true,

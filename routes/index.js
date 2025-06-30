@@ -27,6 +27,17 @@ const Category = require('../controllers/category/Category');
 const Designation = require('../controllers/designation/Designation');
 const Committee = require('../controllers/committee/Committee');
 const AssignCommittee = require('../controllers/assign_committee/AssignCommittee');
+const Donate = require('../controllers/donate_list/Donate');
+const Gallery = require('../controllers/gallery/Gallery');
+const Contacts = require('../controllers/contacts/Contacts');
+const HomeSlider = require('../controllers/home_slider/HomeSlider');
+const HomePopup = require('../controllers/home_popup/HomePopup');
+const AboutUsMessage = require('../controllers/about_us_message/AboutUsMessage');
+const Payment = require("../controllers/payment");
+const Programs = require("../controllers/programs/Programs");
+const EnterEvent = require("../controllers/enter_event");
+const eventRegistrationController = require('../controllers/event_registration/EventRegistration');
+
 
 function isLogin(req, res){
   if (req.session.user && req.cookies.MessengerPharmaAdminUser) {
@@ -73,6 +84,38 @@ router.get('/dashboard', function(req, res, next) {
   }
 });
 
+router.get('/event-registration', eventRegistrationController.list);
+router.get('/event-registrations-data', eventRegistrationController.getEventRegistrations);
+router.get('/event/enter', EnterEvent.participantDetails);
+router.post('/event/enter', EnterEvent.updateEnterDateTime);
+router.get('/event-registrations-download', eventRegistrationController.downloadExcel);
+
+
+router.post('/payment/ipn_url', function(req, res, next) {
+  Payment.sslPaymentValidate(req, res, next);
+});
+router.post('/payment/success', function(req, res, next) {
+  Payment.sslPaymentValidate(req, res, next);
+});
+router.post('/payment/fail', function(req, res, next) {
+  Payment.sslPaymentValidate(req, res, next);
+});
+router.post('/payment/cancel', function(req, res, next) {
+  Payment.sslPaymentValidate(req, res, next);
+});
+
+router.get('/donate_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Donate.list(req, res, next);
+  }
+});
+router.post('/donate_list/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Donate.data_list(req, res, next);
+  }
+});
+
+
 
 router.get('/committee/assign_committee', function(req, res, next) {
   if (isLogin(req, res)) {
@@ -90,6 +133,128 @@ router.get('/committee/assign_committee/add', function(req, res, next) {
   }
 });
 router.post('/committee/assign_committee/add', Committee.add);
+
+router.get('/contacts', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Contacts.list(req, res, next);
+  }
+});
+router.post('/contacts/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Contacts.data_list(req, res, next);
+  }
+});
+router.post('/contacts/del', function(req, res, next) {
+  Contacts.delete(req, res, next);
+});
+
+
+router.get('/about_us_message', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AboutUsMessage.list(req, res, next);
+  }
+});
+router.post('/about_us_message/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AboutUsMessage.data_list(req, res, next);
+  }
+});
+router.get('/about_us_message/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AboutUsMessage.add_from(req, res, next);
+  }
+});
+router.post('/about_us_message/add', AboutUsMessage.add);
+router.get('/about_us_message/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    AboutUsMessage.edit_from(req, res, next);
+  }
+});
+router.post('/about_us_message/edit/:id', AboutUsMessage.edit);
+router.post('/about_us_message/del', function(req, res, next) {
+  AboutUsMessage.delete(req, res, next);
+});
+
+
+router.get('/home_popup', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomePopup.list(req, res, next);
+  }
+});
+router.post('/home_popup/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomePopup.data_list(req, res, next);
+  }
+});
+router.get('/home_popup/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomePopup.add_from(req, res, next);
+  }
+});
+router.post('/home_popup/add', HomePopup.add);
+router.get('/home_popup/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomePopup.edit_from(req, res, next);
+  }
+});
+router.post('/home_popup/edit/:id', HomePopup.edit);
+router.post('/home_popup/del', function(req, res, next) {
+  HomePopup.delete(req, res, next);
+});
+
+
+router.get('/home_slider', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomeSlider.list(req, res, next);
+  }
+});
+router.post('/home_slider/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomeSlider.data_list(req, res, next);
+  }
+});
+router.get('/home_slider/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomeSlider.add_from(req, res, next);
+  }
+});
+router.post('/home_slider/add', HomeSlider.add);
+router.get('/home_slider/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    HomeSlider.edit_from(req, res, next);
+  }
+});
+router.post('/home_slider/edit/:id', HomeSlider.edit);
+router.post('/home_slider/del', function(req, res, next) {
+  HomeSlider.delete(req, res, next);
+});
+
+
+router.get('/gallery', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Gallery.list(req, res, next);
+  }
+});
+router.post('/gallery/data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Gallery.data_list(req, res, next);
+  }
+});
+router.get('/gallery/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Gallery.add_from(req, res, next);
+  }
+});
+router.post('/gallery/add', Gallery.add);
+router.get('/gallery/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Gallery.edit_from(req, res, next);
+  }
+});
+router.post('/gallery/edit/:id', Gallery.edit);
+router.post('/gallery/del', function(req, res, next) {
+  Gallery.delete(req, res, next);
+});
 
 
 
@@ -191,12 +356,16 @@ router.post('/members/import_excel', upload.single('file'), async (req, res) => 
           name: row.getCell(2).value,
           phone_number: row.getCell(3).value,
           email: row.getCell(4).value,
-          session: row.getCell(5).value,
-          hsc_passing_year: row.getCell(5).value,
-          occupation: row.getCell(7).value,
-          organization_name: row.getCell(8).value,
-          designation_name: row.getCell(9).value,
+          address: row.getCell(5).address,
+          session: row.getCell(6).value,
+          hsc_passing_year: row.getCell(7).value,
+          occupation: row.getCell(8).value,
+          organization_name: row.getCell(9).value,
+          designation_name: row.getCell(10).value,
+          membership_category_id: row.getCell(11).value,
           password: '123456',
+          member_image: 'default.jpg',
+
         });
       }
     });
@@ -204,8 +373,9 @@ router.post('/members/import_excel', upload.single('file'), async (req, res) => 
     // 4. Save the extracted data to your database using Sequelize
     await MemberModel.bulkCreate(data);
 
-    req.flash('success', 'Data edit successfully!');
-    res.redirect('/member');
+    return res.status(200).json({
+      success: true,
+    });
   } catch (error) {
     console.error('Error importing data:', error);
     req.flash('error', 'Error importing data!');
@@ -352,7 +522,12 @@ router.post('/member/edit/:id', Member.edit);
 router.post('/member/del', function(req, res, next) {
   Member.delete(req, res, next);
 });
-
+router.post('/member/approve', function(req, res, next) {
+  Member.approve(req, res, next);
+});
+router.post('/member/not_approve', function(req, res, next) {
+  Member.not_approve(req, res, next);
+});
 
 //==================================================================
 router.get('/page', function(req, res, next) {
@@ -560,6 +735,33 @@ router.post('/event_sponsors/del', function(req, res, next) {
   EventSponsors.delete(req, res, next);
 });
 
+
+//======================================================
+router.get('/programs', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Programs.list(req, res, next);
+  }
+});
+router.post('/programs/data-list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Programs.data_list(req, res, next);
+  }
+});
+router.get('/programs/add', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Programs.add_from(req, res, next);
+  }
+});
+router.post('/programs/add', Programs.add);
+router.get('/programs/edit/:id', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Programs.edit_from(req, res, next);
+  }
+});
+router.post('/programs/edit/:id', Programs.edit);
+router.post('/programs/del', function(req, res, next) {
+  Programs.delete(req, res, next);
+});
 
 //======================================================
 router.get('/donation_career', function(req, res, next) {

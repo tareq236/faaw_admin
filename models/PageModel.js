@@ -23,7 +23,7 @@ module.exports = sequelize => {
             field: "title"
         },
         details: {
-            type: DataTypes.TEXT,
+            type: DataTypes.TEXT('long'),
             allowNull: true,
             defaultValue: 1,
             primaryKey: false,

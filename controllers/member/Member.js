@@ -7,6 +7,7 @@ const excel = require("exceljs");
 const moment = require("moment");
 const multer = require("multer");
 const path = require("path");
+const sharp = require("sharp");
 const fields = [
   {param: 'membership_number'},
   {param: 'name'},
@@ -18,8 +19,8 @@ const fields = [
   {param: 'designation_name'},
   {param: 'password'},
   {param: 'hsc_passing_year'},
+  {param: 'address'},
 ];
-
 
 exports.list = (req, res, next) => {
   res.render('member/index', {})
@@ -29,16 +30,18 @@ exports.data_list = async (req, res, next) => {
   let offset = req.body.start;
   let limit = req.body.length;
   let page_num = req.body.draw;
-  let search = req.body['search[value]'];
-  let query_str = "";
-  if(search !== ""){
-    query_str = query_str + " AND email like " + '%'+search+'%';
+  let search = req.body['search'];
+  let search_value = search.value;
+  let query_str = " WHERE status = 1 ";
+  if(search_value){
+    // query_str = query_str + " AND email like " + '%'+search+'%';
+    query_str = query_str + " AND (email LIKE '%" + search_value + "%' OR name LIKE '%" + search_value + "%' OR phone_number LIKE '%" + search_value + "%') ";
   }
 
   const query_data = await sequelize.query(`SELECT * FROM member_list ${query_str} ORDER BY id DESC LIMIT ${offset}, ${limit};`, { type: QueryTypes.SELECT });
   const query_data_count = await sequelize.query(`SELECT COUNT(*) AS num_of_row FROM member_list ${query_str};`, { type: QueryTypes.SELECT });
 
-  query_data.forEach(function(e) { e.action = CommonFunction.action_menu_edit_del(e.id, "member") });
+  query_data.forEach(function(e) { e.action = CommonFunction.action_menu_edit_del_others(e.id, "member") });
   let num_of_rows = query_data_count[0].num_of_row;
 
   if(query_data.length !== 0){
@@ -81,6 +84,7 @@ exports.add_from = async (req, res, next) => {
     hsc_passing_year: '',
     member_image: "",
     membership_category_id: "",
+    address: "",
     validation: validations.all_field_validations(null, fields)
   });
 };
@@ -107,6 +111,10 @@ exports.add = [async (req, res, next) => {
     req.flash('error', err);
     res.redirect('/member/add');
   };
+  const errorHandler = async (err, _id) => {
+    req.flash('error', err);
+    res.redirect('/member/add');
+  };
   upload(req, res, async ( err ) => {
     if (err) {
       await errorHandlerUpload(err);
@@ -116,7 +124,14 @@ exports.add = [async (req, res, next) => {
         req.flash('error', "Please add image");
         res.redirect('/member/add');
       }else{
-        image = req.file.filename;
+        const resizedImagePath = 'public/member/resized_' + req.file.filename;
+        await sharp(req.file.path)
+          .resize(150, 150) // Resize to 300x300 pixels
+          .toFile(resizedImagePath)
+          .catch(errorHandler);
+
+        image = resizedImagePath.split('public/member/')[1];
+        // image = req.file.filename;
       }
       if(req.body.membership_number === ""){
         req.flash('error', "Please enter membership number");
@@ -146,6 +161,7 @@ exports.add = [async (req, res, next) => {
           password: req.body.password,
           admin_approval: req.body.admin_approval,
           membership_category_id: req.body.membership_category_id,
+          address: req.body.address,
           member_image: image,
         };
         const save_date = await MemberModel.create(insert_data).catch(errorHandlerProductList);
@@ -186,6 +202,7 @@ exports.edit_from = async (req, res, next) => {
     category_list: category_list,
     member_image: result.member_image,
     membership_category_id: result.membership_category_id,
+    address: result.address,
     id: result.id,
     validation: validations.all_field_validations(null, fields)
   });
@@ -250,6 +267,7 @@ exports.edit = [async (req, res, next) => {
           password: req.body.password,
           admin_approval: req.body.admin_approval,
           membership_category_id: req.body.membership_category_id,
+          address: req.body.address,
           member_image: image,
         };
         if(image===""){
@@ -268,15 +286,36 @@ exports.delete = async (req, res, next) => {
   const errorHandler = (err) => {
     return res.status(500).json({success: false, error: err.original.sqlMessage});
   };
-  const results = await MenuModel.destroy({where:{id:req.body.del_id}}).catch(errorHandler);
+  const results = await MemberModel.destroy({where:{id:req.body.del_id}}).catch(errorHandler);
   return res.status(200).json({
     success: true,
     result: results
   });
 };
 
-exports.excel_report = [
-  async (req, res, next) => {
+exports.approve = async (req, res, next) => {
+  const errorHandler = (err) => {
+    return res.status(500).json({success: false, error: err.original.sqlMessage});
+  };
+  const results = await MemberModel.update({admin_approval: 1},{ where: { id: req.body.approve_id } }).catch(errorHandler);
+  return res.status(200).json({
+    success: true,
+    result: results
+  });
+};
+
+exports.not_approve = async (req, res, next) => {
+  const errorHandler = (err) => {
+    return res.status(500).json({success: false, error: err.original.sqlMessage});
+  };
+  const results = await MemberModel.update({admin_approval: 0},{ where: { id: req.body.approve_id } }).catch(errorHandler);
+  return res.status(200).json({
+    success: true,
+    result: results
+  });
+};
+
+exports.excel_report = [async (req, res, next) => {
 
     let file_name = "";
     const errors = validationResult(req);
@@ -299,14 +338,13 @@ exports.excel_report = [
         {header: "Name", key: "name", width: 10},
         {header: "Phone Number", key: "phone_number", width: 30},
         {header: "Email", key: "email", width: 30},
+        {header: "Address", key: "address", width: 30},
         {header: "Session/Batch", key: "session", width: 10},
         {header: "HSC Passing Year", key: "hsc_passing_year", width: 10},
         {header: "Occupation", key: "occupation", width: 20},
         {header: "Organization name", key: "organization_name", width: 20},
         {header: "Designation name", key: "designation_name", width: 20},
-        {header: "Status", key: "status", width: 20},
-        {header: "Admin Approval", key: "admin_approval", width: 20},
-        {header: "Created At", key: "created_at", width: 20},
+        {header: "Membership Category", key: "membership_category_id", width: 20},
       ];
       list.forEach((list_obj) => {
         let a_row = "{";
@@ -314,14 +352,13 @@ exports.excel_report = [
         a_row = a_row + '"name":"' + list_obj.name + '",';
         a_row = a_row + '"phone_number":"' + list_obj.phone_number + '",';
         a_row = a_row + '"email":"' + list_obj.email + '",';
+        a_row = a_row + '"address":"' + list_obj.address + '",';
         a_row = a_row + '"session":"' + list_obj.session + '",';
         a_row = a_row + '"hsc_passing_year":"' + list_obj.hsc_passing_year + '",';
         a_row = a_row + '"occupation":"' + list_obj.occupation + '",';
         a_row = a_row + '"organization_name":"' + list_obj.organization_name + '",';
         a_row = a_row + '"designation_name":"' + list_obj.designation_name + '",';
-        a_row = a_row + '"status":"' + list_obj.status + '",';
-        a_row = a_row + '"admin_approval":"' + list_obj.admin_approval + '",';
-        a_row = a_row + '"created_at":"' + moment(list_obj.created_at).format('DD-MMM-YYYY h:m:s') + '"}';
+        a_row = a_row + '"membership_category_id":"' + list_obj.membership_category_id + '"}';
         let json_obj = JSON.parse(a_row);
         worksheet.addRow(json_obj);
       });

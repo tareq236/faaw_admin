@@ -14,6 +14,14 @@ module.exports = sequelize => {
       comment: null,
       field: "id"
     },
+    category_title: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      primaryKey: false,
+      autoIncrement: false,
+      comment: null,
+      field: "category_title"
+    },
     category_name: {
       type: DataTypes.TEXT,
       allowNull: false,

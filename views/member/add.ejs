@@ -68,6 +68,10 @@
                             <span class="form-text text-danger"><%= validation.find(e=>e.param==='email').msg %></span>
                         </div>
                         <div class="form-group">
+                            <label>Address: </label>
+                            <input type="text" name="address" value="<%= address %>" class="form-control" placeholder="Address">
+                        </div>
+                        <div class="form-group">
                             <label for="hsc_passing_year">HSC Passing Year:</label>
                             <div class="input-group">
                                 <input type="text" id="hsc_passing_year" name="hsc_passing_year" value="<%= hsc_passing_year %>" class="form-control" placeholder="Select Year" autocomplete="off">
@@ -108,7 +112,7 @@
                             <label>Admin Approval: </label>
                             <select name="admin_approval" class="form-control select-fixed-single" data-fouc>
                                 <option value="1" <%= admin_approval === 1 ? 'selected' : ''%>>Endorse (I Know)</option>
-                                <option value="1" <%= admin_approval === 2 ? 'selected' : ''%>>Both</option>
+                                <option value="1" <%= admin_approval === 2 ? 'selected' : ''%>>Endorse and Approval</option>
                                 <option value="1" <%= admin_approval === 3 ? 'selected' : ''%>>No Admin Rights</option>
                                 <option value="0" <%= admin_approval === 0 ? 'selected' : ''%>>Not Approval</option>
                             </select>

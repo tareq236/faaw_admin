@@ -4,6 +4,7 @@ const CommonFunction = require('../common_function');
 const path = require('path');
 const multer = require('multer');
 const moment = require('moment');
+const sharp = require("sharp");
 
 exports.list = (req, res, next) => {
     res.render('event/index', { })
@@ -52,6 +53,11 @@ exports.add_from = async (req, res, next) => {
       cover_image: "",
       status: "",
       event_fees: "",
+      membership_renew_fees: "0",
+      member_single_fees: "0",
+      member_spouse_fees: "0",
+      student_single_fees: "0",
+      student_spouse_fees: "0",
       event_session: "Upcoming Event",
     });
 };
@@ -79,6 +85,10 @@ exports.add = [async (req, res, next) => {
         req.flash('error', err);
         res.redirect('/event/add');
     };
+    const errorHandler = async (err, _id) => {
+        req.flash('error', err);
+        res.redirect('/event/add');
+    };
 
     // Upload image
     upload(req, res, async ( err ) => {
@@ -90,7 +100,22 @@ exports.add = [async (req, res, next) => {
                 req.flash('error', "Please add image");
                 res.redirect('/event/add');
             }else{
-                image = req.file.filename;
+              if(req.body.event_session === "Upcoming Event"){
+                const resizedImagePath = 'public/cover_image_event/resized_' + req.file.filename;
+                await sharp(req.file.path)
+                  .resize(650, 450) // Resize to 300x300 pixels
+                  .toFile(resizedImagePath)
+                  .catch(errorHandler);
+                image = resizedImagePath.split('public/cover_image_event/')[1];
+              }else{
+                const resizedImagePath = 'public/cover_image_event/resized_' + req.file.filename;
+                await sharp(req.file.path)
+                  .resize(370, 220) // Resize to 300x300 pixels
+                  .toFile(resizedImagePath)
+                  .catch(errorHandler);
+                image = resizedImagePath.split('public/cover_image_event/')[1];
+              }
+                // image = req.file.filename;
             }
             if(req.body.event_title === ""){
                 req.flash('error', "Please enter event title");
@@ -115,7 +140,11 @@ exports.add = [async (req, res, next) => {
                   event_type: req.body.event_type,
                   cover_image: image,
                   status: req.body.status,
-                  event_fees: req.body.event_fees,
+                  membership_renew_fees: req.body.membership_renew_fees,
+                  member_single_fees: req.body.member_single_fees,
+                  member_spouse_fees: req.body.member_spouse_fees,
+                  student_single_fees: req.body.student_single_fees,
+                  student_spouse_fees: req.body.student_spouse_fees,
                   event_session: req.body.event_session
                 };
 
@@ -145,6 +174,11 @@ exports.edit_from = async (req, res, next) => {
       status: result.status,
       event_session: result.event_session,
       event_fees: result.event_fees,
+      membership_renew_fees: result.membership_renew_fees,
+      member_single_fees: result.member_single_fees,
+      member_spouse_fees: result.member_spouse_fees,
+      student_single_fees: result.student_single_fees,
+      student_spouse_fees: result.student_spouse_fees,
       id: result.id,
       moment: moment
     });
@@ -175,6 +209,10 @@ exports.edit = [async (req, res, next) => {
         req.flash('error', err);
         res.redirect('/event/edit/'+id);
     };
+  const errorHandler = async (err) => {
+    req.flash('error', err);
+    res.redirect('/event/edit/'+id);
+  };
 
     // Upload image
     upload(req, res, async ( err ) => {
@@ -183,7 +221,23 @@ exports.edit = [async (req, res, next) => {
         } else {
             let image = "";
             if(req.file !== undefined){
-                image = req.file.filename;
+              if(event_session === "Upcoming Event"){
+                const resizedImagePath = 'public/cover_image_event/resized_' + req.file.filename;
+                await sharp(req.file.path)
+                  .resize(650, 450) // Resize to 300x300 pixels
+                  .toFile(resizedImagePath)
+                  .catch(errorHandler);
+                image = resizedImagePath.split('public/cover_image_event/')[1];
+              }else{
+                const resizedImagePath = 'public/cover_image_event/resized_' + req.file.filename;
+                await sharp(req.file.path)
+                  .resize(370, 220) // Resize to 300x300 pixels
+                  .toFile(resizedImagePath)
+                  .catch(errorHandler);
+                image = resizedImagePath.split('public/cover_image_event/')[1];
+              }
+
+              // image = req.file.filename;
             }
             if(req.body.event_title === ""){
                 req.flash('error', "Please enter event title");
@@ -205,7 +259,11 @@ exports.edit = [async (req, res, next) => {
                   cover_image: image,
                   status: req.body.status,
                   event_session: req.body.event_session,
-                  event_fees: req.body.event_fees
+                  membership_renew_fees: req.body.membership_renew_fees,
+                  member_single_fees: req.body.member_single_fees,
+                  member_spouse_fees: req.body.member_spouse_fees,
+                  student_single_fees: req.body.student_single_fees,
+                  student_spouse_fees: req.body.student_spouse_fees,
                 };
                 if(image===""){
                     delete update_data.cover_image;
