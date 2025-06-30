@@ -1,0 +1,124 @@
+<!--view/event_registration/index.ejs-->
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Event Registration</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Event Registration List</h5>
+            <div class="card-body">
+                <div class="filter-container">
+                    <label for="event-filter">Event:</label>
+                    <select id="event-filter">
+                        <option value="">All</option>
+                        <option value="5">FAA Re-Union 2023</option>
+                        <option value="10">Financial Aid</option>
+                        <option value="11">Inauguration of SICTL</option>
+                        <option value="12">50th Anniversary Celebration of DU Finance Department</option>
+                        <!-- Add more events as needed -->
+                    </select>
+
+                    <label for="member-type-filter">Member Type:</label>
+                    <select id="member-type-filter">
+                        <option value="">All</option>
+                        <option value="3">Life Time Member</option>
+                        <option value="4">General Member</option>
+                        <option value="6">Student/Guest</option>
+                        <!-- Add more member types as needed -->
+                    </select>
+
+                    <label for="tx-status-filter">Transaction Status:</label>
+                    <select id="tx-status-filter">
+                        <option value="">All</option>
+                        <option value="1">Paid</option>
+                        <option value="0">Unpaid</option>
+                        <!-- Add more transaction statuses as needed -->
+                    </select>
+                </div>
+                <button id="download-excel" class="btn btn-success">Download Excel</button>
+            </div>
+        </div>
+
+        <table id="list" class="table datatable-basic table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Event ID</th>
+                <th>Event Title</th>
+                <th>Full Name</th>
+                <th>Member Type</th>
+                <th>Participation Type</th>
+                <th>Pay Amount</th>
+                <th>TX Status</th>
+                <th>Payment Type</th>
+                <th>Enter Date Time</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Destroy any existing DataTable instance before initializing a new one
+        if ($.fn.dataTable.isDataTable('#list')) {
+            $('#list').DataTable().clear().destroy();
+        }
+
+        // Initialize DataTable with server-side processing
+        var table = $('#list').DataTable({
+            processing: true, // Show processing indicator
+            serverSide: true, // Enable server-side processing
+            ajax: {
+                url: '/event-registrations-data', // API endpoint
+                type: 'GET',
+                data: function(d) {
+                    // Include the filter values in the request data
+                    d.event = $('#event-filter').val();  // Get selected event filter value
+                    d.member_type = $('#member-type-filter').val(); // Get selected member_type filter value
+                    d.tx_status = $('#tx-status-filter').val(); // Get selected tx_status filter value
+                }
+            },
+            columns: [
+                { data: 'id' },
+                { data: 'event_title' },
+                { data: 'full_name' },
+                { data: 'member_type' },
+                { data: 'participation_type' },
+                { data: 'pay_amount' },
+                { data: 'tx_status' },
+                { data: 'payment_type' },
+                { data: 'enter_date_time' }
+            ]
+        });
+
+        // Event listener for filter changes
+        $('#event-filter, #member-type-filter, #tx-status-filter').on('change', function() {
+            table.ajax.reload();  // Reload table data when filter changes
+        });
+
+        // Add event listener for the download button
+        $('#download-excel').on('click', function() {
+            var event = $('#event-filter').val();
+            var member_type = $('#member-type-filter').val();
+            var tx_status = $('#tx-status-filter').val();
+
+            // Trigger an AJAX call to download the Excel file
+            window.location.href = `/event-registrations-download?event=${event}&member_type=${member_type}&tx_status=${tx_status}`;
+        });
+
+    });
+</script>
+
+

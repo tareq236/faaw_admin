@@ -1,0 +1,123 @@
+<!-- Page header -->
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active"> Donate List</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
+
+<!-- Content area -->
+<div class="content">
+
+    <!-- Style combinations -->
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Donate List</h5>
+        </div>
+
+        <table id="list" class="table datatable-basic table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Organization Name</th>
+                <th>Email Address</th>
+                <th>Phone Number</th>
+                <th>Pay Amount</th>
+                <th>Payment Type</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+    <!-- /style combinations -->
+
+
+
+</div>
+<!-- /content area -->
+
+
+<script>
+    $(document).ready(function() {
+
+        function dataLoad() {
+            $('#list').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "search": false,
+                "destroy": true,
+                "pageLength": 50,
+                "searching": false,
+                "ajax": {
+                    "url": "/donate_list/data_list",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "createdRow": function( row, data, dataIndex ) {
+
+                },
+                "columns": [
+                    { "data": "name" },
+                    { "data": "organization_name" },
+                    { "data": "email_address" },
+                    { "data": "phone_number" },
+                    { "data": "pay_amount" },
+                    { "data": "payment_type" },
+                    { "data": "status" },
+                ]
+            });
+        }
+
+        dataLoad();
+
+        // Custom bootbox dialog with form
+        $("#list").on('click', '#delete', function () {
+            var delid = $(this).attr('data-delete-id');
+            bootbox.confirm({
+                title: 'Delete',
+                message: 'Do you want to delete?',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-primary'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-link'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "post",
+                            url: "/event/del",
+                            data: { del_id: delid },
+                            datatype: "json",
+                            traditional: true,
+                            success: function (data) {
+                                if (data.success) {
+                                    window.location.href = "/event";
+                                } else {
+                                    bootbox.alert({
+                                        title: 'Delete Faild!',
+                                        message: data.message
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+    });
+</script>
