@@ -23,7 +23,11 @@ const fields = [
 ];
 
 exports.list = (req, res, next) => {
-  res.render('member/index', {})
+  const categoryid = req.query.categoryid;
+  res.render('member/index', {data: {categoryid: categoryid}})
+};
+exports.expired_members = (req, res, next) => {
+  res.render('member/expired_members', {})
 };
 
 exports.data_list = async (req, res, next) => {
@@ -32,7 +36,46 @@ exports.data_list = async (req, res, next) => {
   let page_num = req.body.draw;
   let search = req.body['search'];
   let search_value = search.value;
-  let query_str = " WHERE status = 1 ";
+  let categoryid = req.body.categoryid;
+  let query_str = " WHERE ml.status = 1 ";
+  if(categoryid){
+    query_str = query_str +` AND ml.membership_category_id = ${categoryid} `;
+  }
+  if(search_value){
+    // query_str = query_str + " AND email like " + '%'+search+'%';
+    query_str = query_str + " AND (ml.email LIKE '%" + search_value + "%' OR ml.name LIKE '%" + search_value + "%' OR ml.phone_number LIKE '%" + search_value + "%') ";
+  }
+
+  const query_data = await sequelize.query(`SELECT ml.*, c.category_name FROM member_list ml INNER JOIN category_list c ON ml.membership_category_id = c.id  ${query_str} ORDER BY ml.id DESC LIMIT ${offset}, ${limit};`, { type: QueryTypes.SELECT });
+  const query_data_count = await sequelize.query(`SELECT COUNT(*) AS num_of_row FROM member_list ml INNER JOIN category_list c ON ml.membership_category_id = c.id ${query_str};`, { type: QueryTypes.SELECT });
+
+  query_data.forEach(function(e) { e.action = CommonFunction.action_menu_edit_del_others(e.id, "member") });
+  let num_of_rows = query_data_count[0].num_of_row;
+
+  if(query_data.length !== 0){
+    return res.status(200).json({
+      success: true,
+      recordsTotal: query_data.length,
+      recordsFiltered: num_of_rows,
+      data: query_data
+    });
+  }else{
+    return res.status(200).json({
+      success: true,
+      recordsTotal: 0,
+      recordsFiltered: 0,
+      data: query_data
+    });
+  }
+};
+
+exports.expired_data_list = async (req, res, next) => {
+  let offset = req.body.start;
+  let limit = req.body.length;
+  let page_num = req.body.draw;
+  let search = req.body['search'];
+  let search_value = search.value;
+  let query_str = " WHERE status = 1 AND is_pay=0";
   if(search_value){
     // query_str = query_str + " AND email like " + '%'+search+'%';
     query_str = query_str + " AND (email LIKE '%" + search_value + "%' OR name LIKE '%" + search_value + "%' OR phone_number LIKE '%" + search_value + "%') ";
@@ -133,10 +176,6 @@ exports.add = [async (req, res, next) => {
         image = resizedImagePath.split('public/member/')[1];
         // image = req.file.filename;
       }
-      if(req.body.membership_number === ""){
-        req.flash('error', "Please enter membership number");
-        res.redirect('/member/add');
-      }
       if(req.body.name === ""){
         req.flash('error', "Please enter name");
         res.redirect('/member/add');
@@ -146,9 +185,30 @@ exports.add = [async (req, res, next) => {
         res.redirect('/member/add');
       }
 
-      if(req.file !== undefined && req.body.membership_number !== "" && req.body.name !== "" && req.body.phone_number !== ""){
+      let prefix = "";
+      switch (req.body.membership_category_id) {
+        case "3":
+          prefix = "LM"; break;
+        case "4":
+          prefix = "GM"; break;
+        case "6":
+          prefix = "SM"; break;
+        default:
+          prefix = "MB"; // fallback
+      }
+      // Get max ID for this category
+      const maxEntry = await MemberModel.findOne({
+        where: { membership_category_id: req.body.membership_category_id },
+        order: [['id', 'DESC']],
+        attributes: ['id']
+      });
+
+      const nextId = maxEntry ? maxEntry.id + 1 : 1;
+      const membership_number = `${prefix}${nextId}`;
+
+      if(req.file !== undefined && req.body.name !== "" && req.body.phone_number !== ""){
         let insert_data = {
-          membership_number: req.body.membership_number,
+          membership_number: membership_number,
           name: req.body.name,
           phone_number: req.body.phone_number,
           email: req.body.email,
@@ -240,10 +300,6 @@ exports.edit = [async (req, res, next) => {
       if(req.file !== undefined){
         image = req.file.filename;
       }
-      if(req.body.membership_number === ""){
-        req.flash('error', "Please enter membership number");
-        res.redirect('/member/edit/'+id);
-      }
       if(req.body.name === ""){
         req.flash('error', "Please enter name");
         res.redirect('/member/edit/'+id);
@@ -252,9 +308,8 @@ exports.edit = [async (req, res, next) => {
         req.flash('error', "Please enter phone number");
         res.redirect('/member/edit/'+id);
       }
-      if(req.body.membership_number !== "" && req.body.name !== "" && req.body.phone_number !== ""){
+      if(req.body.name !== "" && req.body.phone_number !== ""){
         let update_data = {
-          membership_number: req.body.membership_number,
           name: req.body.name,
           phone_number: req.body.phone_number,
           email: req.body.email,

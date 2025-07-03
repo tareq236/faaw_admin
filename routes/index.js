@@ -528,7 +528,16 @@ router.post('/member/approve', function(req, res, next) {
 router.post('/member/not_approve', function(req, res, next) {
   Member.not_approve(req, res, next);
 });
-
+router.get('/expired_members', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Member.expired_members(req, res, next);
+  }
+});
+router.post('/members/expired_data_list', function(req, res, next) {
+  if (isLogin(req, res)) {
+    Member.expired_data_list(req, res, next);
+  }
+});
 //==================================================================
 router.get('/page', function(req, res, next) {
   if (isLogin(req, res)) {

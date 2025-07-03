@@ -46,9 +46,6 @@
                     </form>
                 </div>
             </div>
-
-
-
         </div>
 
         <table id="list" class="table datatable-basic table-bordered table-striped table-hover">
@@ -58,6 +55,7 @@
                 <th>Phone Number</th>
                 <th>Email</th>
                 <th>Session</th>
+                <th>Type</th>
                 <th class="text-center">Payment</th>
                 <th>Approval</th>
                 <th class="text-center">Actions</th>
@@ -75,6 +73,7 @@
 <!-- /content area -->
 
 <input type="file" id="fileInput" style="display:none;" accept=".xls, .xlsx">
+<input type="hidden" id="categoryid" value="<%=data.categoryid%>">
 
 <script>
     $(document).ready(function() {
@@ -111,7 +110,6 @@
 
         });
 
-
         function dataLoad() {
             $('#list').DataTable( {
                 "processing": true,
@@ -127,17 +125,20 @@
                     "url": "/members/data_list",
                     "type": "POST",
                     "datatype": "json",
+                    "data": function (d) {
+                        d.categoryid = $('#categoryid').val();
+                    }
                 },
                 "createdRow": function( row, data, dataIndex ) {
                     if ( data.is_pay === 1 ) {
-                        $('td:eq(4)', row).html('<span class="badge badge-success">Pay</span>');
+                        $('td:eq(5)', row).html('<span class="badge badge-success">Pay</span>');
                     }else{
-                        $('td:eq(4)', row).html('<span class="badge badge-secondary">Not Pay</span>');
+                        $('td:eq(5)', row).html('<span class="badge badge-secondary">Not Pay</span>');
                     }
                     if ( data.admin_approval === 1 ) {
-                        $('td:eq(5)', row).html('<span class="badge badge-success">Approved</span>');
+                        $('td:eq(6)', row).html('<span class="badge badge-success">Approved</span>');
                     }else{
-                        $('td:eq(5)', row).html('<span class="badge badge-secondary">Not Approved</span>');
+                        $('td:eq(6)', row).html('<span class="badge badge-secondary">Not Approved</span>');
                     }
                 },
                 "columns": [
@@ -145,6 +146,7 @@
                     { "data": "phone_number" },
                     { "data": "email" },
                     { "data": "session" },
+                    { "data": "category_name" },
                     { "data": "is_pay" },
                     { "data": "admin_approval" },
                     { "data": "action" },

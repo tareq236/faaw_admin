@@ -1,0 +1,89 @@
+<!-- Page header -->
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Expired Member</a>
+                <span class="breadcrumb-item active">Expired Member List</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
+
+<!-- Content area -->
+<div class="content">
+
+    <!-- Style combinations -->
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Expired Member list</h5>
+        </div>
+
+        <table id="list" class="table datatable-basic table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Session</th>
+                <th class="text-center">Payment</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+    <!-- /style combinations -->
+
+</div>
+<!-- /content area -->
+
+<input type="file" id="fileInput" style="display:none;" accept=".xls, .xlsx">
+
+<script>
+    $(document).ready(function() {
+
+        function dataLoad() {
+            $('#list').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "search": true,
+                "destroy": true,
+                "pageLength": 50,
+                "language": {
+                    "searchPlaceholder": "Filter by Name"
+                },
+                "ajax": {
+                    "url": "/members/expired_data_list",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "createdRow": function( row, data, dataIndex ) {
+                    if ( data.is_pay === 1 ) {
+                        $('td:eq(4)', row).html('<span class="badge badge-success">Pay</span>');
+                    }else{
+                        $('td:eq(4)', row).html('<span class="badge badge-secondary">Not Pay</span>');
+                    }
+                },
+                "columns": [
+                    { "data": "name" },
+                    { "data": "phone_number" },
+                    { "data": "email" },
+                    { "data": "session" },
+                    { "data": "is_pay" },
+                ]
+            });
+        }
+
+        dataLoad();
+
+        $("#filter").click(function(){
+            dataLoad();
+        });
+
+
+    });
+</script>
