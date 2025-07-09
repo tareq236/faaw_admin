@@ -1,0 +1,103 @@
+<!--views/event_registration/index.ejs-->
+
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Collection Of Payments</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Collection Of Payments</h5>
+            <div class="card-body">
+                <div class="filter-container">
+                    <label for="event-filter">Event:</label>
+                    <select id="event-filter">
+                        <option value="">All</option>
+                        <option value="Membership Payment">Membership Payment</option>
+                        <option value="Donation">Donation</option>
+                        <option value="Event">Event</option>
+                    </select>
+                </div>
+            </div>
+            <button id="download-excel" class="btn btn-success mb-3">Download Excel</button>
+        </div>
+
+
+        <table id="list" class="table datatable-basic table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Source</th>
+                <th>Member ID</th>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Organization</th>
+                <th>Session</th>
+                <th>Member Type</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Amount</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if ($.fn.dataTable.isDataTable('#list')) {
+            $('#list').DataTable().clear().destroy();
+        }
+
+        $('#list').DataTable({
+            processing: true,
+            serverSide: true,
+            language: {
+                "searchPlaceholder": "Filter by Mobile"
+            },
+            ajax: {
+                url: '/collection-payments-data',
+                type: 'GET',
+                data: function (d) {
+                    d.source_type = $('#event-filter').val();
+                }
+            },
+            columns: [
+                { data: 'source' },
+                { data: 'member_id' },
+                { data: 'student_id' },
+                { data: 'name' },
+                { data: 'organization_name' },
+                { data: 'session' },
+                { data: 'member_type' },
+                { data: 'phone_number' },
+                { data: 'email_address' },
+                { data: 'pay_amount' }
+            ]
+        });
+
+        $('#download-excel').on('click', function () {
+            const phone = $('#phone-filter').val();
+            const source = $('#event-filter').val();
+            const url = `/collection-payments-excel?phone_number=${phone}&source_type=${source}`;
+            window.location.href = url;
+        });
+
+        $('#event-filter').on('change', function () {
+            $('#list').DataTable().ajax.reload();
+        });
+    });
+</script>
+
+

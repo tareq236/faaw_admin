@@ -37,6 +37,7 @@ const Payment = require("../controllers/payment");
 const Programs = require("../controllers/programs/Programs");
 const EnterEvent = require("../controllers/enter_event");
 const eventRegistrationController = require('../controllers/event_registration/EventRegistration');
+const collectionOfPaymentsController = require('../controllers/collection_of_payments/CollectionOfPayments');
 
 
 function isLogin(req, res){
@@ -83,6 +84,11 @@ router.get('/dashboard', function(req, res, next) {
     Dashboard.data(req, res, next);
   }
 });
+
+router.get('/collection-payments', collectionOfPaymentsController.list);
+router.get('/collection-payments-data', collectionOfPaymentsController.getCollectionOfPayments);
+router.get('/collection-payments-excel', collectionOfPaymentsController.downloadExcel);
+
 
 router.get('/event-registration', eventRegistrationController.list);
 router.get('/event-registrations-data', eventRegistrationController.getEventRegistrations);
