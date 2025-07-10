@@ -164,16 +164,8 @@ exports.Save  = async (req, res, next) => {
         image = resizedImagePath.split('public/member/')[1];
       }
 
+      // image = req.file.filename;
 
-
-        // image = req.file.filename;
-
-      if(req.body.membership_number === ""){
-        return res.status(200).json({
-          success: false,
-          message: "Please enter membership number"
-        });
-      }
       if(req.body.name === ""){
         return res.status(200).json({
           success: false,
@@ -187,9 +179,30 @@ exports.Save  = async (req, res, next) => {
         });
       }
 
-      if(req.body.membership_number !== "" && req.body.name !== "" && req.body.phone_number !== "") {
+      let prefix = "";
+      switch (req.body.membership_category_id) {
+        case "3":
+          prefix = "LM"; break;
+        case "4":
+          prefix = "GM"; break;
+        case "6":
+          prefix = "SM"; break;
+        default:
+          prefix = "MB"; // fallback
+      }
+      // Get max ID for this category
+      const maxEntry = await MemberModel.findOne({
+        where: { membership_category_id: req.body.membership_category_id },
+        order: [['id', 'DESC']],
+        attributes: ['id']
+      });
+
+      const nextId = maxEntry ? maxEntry.id + 1 : 1;
+      const membership_number = `${prefix}${nextId}`;
+
+      if(req.body.name !== "" && req.body.phone_number !== "") {
         let insert_data = {
-          membership_number: req.body.membership_number,
+          membership_number: membership_number,
           name: req.body.name,
           phone_number: req.body.phone_number,
           email: req.body.email,
