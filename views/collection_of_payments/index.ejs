@@ -17,16 +17,24 @@
         <div class="card-header header-elements-inline">
             <h5 class="card-title">Collection Of Payments</h5>
             <div class="card-body">
-                <div class="filter-container">
-                    <label for="event-filter">Event:</label>
+                <div class="filter-container d-flex">
+                    <label for="event-filter" style="margin-left: 10px;margin-right: 10px">Event:</label>
                     <select id="event-filter">
                         <option value="">All</option>
                         <option value="Membership Payment">Membership Payment</option>
                         <option value="Donation">Donation</option>
                         <option value="Event">Event</option>
                     </select>
+
+                        <label for="start-date" style="margin-left: 10px;margin-right: 10px">Start Date:</label>
+                        <input type="date" id="start-date" class="form-control" style="width: 160px;">
+
+                        <label for="end-date" style="margin-left: 10px;margin-right: 10px">End Date:</label>
+                        <input type="date" id="end-date" class="form-control" style="width: 160px;">
+
                 </div>
             </div>
+
             <button id="download-excel" class="btn btn-success mb-3">Download Excel</button>
         </div>
 
@@ -71,6 +79,8 @@
                 type: 'GET',
                 data: function (d) {
                     d.source_type = $('#event-filter').val();
+                    d.start_date = $('#start-date').val();
+                    d.end_date = $('#end-date').val();
                 }
             },
             columns: [
@@ -88,13 +98,14 @@
         });
 
         $('#download-excel').on('click', function () {
-            const phone = $('#phone-filter').val();
             const source = $('#event-filter').val();
-            const url = `/collection-payments-excel?phone_number=${phone}&source_type=${source}`;
+            const start = $('#start-date').val();
+            const end = $('#end-date').val();
+            const url = `/collection-payments-excel?source_type=${source}&start_date=${start}&end_date=${end}`;
             window.location.href = url;
         });
 
-        $('#event-filter').on('change', function () {
+        $('#event-filter, #start-date, #end-date').on('change', function () {
             $('#list').DataTable().ajax.reload();
         });
     });

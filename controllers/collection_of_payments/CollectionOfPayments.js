@@ -12,11 +12,19 @@ exports.getCollectionOfPayments = async (req, res) => {
   const length = parseInt(req.query.length) || 10;
   const source_type = req.query.source_type || '';
   const searchValue = req.query.search?.value || '';
+  const start_date = req.query.start_date || '';
+  const end_date = req.query.end_date || '';
 
   // Build dynamic WHERE clause
   let whereConditions = [];
   if (source_type) {
     whereConditions.push(`source = '${source_type}'`);
+  }
+  if (start_date) {
+    whereConditions.push(`DATE(created_at) >= '${start_date}'`);
+  }
+  if (end_date) {
+    whereConditions.push(`DATE(created_at) <= '${end_date}'`);
   }
   if (searchValue) {
     whereConditions.push(`phone_number LIKE '%${searchValue}%'`);
@@ -155,11 +163,19 @@ exports.getCollectionOfPayments = async (req, res) => {
 
 exports.downloadExcel = async (req, res) => {
   const source_type = req.query.source_type || '';
+  const start_date = req.query.start_date || '';
+  const end_date = req.query.end_date || '';
 
   // Build filter
   let whereConditions = [];
   if (source_type) {
     whereConditions.push(`source = '${source_type}'`);
+  }
+  if (start_date) {
+    whereConditions.push(`DATE(created_at) >= '${start_date}'`);
+  }
+  if (end_date) {
+    whereConditions.push(`DATE(created_at) <= '${end_date}'`);
   }
   let whereClause = whereConditions.length ? 'WHERE ' + whereConditions.join(' AND ') : '';
 
