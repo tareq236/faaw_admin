@@ -144,6 +144,64 @@ exports.getCollectionOfPayments = async (req, res) => {
     ${whereClause};
   `;
 
+  const sumQuery = `
+  SELECT SUM(pay_amount) AS total_amount FROM (
+    SELECT 
+      el.event_title AS source,
+      er.member_id,
+      er.student_id,
+      er.full_name AS name,
+      er.organization_name,
+      er.session,
+      er.member_type,
+      er.phone_number,
+      er.email_address,
+      er.pay_amount,
+      er.created_at
+    FROM event_register er 
+    INNER JOIN event_list el ON er.event_id = el.id
+    WHERE er.is_pay = 1
+
+    UNION ALL
+
+    SELECT 
+      'Membership Payment' AS source,
+      msp.member_id,
+      NULL AS student_id,
+      msp.name,
+      msp.organization_name,
+      NULL AS session,
+      NULL AS member_type,
+      msp.phone_number,
+      msp.email_address,
+      msp.pay_amount,
+      msp.created_at
+    FROM member_ship_payments msp
+    WHERE msp.tx_status = 'VALID'
+
+    UNION ALL
+
+    SELECT 
+      'Donation' AS source,
+      NULL AS member_id,
+      NULL AS student_id,
+      dl.name,
+      dl.organization_name,
+      NULL AS session,
+      NULL AS member_type,
+      dl.phone_number,
+      dl.email_address,
+      dl.pay_amount,
+      dl.created_at
+    FROM donation_list dl
+    WHERE dl.tx_status = 'VALID'
+  ) AS combined
+  ${whereClause};
+`;
+
+  const sumResult = await sequelize.query(sumQuery, { type: QueryTypes.SELECT });
+  const totalAmount = sumResult[0].total_amount || 0;
+
   try {
     const data = await sequelize.query(baseQuery, { type: QueryTypes.SELECT });
     const total = await sequelize.query(countQuery, { type: QueryTypes.SELECT });
@@ -152,7 +210,8 @@ exports.getCollectionOfPayments = async (req, res) => {
       draw,
       recordsTotal: total[0].total,
       recordsFiltered: total[0].total,
-      data
+      data,
+      totalAmount
     });
   } catch (error) {
     console.error(error);
