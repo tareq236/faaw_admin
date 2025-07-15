@@ -199,6 +199,7 @@ exports.getCollectionOfPayments = async (req, res) => {
   ${whereClause};
 `;
 
+
   const sumResult = await sequelize.query(sumQuery, { type: QueryTypes.SELECT });
   const totalAmount = sumResult[0].total_amount || 0;
 
