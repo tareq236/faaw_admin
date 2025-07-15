@@ -91,8 +91,8 @@ exports.getCollectionOfPayments = async (req, res) => {
 
   const countQuery = `
     SELECT COUNT(*) AS total FROM (
-      SELECT 
-        el.event_title AS source,
+      SELECT
+        'Event' AS source,
         er.member_id,
         er.student_id,
         er.full_name AS name,
@@ -146,8 +146,8 @@ exports.getCollectionOfPayments = async (req, res) => {
 
   const sumQuery = `
   SELECT SUM(pay_amount) AS total_amount FROM (
-    SELECT 
-      el.event_title AS source,
+    SELECT
+      'Event' AS source,
       er.member_id,
       er.student_id,
       er.full_name AS name,
