@@ -370,51 +370,73 @@ exports.not_approve = async (req, res, next) => {
   });
 };
 
-exports.excel_report = [async (req, res, next) => {
-
+exports.excel_report = [
+  async (req, res, next) => {
     let file_name = "";
     const errors = validationResult(req);
     let validation = true;
     let validation_message = "";
-    if (errors.errors.length === 0) {
-      validation = true;
-    } else {
+
+    if (errors.errors.length !== 0) {
       validation = false;
+      errors.errors.forEach((err) => {
+        validation_message += err.msg + "<br />";
+      });
+      req.flash("error", validation_message);
+      return res.redirect("/member");
     }
 
-    if (validation) {
+    try {
       file_name = "Excel_Member";
-      const list = await sequelize.query(`SELECT * FROM member_list;`, {type: QueryTypes.SELECT});
+      const list = await sequelize.query(`SELECT * FROM member_list;`, {
+        type: QueryTypes.SELECT,
+      });
 
       let workbook = new excel.Workbook();
-      let worksheet = workbook.addWorksheet("Prescription");
+      let worksheet = workbook.addWorksheet("Members");
+
       worksheet.columns = [
-        {header: "Membership Number", key: "membership_number", width: 20},
-        {header: "Name", key: "name", width: 10},
-        {header: "Phone Number", key: "phone_number", width: 30},
-        {header: "Email", key: "email", width: 30},
-        {header: "Address", key: "address", width: 30},
-        {header: "Session/Batch", key: "session", width: 10},
-        {header: "HSC Passing Year", key: "hsc_passing_year", width: 10},
-        {header: "Occupation", key: "occupation", width: 20},
-        {header: "Organization name", key: "organization_name", width: 20},
-        {header: "Designation name", key: "designation_name", width: 20},
-        {header: "Membership Category", key: "membership_category_id", width: 20},
+        { header: "Membership Number", key: "membership_number", width: 20 },
+        { header: "Name", key: "name", width: 20 },
+        { header: "Phone Number", key: "phone_number", width: 20 },
+        { header: "Email", key: "email", width: 25 },
+        { header: "Address", key: "address", width: 30 },
+        { header: "Session/Batch", key: "session", width: 15 },
+        { header: "HSC Passing Year", key: "hsc_passing_year", width: 20 },
+        { header: "Occupation", key: "occupation", width: 20 },
+        { header: "Organization name", key: "organization_name", width: 25 },
+        { header: "Designation name", key: "designation_name", width: 25 },
+        {
+          header: "Membership Category",
+          key: "membership_category_id",
+          width: 20,
+        },
       ];
-      list.forEach((list_obj) => {
-        let a_row = "{";
-        a_row = a_row + '"membership_number":"' + list_obj.membership_number + '",';
-        a_row = a_row + '"name":"' + list_obj.name + '",';
-        a_row = a_row + '"phone_number":"' + list_obj.phone_number + '",';
-        a_row = a_row + '"email":"' + list_obj.email + '",';
-        a_row = a_row + '"address":"' + list_obj.address + '",';
-        a_row = a_row + '"session":"' + list_obj.session + '",';
-        a_row = a_row + '"hsc_passing_year":"' + list_obj.hsc_passing_year + '",';
-        a_row = a_row + '"occupation":"' + list_obj.occupation + '",';
-        a_row = a_row + '"organization_name":"' + list_obj.organization_name + '",';
-        a_row = a_row + '"designation_name":"' + list_obj.designation_name + '",';
-        a_row = a_row + '"membership_category_id":"' + list_obj.membership_category_id + '"}';
-        let json_obj = JSON.parse(a_row);
+
+      const sanitize = (value) => {
+        if (!value) return "";
+        return String(value)
+          .replace(/\\/g, "\\\\") // Escape backslashes
+          .replace(/"/g, '\\"') // Escape double quotes
+          .replace(/\r/g, "") // Remove carriage returns
+          .replace(/\n/g, " "); // Replace newlines with space
+      };
+
+      list.forEach((member) => {
+        const json_obj = {
+          membership_number: sanitize(member.membership_number),
+          name: sanitize(member.name),
+          phone_number: sanitize(member.phone_number),
+          email: sanitize(member.email),
+          address: sanitize(member.address),
+          session: sanitize(member.session),
+          hsc_passing_year: sanitize(member.hsc_passing_year),
+          occupation: sanitize(member.occupation),
+          organization_name: sanitize(member.organization_name),
+          designation_name: sanitize(member.designation_name),
+          membership_category_id: sanitize(member.membership_category_id),
+        };
+
         worksheet.addRow(json_obj);
       });
 
@@ -427,16 +449,13 @@ exports.excel_report = [async (req, res, next) => {
         "attachment; filename=" + file_name + ".xlsx"
       );
 
-      return workbook.xlsx.write(res).then(function () {
+      return workbook.xlsx.write(res).then(() => {
         res.status(200).end();
       });
-
-    } else {
-      for (let i = 0; i < errors.errors.length; i++) {
-        validation_message += errors.errors[i].msg + "<br />";
-      }
-      req.flash('error', validation_message);
-      res.redirect('/member');
+    } catch (err) {
+      console.error("Excel Export Error:", err);
+      req.flash("error", "Excel export failed!");
+      return res.redirect("/member");
     }
-  }];
-
+  },
+];
